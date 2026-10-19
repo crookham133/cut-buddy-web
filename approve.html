@@ -1,0 +1,65 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex, nofollow"><meta name="referrer" content="no-referrer"><link rel="stylesheet" href="style.css"><title>Approve a Team</title></head><body><main>
+<div class="mark"><span aria-hidden="true"></span>Cut Buddy</div>
+<section id="loading"><h1>One moment…</h1></section>
+
+<section id="pending" hidden>
+  <h1>Approve joining a team?</h1>
+  <p>Your teenager would like to join <strong id="team"></strong> on Cut Buddy, an app that plans their meals around their training.</p>
+  <div class="card">
+    <p><strong>Their coach would see</strong>, only for what your teenager leaves switched on: their weight trend as a 7-day average against their class, how closely they follow their meal plan, and a warning if they're losing weight too fast or not eating enough.</p>
+    <p><strong>Their coach would never see</strong> their health answers, their conversations with the app, or a daily weight.</p>
+  </div>
+  <p>Your teenager can change what's shared, or leave the team, at any time.</p>
+  <button id="approve" type="button">I approve</button>
+  <p class="updated" style="margin-top:14px">If you weren't expecting this, close this page and nothing happens. <a href="guardians.html">What Cut Buddy collects, for parents</a>.</p>
+</section>
+
+<section id="approved" hidden>
+  <h1 class="ok">Approved</h1>
+  <p>Thank you. Your teenager is now on <strong id="team-done"></strong>.</p>
+  <p>They can change what's shared, or leave, from Settings in the app. You can ask us anything at the address in our <a href="guardians.html">page for parents</a>.</p>
+</section>
+
+<section id="handled" hidden>
+  <h1>Already handled</h1>
+  <p>This link has been used, or it's no longer valid. There's nothing more to do. If your teenager asks you again, they can send a new request from the app.</p>
+</section>
+
+<section id="invalid" hidden>
+  <h1>This link isn't complete</h1>
+  <p>Part of the link seems to be missing. Try opening it again from the email or text message, or ask your teenager to send a new request.</p>
+</section>
+
+<section id="failed" hidden>
+  <h1>That didn't go through</h1>
+  <p>We couldn't reach Cut Buddy just now. Check your connection and try again.</p>
+  <button id="retry" type="button">Try again</button>
+</section>
+<script>
+// The token is in the fragment (#t=…), which the browser never sends to this
+// site's server; it goes only to Cut Buddy's API, in a request body.
+(function () {
+  var API = "https://xbbfsizidhtdkhirwvqx.supabase.co/functions/v1/guardian-approve";
+  var token = new URLSearchParams(location.hash.slice(1)).get("t") || "";
+  // Out of the address bar, history and any screenshot of it.
+  try { history.replaceState(null, "", location.pathname); } catch (e) {}
+  var shown = null;
+  function show(id) { ["loading", "pending", "approved", "handled", "invalid", "failed"].forEach(function (s) { document.getElementById(s).hidden = s !== id; }); shown = id; }
+  function call(action) {
+    return fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token: token, action: action }) })
+      .then(function (r) { if (!r.ok) throw new Error(String(r.status)); return r.json(); });
+  }
+  var last = "preview";
+  function render(a) {
+    if (a.state === "pending") { document.getElementById("team").textContent = a.team || "their team"; show("pending"); }
+    else if (a.state === "approved") { document.getElementById("team-done").textContent = a.team || "their team"; show("approved"); }
+    else if (a.state === "handled") show("handled");
+    else show("invalid");
+  }
+  function run(action) { last = action; show("loading"); call(action).then(render, function () { show("failed"); }); }
+  document.getElementById("approve").addEventListener("click", function () { this.disabled = true; run("approve"); });
+  document.getElementById("retry").addEventListener("click", function () { run(last); });
+  if (!/^[0-9a-f]{48}$/.test(token)) show("invalid"); else run("preview");
+})();
+</script>
+</main></body></html>
