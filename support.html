@@ -1,36 +1,73 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex, nofollow"><meta name="description" content="How to reach Cut Buddy, and answers to common questions."><link rel="icon" href="assets/app-icon-1024.png"><link rel="stylesheet" href="style.css"><title>Cut Buddy Support</title></head><body><main>
-<a class="mark" href="index.html"><span aria-hidden="true"></span>Cut Buddy</a>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex, nofollow"><meta name="description" content="How to reach Cut Buddy, and answers to common questions."><link rel="icon" href="assets/app-icon-1024.png"><link rel="stylesheet" href="theme.css"><title>Cut Buddy Support</title>
+<style>
+  /* Support layout only. Every value comes from theme.css. */
+  .faq { display: grid; gap: var(--cb-space-md); }
+  .email { font-size: var(--cb-title-size); font-weight: 600; overflow-wrap: anywhere; }
+  #copy-status:empty { display: none; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cb-space-sm) var(--cb-space-md); }
+</style></head><body class="cb-text">
+<header class="cb-wrap cb-header">
+  <a class="cb-brand" href="index.html"><img src="assets/logo-mark.png" alt="" width="390" height="427"><span class="cb-wordmark">Cut Buddy</span></a>
+</header>
+<main>
 <h1>Support</h1>
-<p class="updated">Questions, problems or feedback about Cut Buddy. We read every message.</p>
+<p class="cb-muted">Questions, problems or feedback about Cut Buddy. We read every message.</p>
 
 <h2>How to reach us</h2>
-<div class="card contact">
-<p>Email us at</p>
-<!-- Ryan supplies the support address; swap it into #support-email when it exists. -->
-<p class="email"><span id="support-email" class="ph">support email to come</span></p>
-<button type="button" class="copy" data-copy="support-email">Copy email address</button>
-<p class="copy-status" role="status"></p>
+<div class="cb-card">
+  <p class="cb-label">Email</p>
+  <p class="email" id="support-email">cutbuddyapp@gmail.com</p>
+  <div class="actions">
+    <button type="button" class="cb-btn is-outline" data-copy="support-email">Copy email address</button>
+    <a class="cb-link" href="mailto:cutbuddyapp@gmail.com">Email us ›</a>
+  </div>
+  <p class="cb-caption" id="copy-status" role="status"></p>
 </div>
-<p>Include the email you use for Cut Buddy and, if something went wrong, what you were doing when it happened. Never send us your password.</p>
+<p class="cb-muted">Include the email you use for Cut Buddy and, if something went wrong, what you were doing when it happened. Never send us your password.</p>
 
 <h2>Common questions</h2>
-<h3>How do I delete my account?</h3>
-<p>In the app, go to Settings → Privacy and data → Delete my account and data. It's immediate and permanent: everything we hold about you is deleted, and it can't be undone.</p>
-<h3>How do I export my data?</h3>
-<p>Settings → Privacy and data → Export my data gives you a copy of everything we hold about you.</p>
-<h3>How do I see or delete what Buddy remembers?</h3>
-<p>Settings → Buddy → What Buddy knows about me. You can delete any single note, or everything Buddy remembers.</p>
-<h3>How do I leave a team or change what my coach sees?</h3>
-<p>Settings → Team and sharing → Team. You can lower what you share or leave the team at any time, and it takes effect immediately.</p>
-<h3>I'm a parent. What does my teen share?</h3>
-<p>Our <a href="guardians.html">page for parents and guardians</a> explains what a coach can see, what you approve and how to change it.</p>
-<h3>I'm getting a new phone. Will my data come with me?</h3>
-<p>We're still finishing this. If you're switching phones or reinstalling the app, email us first and we'll help.</p>
-<h3>How do subscriptions work?</h3>
-<p><span class="ph">Subscription details to come before launch.</span></p>
+<div class="faq">
+  <div class="cb-card">
+    <p class="cb-label">Your account</p>
+    <h3>How do I delete my account?</h3>
+    <p>In the app, go to Settings → Privacy and data → Delete my account and data. You'll be asked to sign in again first. Everything we hold about you is deleted straight away, and encrypted backup copies within 30 days. It can't be undone. Deleting your account doesn't cancel an App Store subscription: cancel that in your iPhone's Settings.</p>
+  </div>
+  <div class="cb-card">
+    <p class="cb-label">Your data</p>
+    <h3>How do I export my data?</h3>
+    <p>Settings → Privacy and data → Export my data gives you a copy of everything we hold about you. You'll be asked to sign in again first, and you can export once an hour.</p>
+  </div>
+  <div class="cb-card">
+    <p class="cb-label">Buddy</p>
+    <h3>How do I see or delete what Buddy remembers?</h3>
+    <p>Settings → Buddy → What Buddy knows about me. You can delete any single note, or everything Buddy remembers.</p>
+  </div>
+  <div class="cb-card">
+    <p class="cb-label">Teams</p>
+    <h3>How do I leave a team or change what my coach sees?</h3>
+    <p>Settings → Team and sharing → Team. You can lower what you share or leave the team at any time, and it takes effect immediately.</p>
+  </div>
+  <div class="cb-card">
+    <p class="cb-label">Parents</p>
+    <h3>I'm a parent. What does my teen share?</h3>
+    <p>Our <a href="guardians.html">page for parents and guardians</a> explains what a coach can see, what you approve and how to change it.</p>
+  </div>
+  <div class="cb-card">
+    <p class="cb-label">New phone</p>
+    <h3>I'm getting a new phone. Will my data come with me?</h3>
+    <p>Yes. Sign in with the same account on the new phone, or after reinstalling, and your data comes back: your profile and health answers, your plan, your last 90 days of food, meals and water, every weigh-in, your saved meals, your settings and today's conversation with Buddy. Older history stays safely on our servers. If you use Cut Buddy on two devices, they stay in step. You'll need to be online the first time you sign in, and to allow notifications again on the new phone.</p>
+  </div>
+  <div class="cb-card">
+    <p class="cb-label">Subscriptions</p>
+    <h3>How do subscriptions work?</h3>
+    <p><span class="ph">Subscription details to come before launch.</span></p>
+  </div>
+</div>
 
 <h2>If you need help now</h2>
-<p>Cut Buddy gives nutrition information, not medical advice. If you're struggling, these services are free and confidential:</p>
+<div class="cb-card">
+  <p class="cb-label">Free and confidential</p>
+  <p>Cut Buddy gives nutrition information, not medical advice. If you're struggling, these services can help:</p>
 <!-- helplines:start (written by scripts/render-helplines.mjs from src/chat/helplines.ts; don't edit by hand) -->
 <ul class="helplines">
 <li>Crisis or self-harm: the 988 Suicide &amp; Crisis Lifeline, call or text 988, 24/7.</li>
@@ -38,17 +75,16 @@
 <li>Text support anytime: the Crisis Text Line, text HOME to 741741.</li>
 </ul>
 <!-- helplines:end -->
+</div>
 </main>
-<footer class="site-footer">
-  <div class="wrap">
-    <nav aria-label="Policies and support"><a href="privacy.html">Privacy policy</a><a href="health-data.html">Consumer health data policy</a><a href="guardians.html">For parents and guardians</a><a href="terms.html">Terms of use</a><a href="support.html" aria-current="page">Support</a></nav>
-    <p>Cut Buddy gives nutrition information, not medical advice.</p>
-    <p>© 2026 <span class="ph">company name to come</span></p>
-  </div>
+<footer class="cb-wrap cb-footer">
+  <nav aria-label="Policies and support"><a href="privacy.html">Privacy</a><a href="health-data.html">Health data</a><a href="terms.html">Terms</a><a href="support.html" aria-current="page">Support</a><a href="guardians.html">Parents</a></nav>
+  <p>Cut Buddy gives nutrition information, not medical advice.</p>
+  <p>© 2026 <span class="ph">company name to come</span></p>
 </footer>
 <script>
-  document.querySelectorAll("button.copy").forEach((button) => {
-    const status = button.parentElement.querySelector(".copy-status");
+  document.querySelectorAll("button[data-copy]").forEach((button) => {
+    const status = document.getElementById("copy-status");
     button.addEventListener("click", async () => {
       const text = document.getElementById(button.dataset.copy).textContent.trim();
       try { await navigator.clipboard.writeText(text); status.textContent = "Copied."; }
