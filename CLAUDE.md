@@ -26,9 +26,24 @@ it; Ryan owns the app. Setup, preview and publishing are in `START-HERE.md`.
 
 ## Brand
 
+**`theme.css` is the only source of styles** (decided 21 Oct). It holds the
+app's real values, taken from its code: colours, the type scale, card,
+label, key number, button, pill, macro bars, grid squares and chart lines.
+`theme.html` shows each one next to its name.
+
+- **Pages use its classes and variables.** No other file sets a colour, a
+  font, a radius or a shadow. Page-specific layout (grid columns, section
+  spacing) may sit in a page's own small `<style>`, built from `var(--cb-…)`
+  only.
+- **`style.css` goes:** fold what the pages still need into `theme.css`
+  classes, then delete it.
+- **To change the look,** change `theme.css`, and say in the PR which app
+  value it follows.
+- **The site is dark, like the app.** No light theme.
+
 | Token | Hex | Use |
 |---|---|---|
-| black | `#000000` | Background. The app is dark-only; the site can offer light too |
+| black | `#000000` | Background (dark only, as the app) |
 | surface | `#161616` | Cards, inputs |
 | line | `#2A2A2A` | Dividers, borders |
 | gold | `#FFCD00` (Pantone 116 C) | Logo, the one primary button, the one key number per screen |
@@ -37,10 +52,9 @@ it; Ryan owns the app. Setup, preview and publishing are in `START-HERE.md`.
 | alert | `#E5484D` | Safety warnings only, never decoration |
 
 - **Gold is used sparingly:** one primary action and one highlight per screen.
-  On a light background, gold text uses the darker `#8A6B00` for contrast
-  (`style.css` already does).
+- **Macros always read protein gold, carbs white, fat gray,** in that order.
 - **Text on gold is black, never white.**
-- **Type:** the system font stack (SF Pro on Apple devices), as `style.css`
+- **Type:** the system font stack (SF Pro on Apple devices), as `theme.css`
   has it. No web-font CDN: Google Fonts sends every visitor's IP address to
   Google, which the privacy policy doesn't list. Self-host a font file in the
   repo if you want one.
@@ -55,6 +69,11 @@ it; Ryan owns the app. Setup, preview and publishing are in `START-HERE.md`.
     vector.
 
 ## The site brief
+
+**`BRIEF.md` is the brief, page by page.** It covers which app screens to
+show and in what order, what the hero shows, which features get their own
+section, and how to say what makes Cut Buddy different. The screenshots for
+it are in `assets/screens/`, demo data only. This table is the status.
 
 | Page | File | Status | Notes |
 |---|---|---|---|
@@ -85,10 +104,15 @@ it; Ryan owns the app. Setup, preview and publishing are in `START-HERE.md`.
   - **Success state:** "You're on the list. We'll email you when Cut Buddy is
     ready." Show the same message whether the address was new or already on
     the list; the server answers the same on purpose.
-  - **Don't put the form live on `main` yet.** The live privacy policy doesn't
-    mention the waitlist; the text that does is on the `policy-drafts` branch.
-    Build it on a branch, and Ryan decides when the form and that policy text
-    go live together.
+  - **The form goes live together with the published privacy policy, on
+    cutbuddyapp.com** (decided 21 Oct). There's no public form before then,
+    on GitHub Pages or anywhere else. The policy text that covers the waitlist
+    is on the `policy-drafts` branch. Keep the form on its own branch; until
+    launch the home page says "Coming soon to iPhone", with the support
+    email.
+  - **Retention:** each sign-up is kept until they unsubscribe, or 12 months
+    after signing up, whichever comes first. The server deletes it then; the
+    policy says so.
   - **No Google Forms, Formspree, Mailchimp embeds or any other third-party
     form.** The endpoint below is the only place sign-ups go.
 - **Footer:**
@@ -120,8 +144,9 @@ it; Ryan owns the app. Setup, preview and publishing are in `START-HERE.md`.
 
 ### Support
 
-- **How to reach us:** an email address, as plain text with a copy button.
-  Ryan supplies the address; use a placeholder until then.
+- **How to reach us:** **cutbuddyapp@gmail.com** until the domain exists,
+  as plain text with a copy button. The same address goes in the terms, the
+  footer and the policies' contact lines.
 - **FAQ:**
   - how do I delete my account (Settings → Privacy and data → Delete my
     account and data; it's immediate and permanent) or export my data (Export
@@ -131,7 +156,8 @@ it; Ryan owns the app. Setup, preview and publishing are in `START-HERE.md`.
   - how do I leave a team or change what my coach sees (Settings → Team and
     sharing → Team);
   - I'm a parent, what does my teen share (link to `guardians.html`);
-  - restoring on a new phone: **don't promise this yet**, it's being built;
+  - a new phone or a reinstall: sign in with the same account and it comes
+    back (the wording is in the review on PR #1);
   - subscriptions: a placeholder until billing exists.
 - **The helplines block** (below), under "If you need help now".
 

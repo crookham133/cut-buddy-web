@@ -1,0 +1,89 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex, nofollow"><link rel="stylesheet" href="theme.css"><title>Cut Buddy Style Guide</title>
+<style>
+/* Layout of this guide only. Every colour and component comes from theme.css. */
+.guide { display: grid; gap: var(--cb-space-xl); padding-block: var(--cb-space-xl); }
+.guide section { display: grid; gap: var(--cb-space-md); }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--cb-space-md); align-items: start; }
+.swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--cb-space-sm); }
+.swatch { border: 1px solid var(--cb-line); border-radius: var(--cb-radius-sm); overflow: hidden; }
+.swatch b { display: block; height: 56px; }
+.swatch span { display: block; padding: var(--cb-space-xs) var(--cb-space-sm); font-size: var(--cb-caption-size); color: var(--cb-muted); }
+.line-up { display: flex; flex-wrap: wrap; gap: var(--cb-space-sm); align-items: center; }
+</style></head><body>
+<main class="cb-wrap guide">
+  <header>
+    <p class="cb-label is-gold">theme.css</p>
+    <h1 class="cb-display">Cut Buddy, as the app draws it</h1>
+    <p class="cb-caption">Every value is the app's own (cut-buddy-ai theme/tokens.ts and src/ui). Demo numbers.</p>
+  </header>
+
+  <section>
+    <h2 class="cb-title">Colour</h2>
+    <div class="swatches">
+      <div class="swatch"><b style="background:var(--cb-black)"></b><span>black #000000, the page</span></div>
+      <div class="swatch"><b style="background:var(--cb-surface)"></b><span>surface #161616, cards</span></div>
+      <div class="swatch"><b style="background:var(--cb-line)"></b><span>line #2A2A2A, borders</span></div>
+      <div class="swatch"><b style="background:var(--cb-gold)"></b><span>gold #FFCD00, once a screen</span></div>
+      <div class="swatch"><b style="background:var(--cb-white)"></b><span>white #FFFFFF, text</span></div>
+      <div class="swatch"><b style="background:var(--cb-muted)"></b><span>muted #9A9A9A, captions</span></div>
+      <div class="swatch"><b style="background:var(--cb-alert)"></b><span>alert #E5484D, safety only</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="cb-title">Cards, labels, key numbers</h2>
+    <div class="cols">
+      <div class="cb-card">
+        <div class="cb-row" style="min-height:0"><p class="cb-label">Macros</p><span class="cb-pill is-dim">Hard day</span></div>
+        <div class="cb-macro"><span>Protein</span><span>103g left</span><div class="cb-bar protein"><i style="width:25%"></i></div></div>
+        <div class="cb-macro"><span>Carbs</span><span>178g left</span><div class="cb-bar carbs"><i style="width:20%"></i></div></div>
+        <div class="cb-macro"><span>Fat</span><span>32g left</span><div class="cb-bar fat"><i style="width:19%"></i></div></div>
+      </div>
+      <div class="cb-card">
+        <p class="cb-label">Weight against plan</p>
+        <div><p class="cb-key-number">128.3</p><p class="cb-caption">pounds, 7-day average</p></div>
+        <svg class="cb-chart" viewBox="0 0 300 140" role="img" aria-label="Seven-day average weight falling along the plan line">
+          <line class="axis" x1="24" y1="10" x2="24" y2="120"/><line class="axis" x1="24" y1="120" x2="296" y2="120"/>
+          <text x="0" y="14">139</text><text x="0" y="122">124</text>
+          <polyline class="plan" points="24,14 296,112"/>
+          <polyline class="rate" points="240,86 296,98"/>
+          <g><circle class="dot" cx="40" cy="22" r="2.5"/><circle class="dot" cx="70" cy="30" r="2.5"/><circle class="dot" cx="100" cy="44" r="2.5"/><circle class="dot" cx="130" cy="48" r="2.5"/><circle class="dot" cx="160" cy="60" r="2.5"/><circle class="dot" cx="190" cy="70" r="2.5"/><circle class="dot" cx="220" cy="80" r="2.5"/></g>
+          <polyline class="avg" points="24,16 60,24 100,38 140,50 180,62 220,76 240,84"/>
+        </svg>
+        <p>On the line, within half a pound.</p>
+      </div>
+      <div class="cb-card">
+        <p class="cb-label">Water</p>
+        <div><p class="cb-key-number">54 oz</p><p class="cb-caption">of 108 oz today</p></div>
+        <div class="cb-divider"></div>
+        <div class="cb-row"><span>Fueling</span><span>58%</span></div>
+        <div class="cb-row"><span>Logging</span><span>11 / 26 days</span></div>
+        <div class="cb-grid" aria-hidden="true"><i style="--v:.9"></i><i style="--v:.7"></i><i style="--v:.9"></i><i style="--v:.35"></i><i class="empty"></i><i style="--v:.9"></i><i style="--v:.6"></i><i style="--v:.9"></i><i style="--v:.9"></i><i style="--v:.5"></i></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="cb-title">Buttons and pills</h2>
+    <div class="line-up">
+      <button class="cb-btn" type="button">Log it</button>
+      <button class="cb-btn is-outline" type="button">Edit</button>
+      <span class="cb-pill">On track</span>
+      <span class="cb-pill is-dim">Behind</span>
+      <span class="cb-pill is-alert">Too fast</span>
+      <span class="cb-pill">12 days to weigh-in</span>
+    </div>
+    <p class="cb-caption">One gold button and one gold number per screen. Text on gold is black.</p>
+  </section>
+
+  <section>
+    <h2 class="cb-title">Type</h2>
+    <p class="cb-greeting">Good morning, Diego</p>
+    <p class="cb-key-number is-gold">1,473 <span class="cb-caption">calories left</span></p>
+    <p class="cb-title">Title, 22 semibold</p>
+    <p>Body, 17 regular. Sentence case everywhere.</p>
+    <p class="cb-caption">Caption, 13, muted.</p>
+    <p class="cb-label">Label, 12 bold, uppercase, tracked</p>
+  </section>
+</main>
+</body></html>
