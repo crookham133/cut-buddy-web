@@ -1,18 +1,16 @@
 /* Cut Buddy's public pages: policies and the guardian approval. Readable first;
-   the brand's black and gold, used as the app uses them. */
+   the brand's black and gold, used as the app uses them. Dark only, like the app,
+   whatever the visitor's system setting. */
 :root {
-  --bg: #fbfaf6; --fg: #17160f; --muted: #5b584c; --rule: #e2ded2; --tint: #f3f0e6;
-  --gold: #8a6b00; --gold-fill: #ffcd00; --on-gold: #000; --warn: #9b2c2c; --ok: #22663a;
-  color-scheme: light;
-}
-@media (prefers-color-scheme: dark) {
-  :root { --bg: #000; --fg: #fff; --muted: #9a9a9a; --rule: #2a2a2a; --tint: #161616; --gold: #ffcd00; --warn: #e5484d; --ok: #5bd18b; color-scheme: dark; }
+  --bg: #000; --fg: #fff; --muted: #9a9a9a; --rule: #2a2a2a; --tint: #161616;
+  --gold: #ffcd00; --gold-fill: #ffcd00; --on-gold: #000; --warn: #e5484d; --ok: #5bd18b;
+  color-scheme: dark;
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 17px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif; -webkit-text-size-adjust: 100%; }
 main { max-width: 680px; margin: 0 auto; padding: max(28px, env(safe-area-inset-top)) 20px max(56px, env(safe-area-inset-bottom)); }
 .mark { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: .01em; margin-bottom: 28px; }
-.mark span { width: 30px; height: 30px; border-radius: 50%; background: var(--gold-fill); display: inline-block; }
+.mark span { width: 30px; height: 33px; background: url(assets/logo-mark.png) center / contain no-repeat; display: inline-block; }
 .draft { border: 1.5px solid var(--warn); color: var(--warn); border-radius: 8px; padding: 10px 14px; font-size: 14px; margin-bottom: 24px; }
 h1 { font-size: 34px; line-height: 1.15; margin: 0 0 8px; text-wrap: balance; }
 h2 { font-size: 22px; margin: 36px 0 8px; text-wrap: balance; }
@@ -29,8 +27,8 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--gold); outline-
 .card { background: var(--tint); border-radius: 14px; padding: 18px 20px; margin: 18px 0; }
 .ok { color: var(--ok); } .bad { color: var(--warn); }
 
-/* Home page. Scoped to body.home so the policy pages don't change. The hero is
-   black in both themes: the logo's apple is a cut-out and disappears on white. */
+/* Home page. Scoped to body.home so the policy pages don't change. The hero sets
+   its own black: the logo's apple is a cut-out and disappears on white. */
 body.home main { max-width: none; padding: 0; }
 .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
 .home h2 { font-size: 30px; line-height: 1.2; margin: 0 0 20px; }
