@@ -6,12 +6,33 @@
   <h1>Approve joining a team?</h1>
   <p>Your teenager would like to join <strong id="team"></strong> on Cut Buddy, an app that plans their meals around their training.</p>
   <div class="card">
-    <p><strong>Their coach would see</strong>, only for what your teenager leaves switched on: their weight trend as a 7-day average against their class, how closely they follow their meal plan, and a warning if they're losing weight too fast or not eating enough.</p>
+    <p><strong>Their coach would see</strong> whether they fueled before and after practice, whether they logged today, whether they're on track for a weigh-in, and a warning if they're losing weight too fast. Anything more needs your separate approval later.</p>
     <p><strong>Their coach would never see</strong> their health answers, their conversations with the app, or a daily weight.</p>
   </div>
-  <p>Your teenager can change what's shared, or leave the team, at any time.</p>
+  <p>Your teenager can share less, or leave the team, at any time.</p>
   <button id="approve" type="button">I approve</button>
   <p class="updated" style="margin-top:14px">If you weren't expecting this, close this page and nothing happens. <a href="guardians.html">What Cut Buddy collects, for parents</a>.</p>
+</section>
+
+<section id="levels" hidden>
+  <h1>Share more with their coach?</h1>
+  <p>Your teenager is on <strong id="team-levels"></strong>. They've asked to share more with their coach, and you decide.</p>
+  <div class="card">
+    <p><strong>Level 2:</strong> their weight trend against a safe plan (a 7-day average, never a daily weight), food targets, water and meal timing.</p>
+    <p id="level3-detail" hidden><strong>Level 3:</strong> what they eat and when.</p>
+    <p><strong>Never shared:</strong> their conversations with the app, health answers or medications.</p>
+  </div>
+  <p>You can allow less than they asked for. They can share less at any time without asking you.</p>
+  <button id="grant3" type="button" hidden>Allow levels 2 and 3</button>
+  <button id="grant2" type="button" class="secondary">Allow level 2 only</button>
+  <button id="grant1" type="button" class="secondary">Don't allow</button>
+  <p class="updated" style="margin-top:14px">If you weren't expecting this, close this page and nothing changes. <a href="guardians.html">What Cut Buddy collects, for parents</a>.</p>
+</section>
+
+<section id="levels-done" hidden>
+  <h1 class="ok">Saved</h1>
+  <p id="levels-done-text"></p>
+  <p>Your teenager can share less at any time from Settings in the app.</p>
 </section>
 
 <section id="approved" hidden>
@@ -44,21 +65,40 @@
   // Out of the address bar, history and any screenshot of it.
   try { history.replaceState(null, "", location.pathname); } catch (e) {}
   var shown = null;
-  function show(id) { ["loading", "pending", "approved", "handled", "invalid", "failed"].forEach(function (s) { document.getElementById(s).hidden = s !== id; }); shown = id; }
-  function call(action) {
-    return fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token: token, action: action }) })
+  function show(id) { ["loading", "pending", "levels", "levels-done", "approved", "handled", "invalid", "failed"].forEach(function (s) { document.getElementById(s).hidden = s !== id; }); shown = id; }
+  function call(action, grant) {
+    var body = { token: token, action: action };
+    if (grant) body.grant = grant;
+    return fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
       .then(function (r) { if (!r.ok) throw new Error(String(r.status)); return r.json(); });
   }
   var last = "preview";
   function render(a) {
-    if (a.state === "pending") { document.getElementById("team").textContent = a.team || "their team"; show("pending"); }
+    if (a.state === "pending" && a.levels) {
+      document.getElementById("team-levels").textContent = a.team || "their team";
+      var three = a.levels.requested === 3;
+      document.getElementById("level3-detail").hidden = !three;
+      document.getElementById("grant3").hidden = !three;
+      document.getElementById("grant2").className = three ? "secondary" : "";
+      document.getElementById("grant2").textContent = three ? "Allow level 2 only" : "Allow level 2";
+      show("levels");
+    }
+    else if (a.state === "pending") { document.getElementById("team").textContent = a.team || "their team"; show("pending"); }
+    else if (a.state === "approved" && a.granted !== undefined) {
+      document.getElementById("levels-done-text").textContent = a.granted >= 3 ? "Their coach can now see levels 2 and 3." : a.granted === 2 ? "Their coach can now see level 2." : "Nothing more is shared. Their coach still sees level 1 only.";
+      show("levels-done");
+    }
     else if (a.state === "approved") { document.getElementById("team-done").textContent = a.team || "their team"; show("approved"); }
     else if (a.state === "handled") show("handled");
     else show("invalid");
   }
-  function run(action) { last = action; show("loading"); call(action).then(render, function () { show("failed"); }); }
+  var lastGrant;
+  function run(action, grant) { last = action; lastGrant = grant; show("loading"); call(action, grant).then(render, function () { show("failed"); }); }
   document.getElementById("approve").addEventListener("click", function () { this.disabled = true; run("approve"); });
-  document.getElementById("retry").addEventListener("click", function () { run(last); });
+  [3, 2, 1].forEach(function (g) {
+    document.getElementById("grant" + g).addEventListener("click", function () { this.disabled = true; run("approve", g); });
+  });
+  document.getElementById("retry").addEventListener("click", function () { run(last, lastGrant); });
   if (!/^[0-9a-f]{48}$/.test(token)) show("invalid"); else run("preview");
 })();
 </script>

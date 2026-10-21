@@ -24,6 +24,8 @@ ul { padding-left: 1.2em; } li { margin: 6px 0; }
 a { color: var(--gold); }
 nav.other { margin-top: 44px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: 15px; display: flex; flex-wrap: wrap; gap: 8px 20px; }
 button { font: 600 17px/1 inherit; font-family: inherit; background: var(--gold-fill); color: var(--on-gold); border: 0; border-radius: 14px; padding: 16px 20px; width: 100%; min-height: 52px; cursor: pointer; }
+button.secondary { background: transparent; color: inherit; border: 1px solid currentColor; margin-top: 10px; }
+button + button:not(.secondary) { margin-top: 10px; }
 button:disabled { opacity: .5; cursor: default; }
 button:focus-visible, a:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 .card { background: var(--tint); border-radius: 14px; padding: 18px 20px; margin: 18px 0; }
