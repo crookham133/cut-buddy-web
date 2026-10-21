@@ -131,9 +131,10 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .cb-pill.is-gold { background: var(--cb-gold); color: var(--cb-on-gold); }
 
 /* ---- Inputs ---- */
+/* As the app's Field: surface, 1px line, 12 radius, 16 across, 50 tall. */
 .cb-input {
-  width: 100%; min-height: var(--cb-tap); padding: var(--cb-space-sm) var(--cb-space-md);
-  background: var(--cb-surface); border: 1px solid var(--cb-line); border-radius: var(--cb-radius-card);
+  width: 100%; min-height: calc(var(--cb-tap) + 6px); padding: var(--cb-space-sm) var(--cb-space-md);
+  background: var(--cb-surface); border: 1px solid var(--cb-line); border-radius: var(--cb-radius-button);
 }
 .cb-input:focus { border-color: var(--cb-gold); outline: none; }
 
