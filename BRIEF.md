@@ -1,8 +1,12 @@
 # Site brief: page by page
 
 What to build, in what order, and why. Styles come only from `theme.css`
-(see `theme.html`). App screenshots are in `assets/screens/` and use demo
-data only (names end in "(demo)"). Never put a real account on the site.
+(see `theme.html`). App screenshots are in `assets/screens/`. They come
+from fictional demo accounts with plain names and fake data, never a real
+account.
+
+**Every phone mockup gets a small "Sample data" caption**, under or beside
+it: `<span class="cb-sample">Sample data</span>` (theme.css).
 
 ## Home: cutbuddyapp.com
 
