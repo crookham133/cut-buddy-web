@@ -1,0 +1,186 @@
+/* Cut Buddy's design, taken from the app (cut-buddy-ai: theme/tokens.ts,
+   src/ui/index.tsx, Badge, MacroBars, WeightChart, ConsistencyGrid, Rings).
+   The only source of styles on this site: every colour, size, radius and
+   component lives here. Pages use these classes and variables; no page or
+   other stylesheet sets its own colour. theme.html shows each piece.
+
+   One deliberate look, as in the app: dark. 1 app point = 1 CSS pixel. */
+
+:root {
+  color-scheme: dark;
+
+  /* ---- Colour (theme/tokens.ts) ---- */
+  --cb-black: #000000;        /* the page */
+  --cb-surface: #161616;      /* cards, inputs, sheets */
+  --cb-line: #2a2a2a;         /* borders, dividers, bar and ring tracks, pills */
+  --cb-gold: #ffcd00;         /* Pantone 116 C: one primary action, one key number */
+  --cb-on-gold: #000000;      /* text on gold is black, never white */
+  --cb-white: #ffffff;        /* primary text */
+  --cb-muted: #9a9a9a;        /* secondary text, captions, labels */
+  --cb-alert: #e5484d;        /* safety only: "Too fast", warnings. Never decoration */
+  --cb-gold-soft: rgba(255, 205, 0, 0.12);
+
+  /* Macros, always in this order and these colours: protein carries the gold. */
+  --cb-protein: var(--cb-gold);
+  --cb-carbs: var(--cb-white);
+  --cb-fat: var(--cb-muted);
+
+  /* ---- Type: the system font, SF Pro on Apple devices ---- */
+  --cb-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  --cb-serif: Georgia, "Noto Serif", serif;   /* the greeting only ("Good morning, Diego") */
+  --cb-key-size: 34px;        /* the screen's key number, 700 */
+  --cb-title-size: 22px;      /* titles, 600 */
+  --cb-body-size: 17px;       /* body, 400 */
+  --cb-caption-size: 13px;    /* captions, 400, muted */
+  --cb-label-size: 12px;      /* LABELS: 700, uppercase, 0.6px tracking */
+  --cb-label-tracking: 0.6px;
+  /* The web's own large sizes, for the hero (the app's share card is 64). */
+  --cb-display-size: clamp(40px, 7vw, 64px);
+
+  /* ---- Space, radius, tap size ---- */
+  --cb-space-hair: 2px;
+  --cb-space-xs: 4px;
+  --cb-space-sm: 8px;
+  --cb-space-md: 16px;
+  --cb-space-lg: 24px;
+  --cb-space-xl: 32px;
+  --cb-radius-tight: 3px;     /* grid squares */
+  --cb-radius-sm: 8px;
+  --cb-radius-pill: 10px;     /* pills (status chips, day type) */
+  --cb-radius-button: 12px;
+  --cb-radius-card: 16px;
+  --cb-radius-sheet: 20px;
+  --cb-radius-full: 999px;    /* bars, rings */
+  --cb-tap: 44px;             /* nothing tappable is smaller */
+  --cb-page: 1120px;          /* widest content column */
+}
+
+/* ---- Base ---- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--cb-black);
+  color: var(--cb-white);
+  font: 400 var(--cb-body-size)/1.45 var(--cb-font);
+}
+img { max-width: 100%; height: auto; }
+a { color: var(--cb-gold); }
+/* Form controls don't inherit the font by default ("font: ... inherit" in a
+   shorthand is invalid, so it was being dropped). */
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--cb-gold); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+.cb-wrap { max-width: var(--cb-page); margin: 0 auto; padding-inline: var(--cb-space-md); }
+
+/* ---- Type ---- */
+.cb-display { font-size: var(--cb-display-size); font-weight: 700; line-height: 1.04; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+.cb-title { font-size: var(--cb-title-size); font-weight: 600; line-height: 1.25; margin: 0; text-wrap: balance; }
+.cb-body { font-size: var(--cb-body-size); }
+.cb-caption { font-size: var(--cb-caption-size); color: var(--cb-muted); }
+/* The small all-caps letter-spaced label every card opens with: MACROS, WATER, WEIGHT AGAINST PLAN. */
+.cb-label {
+  font-size: var(--cb-label-size); font-weight: 700; letter-spacing: var(--cb-label-tracking);
+  text-transform: uppercase; color: var(--cb-muted); margin: 0;
+}
+.cb-label.is-gold { color: var(--cb-gold); }          /* LOG THIS?, the score's band */
+/* The big bold number with its gray caption: "128.3" over "pounds, 7-day average". */
+.cb-key-number { font-size: var(--cb-key-size); font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; margin: 0; }
+.cb-key-number.is-gold { color: var(--cb-gold); }     /* one per screen: "1,473 calories left", "12 days" */
+.cb-key-number + .cb-caption { margin-top: var(--cb-space-hair); }
+.cb-greeting { font: 400 30px/1.15 var(--cb-serif); }
+
+/* ---- Card: surface, 1px line border, 16 radius, 16 padding, 8 between items ---- */
+.cb-card {
+  background: var(--cb-surface);
+  border: 1px solid var(--cb-line);
+  border-radius: var(--cb-radius-card);
+  padding: var(--cb-space-md);
+  display: grid;
+  gap: var(--cb-space-sm);
+  min-width: 0;
+}
+.cb-card > * { margin: 0; }
+.cb-divider { height: 1px; background: var(--cb-line); border: 0; margin: 0; }
+/* A row inside a card: label left, value right ("Fueling … 50%"). */
+.cb-row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--cb-space-md); min-height: var(--cb-tap); }
+.cb-row > :last-child { color: var(--cb-muted); font-variant-numeric: tabular-nums; text-align: right; }
+
+/* ---- Buttons: 44 tall, 12 radius, 24 across ---- */
+.cb-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: var(--cb-tap); padding: var(--cb-space-sm) var(--cb-space-lg);
+  border-radius: var(--cb-radius-button); border: 0;
+  background: var(--cb-gold); color: var(--cb-on-gold);
+  font-size: var(--cb-body-size); font-weight: 700; text-decoration: none; cursor: pointer;
+}
+.cb-btn.is-outline { background: transparent; color: var(--cb-white); border: 1px solid var(--cb-line); font-weight: 500; }
+.cb-btn.is-block { display: flex; width: 100%; }
+.cb-btn:disabled { opacity: 0.5; cursor: default; }
+
+/* ---- Pill: line fill, 10 radius, label type (ON TRACK, HARD DAY, 12 DAYS TO WEIGH-IN) ---- */
+.cb-pill {
+  display: inline-flex; align-items: center; min-height: 24px; padding: 0 var(--cb-space-sm);
+  border-radius: var(--cb-radius-pill); background: var(--cb-line); color: var(--cb-white);
+  font-size: var(--cb-label-size); font-weight: 700; letter-spacing: var(--cb-label-tracking); text-transform: uppercase;
+  white-space: nowrap;
+}
+.cb-pill.is-dim { color: var(--cb-muted); }      /* BEHIND */
+.cb-pill.is-alert { color: var(--cb-alert); }    /* TOO FAST: safety, so the alert colour */
+.cb-pill.is-gold { background: var(--cb-gold); color: var(--cb-on-gold); }
+
+/* ---- Inputs ---- */
+/* As the app's Field: surface, 1px line, 12 radius, 16 across, 50 tall. */
+.cb-input {
+  width: 100%; min-height: calc(var(--cb-tap) + 6px); padding: var(--cb-space-sm) var(--cb-space-md);
+  background: var(--cb-surface); border: 1px solid var(--cb-line); border-radius: var(--cb-radius-button);
+}
+.cb-input:focus { border-color: var(--cb-gold); outline: none; }
+
+/* ---- Macro bars: an 8px track in the line colour, filled to share eaten ----
+   <div class="cb-macro"><span>Protein</span><span>103g left</span>
+     <div class="cb-bar protein"><i style="width:40%"></i></div></div> */
+.cb-macro { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: var(--cb-space-xs) var(--cb-space-sm); }
+.cb-macro > span:first-child { color: var(--cb-muted); font-size: var(--cb-caption-size); }  /* name: caption; value: body */
+.cb-macro > span:nth-child(2) { font-variant-numeric: tabular-nums; }
+.cb-bar { grid-column: 1 / -1; height: 8px; border-radius: var(--cb-radius-full); background: var(--cb-line); overflow: hidden; }
+.cb-bar > i { display: block; height: 100%; border-radius: inherit; background: var(--cb-white); }
+.cb-bar.protein > i { background: var(--cb-protein); }
+.cb-bar.carbs > i { background: var(--cb-carbs); }
+.cb-bar.fat > i { background: var(--cb-fat); }
+/* Going over is written "+Xg over" in white. Never the alert colour. */
+
+/* ---- Consistency grid: one square a day, brighter = closer to the target ---- */
+.cb-grid { display: flex; flex-wrap: wrap; gap: 5px; }
+.cb-grid > i { width: 16px; height: 16px; border-radius: var(--cb-radius-tight); background: rgba(255, 255, 255, var(--v, 0.9)); border: 1px solid var(--cb-line); }
+.cb-grid > i.empty { background: transparent; }
+
+/* ---- Charts (SVG), as WeightChart.tsx draws them ----
+   7-day average   stroke var(--cb-gold), 2.5px      the one gold line
+   daily weigh-in  circle r 2.5, fill var(--cb-muted)
+   plan line       stroke var(--cb-muted), 1.5px, dasharray "5 4"
+   where this week's rate lands   stroke var(--cb-white), 1.5px, dasharray "2 4"
+   axes, today, target            stroke var(--cb-line), 1px
+   axis text       fill var(--cb-muted), 10-11px
+   Bars on a chart: white at target, gray (rgba(255,255,255,0.28)) under. Over isn't scored.
+   Rings: track var(--cb-line); macro segments protein gold, carbs white, fat gray. */
+.cb-chart { width: 100%; height: auto; display: block; }
+.cb-chart .avg { stroke: var(--cb-gold); stroke-width: 2.5; fill: none; }
+.cb-chart .dot { fill: var(--cb-muted); }
+.cb-chart .plan { stroke: var(--cb-muted); stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }
+.cb-chart .rate { stroke: var(--cb-white); stroke-width: 1.5; stroke-dasharray: 2 4; fill: none; }
+.cb-chart .axis { stroke: var(--cb-line); stroke-width: 1; }
+.cb-chart text { fill: var(--cb-muted); font: 11px var(--cb-font); }
+
+/* ---- Phone frame for app screenshots ---- */
+.cb-phone {
+  width: min(320px, 100%); aspect-ratio: 1206 / 2622; border-radius: 44px; overflow: hidden;
+  border: 8px solid #1c1c1e; background: var(--cb-black);
+  box-shadow: 0 30px 80px rgba(255, 205, 0, 0.08), 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+.cb-phone > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---- Legal pages ---- */
+.cb-draft { border: 1.5px solid var(--cb-alert); color: var(--cb-alert); border-radius: var(--cb-radius-sm); padding: 10px 14px; font-size: 14px; }
+.ph { background: var(--cb-surface); border: 1px dashed var(--cb-muted); border-radius: 4px; padding: 0 0.3em; }
