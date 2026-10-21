@@ -74,19 +74,23 @@ it; Ryan owns the app. Setup, preview and publishing are in `START-HERE.md`.
 - **What it does:** three or four short points. A plan from your own numbers,
   Buddy you can talk to, it adapts when life changes, and safety built in.
   Team features are optional.
-- **The waitlist form:**
-  - **Fields:** email; a required "I'm 13 or older" checkbox (Cut Buddy isn't
-    for under-13s); optionally "I'm a…" (athlete, coach, parent, other).
+- **The waitlist form** (the backend is live; see "The waitlist endpoint"
+  below):
+  - **Fields:** email; first name; "I'm a…" (athlete, coach, parent, other);
+    a required "I'm 13 or older" checkbox (Cut Buddy isn't for under-13s).
+    All four are required.
   - **Consent line under the button:** "We'll email you when Cut Buddy
     launches. Nothing else, and you can unsubscribe anytime," with a link to
     the privacy policy.
-  - **Where signups go isn't decided.** Build the form and a success state,
-    but don't connect it to any service. Ryan will choose; most likely a
-    Supabase table that can only be added to, using the app's public key,
-    which he'll give you. **No Google Forms, Formspree, Mailchimp embeds or
-    any other third-party form without Ryan's OK.**
-  - The privacy policy must mention the waitlist before the form goes live.
-    Flag that to Ryan.
+  - **Success state:** "You're on the list. We'll email you when Cut Buddy is
+    ready." Show the same message whether the address was new or already on
+    the list; the server answers the same on purpose.
+  - **Don't put the form live on `main` yet.** The live privacy policy doesn't
+    mention the waitlist; the text that does is on the `policy-drafts` branch.
+    Build it on a branch, and Ryan decides when the form and that policy text
+    go live together.
+  - **No Google Forms, Formspree, Mailchimp embeds or any other third-party
+    form.** The endpoint below is the only place sign-ups go.
 - **Footer:**
   - links to privacy, health data, parents, terms and support;
   - "Cut Buddy gives nutrition information, not medical advice";
@@ -131,12 +135,108 @@ it; Ryan owns the app. Setup, preview and publishing are in `START-HERE.md`.
   - subscriptions: a placeholder until billing exists.
 - **The helplines block** (below), under "If you need help now".
 
+## The waitlist endpoint
+
+A Supabase database function, called straight from the page with a plain
+`fetch`. No secret is involved: the key below is Cut Buddy's *public* key,
+already inside the app, and safe in this public repo. It can only call this
+function. The list itself can't be read, changed or deleted from the web, only
+by Ryan's server.
+
+- **URL:** `POST https://xbbfsizidhtdkhirwvqx.supabase.co/rest/v1/rpc/join_waitlist`
+- **Headers:**
+  - `apikey: <public key>`
+  - `Authorization: Bearer <public key>`
+  - `Content-Type: application/json`
+- **Public key:**
+  ```
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhiYmZzaXppZGh0ZGtoaXJ3dnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1Mjg5MjYsImV4cCI6MjEwNjEwNDkyNn0.q8qyZ0KMQ-FtB7YgVzEe4syFeYTT7DtjE6NzoEeleIQ
+  ```
+- **Body** (all five keys, every time):
+
+  | Key | Type | From the form |
+  |---|---|---|
+  | `p_email` | string | the email field |
+  | `p_first_name` | string | first name, 1–60 characters |
+  | `p_role` | string | exactly `athlete`, `coach`, `parent` or `other` |
+  | `p_is_13_or_older` | boolean | the checkbox; must be `true` |
+  | `p_website` | string | the hidden honeypot field (below); always send it, normally `""` |
+
+- **Success:** HTTP 200, `{"ok": true}`. The same answer when the address is
+  already on the list, so the form can't reveal who has signed up.
+- **Refused:** HTTP 4xx, JSON with `message` (a sentence you can show as is)
+  and `hint` (a code to branch on):
+
+  | `hint` | When | `message` |
+  |---|---|---|
+  | `invalid_email` | not an email | Enter a valid email address. |
+  | `invalid_name` | blank or over 60 characters | Enter your first name. |
+  | `invalid_role` | not one of the four | Choose athlete, coach, parent or other. |
+  | `under_13` | box not ticked | Cut Buddy is for people 13 and older. |
+  | `rate_limited` | 20 an hour or 50 a day from one connection, or 500 an hour overall | Too many sign-ups… Try again later. |
+
+  For anything else (network down, 5xx), show: "Something went wrong. Try
+  again in a minute."
+- **The honeypot:** a text input named `website`, hidden from people but not
+  from bots. Use a `position: absolute; left: -9999px` wrapper, plus
+  `tabindex="-1"`, `autocomplete="off"` and `aria-hidden="true"`; not
+  `display: none`, which bots skip. Send its value as `p_website`. When it's
+  filled in, the server says yes and keeps nothing.
+- **Testing:**
+  - Use addresses ending `@example.test`, and tell Ryan, who clears them.
+  - Every test try counts toward your connection's 20 an hour.
+  - It works from `localhost` and from the GitHub Pages address.
+
+```html
+<form id="waitlist" novalidate>
+  <label>First name <input name="first_name" autocomplete="given-name" required maxlength="60"></label>
+  <label>Email <input name="email" type="email" autocomplete="email" required></label>
+  <label>I'm a…
+    <select name="role" required>
+      <option value="athlete">Athlete</option><option value="coach">Coach</option>
+      <option value="parent">Parent</option><option value="other">Other</option>
+    </select>
+  </label>
+  <label><input name="age" type="checkbox" required> I'm 13 or older</label>
+  <div style="position:absolute;left:-9999px" aria-hidden="true">
+    <label>Website <input name="website" tabindex="-1" autocomplete="off"></label>
+  </div>
+  <button type="submit">Join the waitlist</button>
+  <p id="waitlist-status" role="status"></p>
+</form>
+<script>
+  const WAITLIST_URL = "https://xbbfsizidhtdkhirwvqx.supabase.co/rest/v1/rpc/join_waitlist";
+  const PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhiYmZzaXppZGh0ZGtoaXJ3dnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1Mjg5MjYsImV4cCI6MjEwNjEwNDkyNn0.q8qyZ0KMQ-FtB7YgVzEe4syFeYTT7DtjE6NzoEeleIQ";
+  document.getElementById("waitlist").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    // form.elements, not form.role: "role" is every element's ARIA role.
+    const f = e.target, el = f.elements, status = document.getElementById("waitlist-status");
+    const button = f.querySelector("button"); button.disabled = true; status.textContent = "";
+    try {
+      const res = await fetch(WAITLIST_URL, {
+        method: "POST",
+        headers: { apikey: PUBLIC_KEY, Authorization: "Bearer " + PUBLIC_KEY, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          p_email: el.email.value, p_first_name: el.first_name.value, p_role: el.role.value,
+          p_is_13_or_older: el.age.checked, p_website: el.website.value,
+        }),
+      });
+      const body = await res.json().catch(() => ({}));
+      if (res.ok && body.ok) { f.reset(); status.textContent = "You're on the list. We'll email you when Cut Buddy is ready."; }
+      else status.textContent = body.message || "Something went wrong. Try again in a minute.";
+    } catch {
+      status.textContent = "Something went wrong. Try again in a minute.";
+    } finally { button.disabled = false; }
+  });
+</script>
+```
+
 ## Rules
 
 1. **No secrets, ever.** No API keys, service keys, passwords, tokens or `.env`
    files, in any file, commit, branch, issue or comment. This repo is public.
-   The only key that may ever appear is the Supabase *public* (anon) key, and
-   only if Ryan gives it to you for the waitlist. If you think you've committed
+   The only key that may ever appear is the Supabase *public* key in "The
+   waitlist endpoint" above. If you think you've committed
    a secret, tell Ryan at once; deleting the commit doesn't un-publish it.
 2. **Never edit cut-buddy-ai.** Read it for the brand, the legal drafts and
    context, but don't push, branch or open pull requests there. Website work
