@@ -284,3 +284,14 @@ by Ryan's server.
     - Keep pages fast: no frameworks unless Ryan agrees.
 12. **Don't publish pricing, launch dates or features** that aren't confirmed.
     Ask Ryan.
+
+## Working style
+
+1. For anything bigger than a small fix, show Jake a plan first.
+2. After every change, preview the site at desktop and 390 px phone width and
+   take screenshots.
+3. End every task with a report: what changed, screenshots, anything that
+   failed, open questions, and the recommended next step.
+4. Commit with a clear message after Jake approves, then push.
+5. Never touch cut-buddy-ai, never add secrets, and ask before installing
+   anything new.
