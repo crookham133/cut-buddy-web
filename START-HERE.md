@@ -1,8 +1,8 @@
 # Start here
 
 Welcome, Jake. This repo is Cut Buddy's public website, served by GitHub Pages at
-**https://crookham133.github.io/cut-buddy-web/** until the domain exists. You own
-it. This page gets you from zero to a published change; `CLAUDE.md` has the
+**https://cutbuddyapp.com** (the old crookham133.github.io/cut-buddy-web
+address redirects there). You own it. This page gets you from zero to a published change; `CLAUDE.md` has the
 brief, the brand and the rules. Claude reads `CLAUDE.md` automatically when you
 work here with Claude Code, so it knows them too.
 
