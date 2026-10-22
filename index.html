@@ -1,24 +1,163 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="Cut Buddy builds your meals and water around your training. Coming soon to iPhone."><link rel="icon" href="assets/app-icon-1024.png"><link rel="stylesheet" href="theme.css"><title>Cut Buddy · Coming soon</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex, nofollow"><meta name="description" content="Cut Buddy builds your meals and water around your training, and changes the plan when your week does. Coming soon to iPhone."><link rel="icon" href="assets/app-icon-1024.png"><link rel="stylesheet" href="theme.css"><title>Cut Buddy: know what to eat, and when</title>
 <style>
-  /* This page's layout only: a holding page until the home page (PR #1) goes up. Every value comes from theme.css. */
-  body { min-height: 100vh; display: flex; flex-direction: column; }
-  main { flex: 1; display: grid; place-content: center; justify-items: center; text-align: center; gap: var(--cb-space-lg); padding-block: calc(var(--cb-space-xl) * 2); }
-  .mark { width: 120px; height: auto; }
-  .lede { color: var(--cb-muted); max-width: 32em; margin: 0; }
-  footer { padding-block: var(--cb-space-xl); display: grid; gap: var(--cb-space-sm); color: var(--cb-muted); font-size: var(--cb-caption-size); }
-  footer nav { display: flex; flex-wrap: wrap; gap: var(--cb-space-md); }
-  footer ul { margin: 0; padding-left: 1.2em; }
+  /* Home-page layout only. Every value comes from theme.css. */
+  .split { display: grid; gap: var(--cb-space-xl); align-items: center; }
+  .shot { margin: 0; display: grid; justify-items: center; }
+  .shot .cb-phone { justify-self: center; }
+  .crop { margin: 0; width: min(100%, calc(var(--cb-page) * 0.4)); justify-self: center; }
+  .crop img { display: block; width: 100%; height: auto; border-radius: var(--cb-radius-sm); }
+  .chart { margin: 0; }
+  .chart img { display: block; width: 100%; height: auto; }
+  .hero { padding-top: var(--cb-space-lg); }
+  .hero .cb-display .hl { color: var(--cb-gold); }
+  .lede { font-size: var(--cb-body-size); color: var(--cb-muted); max-width: 34em; margin: 0; }
+  .h2 { font-size: calc(var(--cb-display-size) * 0.62); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
+  .pair { display: grid; gap: var(--cb-space-xl); align-items: start; }
+  .numbers { display: grid; grid-template-columns: 1fr 1fr; gap: var(--cb-space-md); }
+  @media (min-width: 900px) {
+    .split { grid-template-columns: 1fr 1fr; gap: calc(var(--cb-space-xl) * 2); }
+    .split.flip > :first-child { order: 2; }
+    .hero { padding-top: var(--cb-space-xl); }
+    .pair { grid-template-columns: 1fr 1fr; }
+    .cb-section { padding-block: calc(var(--cb-space-xl) * 3); }
+  }
 </style></head><body>
-<main class="cb-wrap">
-  <img class="mark" src="assets/logo-mark.png" alt="Cut Buddy" width="390" height="427">
-  <p class="cb-label">Cut Buddy</p>
-  <h1 class="cb-display">Know what to eat, and when.</h1>
-  <p class="lede">Cut Buddy builds your meals and water around your training, and changes the plan when your week does.</p>
-  <span class="cb-pill is-dim">Coming soon to iPhone</span>
-  <p class="cb-caption">Questions: <a href="mailto:cutbuddyapp@gmail.com">cutbuddyapp@gmail.com</a></p>
+<header class="cb-wrap cb-header">
+  <a class="cb-brand" href="index.html"><img src="assets/logo-mark.png" alt="" width="390" height="427"><span class="cb-wordmark">Cut Buddy</span></a>
+  <span class="cb-pill is-dim">Coming soon</span>
+</header>
+<main>
+
+<section class="cb-wrap cb-section hero" aria-labelledby="hero-heading">
+  <div class="split">
+    <div class="cb-stack">
+      <h1 class="cb-display" id="hero-heading">Know what to eat, <span class="hl">and when.</span></h1>
+      <p class="lede">Cut Buddy builds your meals and water around your training, and changes the plan when your week does. Every number comes from a tested engine, with safety built in.</p>
+      <p class="cb-muted">Coming soon to iPhone. Questions: <a class="cb-link" href="mailto:cutbuddyapp@gmail.com">cutbuddyapp@gmail.com</a></p>
+    </div>
+    <figure class="shot">
+      <div class="cb-phone"><img src="assets/screens/plan.png" alt="The Plan screen for a sample athlete: protein, carbs and fat left for a hard day, 1,473 calories left, breakfast logged, and 54 of 108 ounces of water." width="804" height="1748"></div>
+      <figcaption class="cb-sample">Sample data</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="cb-wrap cb-section" aria-labelledby="plan-heading">
+  <div class="split flip">
+    <div class="cb-stack">
+      <span><span class="cb-pill">For athletes</span></span>
+      <h2 class="h2" id="plan-heading">Planned around your training.</h2>
+      <div class="cb-card">
+        <p class="cb-label">Your day</p>
+        <p>Hard days get more fuel than rest days. Meals are timed around practice and lifts: a pre-fuel before, recovery after.</p>
+        <p class="cb-muted">A competition on the calendar counts the plan down to it. Water too, in the unit you use.</p>
+      </div>
+    </div>
+    <figure class="shot">
+      <div class="cb-phone"><img src="assets/screens/buddy.png" alt="Buddy's home screen for a sample athlete: pre-fuel in 81 minutes, 19 days to weigh-in, 2,095 calories left, and 51 of 117 ounces of water." width="804" height="1748" loading="lazy"></div>
+      <figcaption class="cb-sample">Sample data</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="cb-wrap cb-section" aria-labelledby="log-heading">
+  <div class="split">
+    <div class="cb-stack">
+      <h2 class="h2" id="log-heading">Log it by saying it.</h2>
+      <div class="cb-card">
+        <p class="cb-label">Talk to Buddy</p>
+        <p>Tell Buddy what you ate or drank, in your own words. You see exactly what it heard and tap Log it.</p>
+        <p class="cb-muted">Nothing goes in your day until you confirm.</p>
+      </div>
+    </div>
+    <figure class="crop cb-card">
+      <img src="assets/screens/chat-confirm.png" alt="Buddy chat: someone typed &quot;Drank 20 oz&quot;, and Buddy answers &quot;Here's what I heard, check it and I'll log it&quot; with a Log this? card for 20 ounces of water, a Log it button, Edit and Not that." width="804" height="600" loading="lazy">
+      <figcaption class="cb-sample">Sample data</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="cb-wrap cb-section" aria-labelledby="trend-heading">
+  <div class="cb-stack">
+    <h2 class="h2" id="trend-heading">See the trend, not the noise.</h2>
+    <div class="numbers">
+      <div class="cb-card">
+        <p class="cb-label">Weight against plan</p>
+        <p class="cb-key-number">7-day</p>
+        <p class="cb-caption">average, against your plan line</p>
+      </div>
+      <div class="cb-card">
+        <p class="cb-label">Weekly score</p>
+        <p class="cb-key-number">6</p>
+        <p class="cb-caption">areas you chose, scored each week</p>
+      </div>
+    </div>
+    <div class="pair">
+      <div class="cb-stack">
+        <figure class="cb-card chart">
+          <p class="cb-label">Weight against plan</p>
+          <img src="assets/screens/weight-chart.png" alt="A sample weight chart: daily weigh-ins as gray dots, the 7-day average as a gold line following the dashed plan line down to today." width="1106" height="752" loading="lazy">
+          <figcaption class="cb-sample">Sample data</figcaption>
+        </figure>
+        <p class="cb-muted">Daily weigh-ins bounce. Cut Buddy shows your 7-day average against your plan line, and tells you plainly where you stand: on the line, behind, or going too fast.</p>
+      </div>
+      <div class="cb-stack">
+        <figure class="shot">
+          <div class="cb-phone"><img src="assets/screens/radar.png" alt="This week's score for a sample athlete: 74, a solid week, across protein, energy, weight, fueling, water and logging." width="804" height="1748" loading="lazy"></div>
+          <figcaption class="cb-sample">Sample data</figcaption>
+        </figure>
+        <p class="cb-muted">Six areas you chose (protein, water, fueling around training, logging and more) scored each week, so you know what to work on.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cb-wrap cb-section" aria-labelledby="safety-heading">
+  <div class="cb-stack">
+    <h2 class="h2" id="safety-heading">Safety isn't a setting.</h2>
+    <div class="cb-card">
+      <p class="cb-label">Built in, for everyone</p>
+      <ul class="cb-list">
+        <li>Weight loss is capped at a safe weekly rate, and the plan slows itself if you lose faster.</li>
+        <li>It never plans below your certified minimum weight, or below your resting energy.</li>
+        <li>No dehydration, saunas, spitting, laxatives or fasting to make weight, ever.</li>
+        <li>Your health answers change what you're shown. Someone the app shouldn't show numbers to doesn't see them.</li>
+        <li>Every number comes from a tested nutrition engine. The AI writes words, never numbers.</li>
+        <li>Not medical advice: it points you to a doctor, athletic trainer or registered dietitian.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="cb-wrap cb-section" aria-labelledby="coach-heading">
+  <div class="split flip">
+    <div class="cb-stack">
+      <span><span class="cb-pill">For coaches</span></span>
+      <h2 class="h2" id="coach-heading">Your team at a glance.</h2>
+      <div class="cb-card">
+        <p class="cb-label">Team view</p>
+        <p>See who's on track, behind, or losing too fast, with a heads-up when someone needs a check-in.</p>
+        <p class="cb-muted">Athletes choose what you see, parents approve for under-18s, and every look is shown to the athlete.</p>
+      </div>
+    </div>
+    <figure class="shot">
+      <div class="cb-phone"><img src="assets/screens/coach-roster.png" alt="A sample coach's team screen: a heads-up that one athlete is losing faster than the safe rate, then the team grouped as too fast, behind and on track." width="804" height="1748" loading="lazy"></div>
+      <figcaption class="cb-sample">Sample data</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="cb-wrap cb-section" aria-labelledby="soon-heading">
+  <div class="cb-card">
+    <p class="cb-label" id="soon-heading">Coming soon to iPhone</p>
+    <p>Starting with wrestlers, and for anyone who wants a plan that fits their week.</p>
+    <p class="cb-muted">Questions: <a class="cb-link" href="mailto:cutbuddyapp@gmail.com">cutbuddyapp@gmail.com</a></p>
+  </div>
+</section>
+
 </main>
-<footer class="cb-wrap">
-  <nav aria-label="Policies"><a href="privacy.html">Privacy</a><a href="health-data.html">Health data</a><a href="guardians.html">Parents</a></nav>
+<footer class="cb-wrap cb-footer">
+  <nav aria-label="Policies and support"><a href="privacy.html">Privacy</a><a href="health-data.html">Health data</a><a href="terms.html">Terms</a><a href="support.html">Support</a><a href="guardians.html">Parents</a></nav>
   <p>Cut Buddy gives nutrition information, not medical advice. If you need help now:</p>
 <!-- helplines:start (written by scripts/render-helplines.mjs from src/chat/helplines.ts; don't edit by hand) -->
 <ul class="helplines">
@@ -27,5 +166,6 @@
 <li>Text support anytime: the Crisis Text Line, text HOME to 741741.</li>
 </ul>
 <!-- helplines:end -->
+  <p>© 2026 <span class="ph">company name to come</span></p>
 </footer>
 </body></html>

@@ -35,7 +35,7 @@ jobs:
           # these exact names: never rename them.
           PAGES: >-
             index.html privacy.html health-data.html guardians.html
-            terms.html support.html approve.html
+            terms.html support.html approve.html join.html 404.html
           STYLES: theme.css style.css
         run: |
           set -euo pipefail

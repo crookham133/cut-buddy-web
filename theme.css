@@ -188,3 +188,48 @@ button, input, select, textarea { font: inherit; color: inherit; }
 /* ---- Legal pages ---- */
 .cb-draft { border: 1.5px solid var(--cb-alert); color: var(--cb-alert); border-radius: var(--cb-radius-sm); padding: 10px 14px; font-size: 14px; }
 .ph { background: var(--cb-surface); border: 1px dashed var(--cb-muted); border-radius: 4px; padding: 0 0.3em; }
+
+/* ---- Wordmark: "CUT BUDDY" in Space Grotesk 600, as the launch animation sets it
+   (design/launch-animation: 24px with 7px tracking). Self-hosted, SIL Open Font
+   License (assets/fonts/SpaceGrotesk-OFL.txt); no font CDN. ---- */
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("assets/fonts/SpaceGrotesk-Variable.ttf") format("truetype");
+  font-weight: 300 700;
+  font-display: swap;
+}
+:root { --cb-wordmark-font: "Space Grotesk", var(--cb-font); }
+.cb-wordmark { font-family: var(--cb-wordmark-font); font-weight: 600; letter-spacing: 0.29em; text-transform: uppercase; }
+
+/* ---- Site chrome, built from the tokens above ---- */
+.cb-header { display: flex; align-items: center; justify-content: space-between; gap: var(--cb-space-md); padding-block: var(--cb-space-md); }
+.cb-brand { display: inline-flex; align-items: center; gap: var(--cb-space-sm); min-height: var(--cb-tap); color: var(--cb-white); text-decoration: none; }
+.cb-brand img { width: calc(var(--cb-space-lg) + var(--cb-space-xs)); height: auto; }
+.cb-section { padding-block: calc(var(--cb-space-xl) * 2); }
+.cb-stack { display: grid; gap: var(--cb-space-md); }
+.cb-link { font-weight: 600; text-decoration: none; }   /* gold text link: "Email us ›" */
+.cb-list { margin: 0; padding-left: var(--cb-space-md); display: grid; gap: var(--cb-space-sm); }
+.cb-muted { color: var(--cb-muted); }
+.cb-footer { border-top: 1px solid var(--cb-line); padding-block: var(--cb-space-xl); font-size: var(--cb-caption-size); color: var(--cb-muted); display: grid; gap: var(--cb-space-sm); }
+.cb-footer > * { margin: 0; }
+.cb-footer nav { display: flex; flex-wrap: wrap; gap: var(--cb-space-xs) var(--cb-space-md); }
+.cb-footer a { color: var(--cb-muted); }
+.cb-footer a[aria-current] { color: var(--cb-white); }
+.cb-footer ul { margin: 0; padding-left: var(--cb-space-md); }
+
+/* ---- Text pages (support, terms, the policies) ----
+   <body class="cb-text">. The policy pages' own classes (.mark, .draft, .updated,
+   .short) are styled here so their HTML, which is Ryan's, stays as written. */
+.cb-text main { max-width: calc(var(--cb-page) * 0.6); margin: 0 auto; padding: var(--cb-space-md) var(--cb-space-md) var(--cb-space-xl); line-height: 1.6; }
+.cb-text .cb-wrap { max-width: calc(var(--cb-page) * 0.6); }
+.cb-text h1 { font-size: var(--cb-key-size); font-weight: 700; line-height: 1.15; margin: var(--cb-space-md) 0 var(--cb-space-sm); text-wrap: balance; }
+.cb-text h2 { font-size: var(--cb-title-size); font-weight: 600; line-height: 1.25; margin: var(--cb-space-xl) 0 var(--cb-space-sm); text-wrap: balance; }
+.cb-text h3 { font-size: var(--cb-body-size); font-weight: 700; margin: 0; }
+.cb-text li { margin-block: var(--cb-space-xs); }
+.cb-text .mark { display: flex; align-items: center; gap: var(--cb-space-sm); font-family: var(--cb-wordmark-font); font-weight: 600; letter-spacing: 0.29em; text-transform: uppercase; margin-bottom: var(--cb-space-lg); }
+.cb-text .mark span { width: calc(var(--cb-space-lg) + var(--cb-space-xs)); aspect-ratio: 390 / 427; background: url("assets/logo-mark.png") center / contain no-repeat; }
+.cb-text .draft { border: 1.5px solid var(--cb-alert); color: var(--cb-alert); border-radius: var(--cb-radius-sm); padding: var(--cb-space-sm) var(--cb-space-md); font-size: var(--cb-caption-size); margin-bottom: var(--cb-space-md); }
+.cb-text .updated { color: var(--cb-muted); font-size: var(--cb-caption-size); }
+.cb-text .short { background: var(--cb-surface); border: 1px solid var(--cb-line); border-radius: var(--cb-radius-card); padding: var(--cb-space-md); }
+.cb-text .short h2 { margin-top: 0; font-size: var(--cb-label-size); font-weight: 700; letter-spacing: var(--cb-label-tracking); text-transform: uppercase; color: var(--cb-muted); }
+.cb-text .card { background: var(--cb-surface); border: 1px solid var(--cb-line); border-radius: var(--cb-radius-card); padding: var(--cb-space-md); }
