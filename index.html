@@ -8,18 +8,16 @@
   .crop img { display: block; width: 100%; height: auto; border-radius: var(--cb-radius-sm); }
   .chart { margin: 0; }
   .chart img { display: block; width: 100%; height: auto; }
-  .hero { padding-top: var(--cb-space-lg); }
+  .hero { padding-top: var(--cb-space-sm); }
   .hero .cb-display .hl { color: var(--cb-gold); }
   .lede { font-size: var(--cb-body-size); color: var(--cb-muted); max-width: 34em; margin: 0; }
   .h2 { font-size: calc(var(--cb-display-size) * 0.62); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
   .pair { display: grid; gap: var(--cb-space-xl); align-items: start; }
-  .numbers { display: grid; grid-template-columns: 1fr 1fr; gap: var(--cb-space-md); }
   @media (min-width: 900px) {
     .split { grid-template-columns: 1fr 1fr; gap: calc(var(--cb-space-xl) * 2); }
     .split.flip > :first-child { order: 2; }
-    .hero { padding-top: var(--cb-space-xl); }
     .pair { grid-template-columns: 1fr 1fr; }
-    .cb-section { padding-block: calc(var(--cb-space-xl) * 3); }
+    .cb-section { padding-block: calc(var(--cb-space-xl) * 2); }
   }
 </style></head><body>
 <header class="cb-wrap cb-header">
@@ -53,8 +51,8 @@
         <p class="cb-muted">A competition on the calendar counts the plan down to it. Water too, in the unit you use.</p>
       </div>
     </div>
-    <figure class="shot">
-      <div class="cb-phone"><img src="assets/screens/buddy.png" alt="Buddy's home screen for a sample athlete: pre-fuel in 81 minutes, 19 days to weigh-in, 2,095 calories left, and 51 of 117 ounces of water." width="804" height="1748" loading="lazy"></div>
+    <figure class="crop cb-card">
+      <img src="assets/screens/plan-week.png" alt="The week on the Plan screen, with Wednesday marked a hard day: protein, carbs and fat left for the day." width="804" height="545" loading="lazy">
       <figcaption class="cb-sample">Sample data</figcaption>
     </figure>
   </div>
@@ -80,18 +78,6 @@
 <section class="cb-wrap cb-section" aria-labelledby="trend-heading">
   <div class="cb-stack">
     <h2 class="h2" id="trend-heading">See the trend, not the noise.</h2>
-    <div class="numbers">
-      <div class="cb-card">
-        <p class="cb-label">Weight against plan</p>
-        <p class="cb-key-number">7-day</p>
-        <p class="cb-caption">average, against your plan line</p>
-      </div>
-      <div class="cb-card">
-        <p class="cb-label">Weekly score</p>
-        <p class="cb-key-number">6</p>
-        <p class="cb-caption">areas you chose, scored each week</p>
-      </div>
-    </div>
     <div class="pair">
       <div class="cb-stack">
         <figure class="cb-card chart">
@@ -150,7 +136,7 @@
 <section class="cb-wrap cb-section" aria-labelledby="soon-heading">
   <div class="cb-card">
     <p class="cb-label" id="soon-heading">Coming soon to iPhone</p>
-    <p>Starting with wrestlers, and for anyone who wants a plan that fits their week.</p>
+    <p>Born in a wrestling room. Built for every kind of week.</p>
     <p class="cb-muted">Questions: <a class="cb-link" href="mailto:cutbuddyapp@gmail.com">cutbuddyapp@gmail.com</a></p>
   </div>
 </section>
@@ -166,6 +152,6 @@
 <li>Text support anytime: the Crisis Text Line, text HOME to 741741.</li>
 </ul>
 <!-- helplines:end -->
-  <p>© 2026 <span class="ph">company name to come</span></p>
+  <p>© 2026 Cut Buddy</p>
 </footer>
 </body></html>
