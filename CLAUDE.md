@@ -1,8 +1,12 @@
 # Cut Buddy website: brief and rules
 
 This repo is Cut Buddy's public website, plain HTML and CSS served by GitHub
-Pages from `main` at https://crookham133.github.io/cut-buddy-web/. Jake builds
-it; Ryan owns the app. Setup, preview and publishing are in `START-HERE.md`.
+Pages from `main` at https://cutbuddyapp.com (from 21 Oct; the old
+crookham133.github.io/cut-buddy-web address redirects there). Jake builds
+it; Ryan owns the app. The app links `privacy.html`, `health-data.html`,
+`guardians.html`, `terms.html`, `support.html` and `approve.html` on the
+domain by these exact paths, and App Store Connect will too: never rename
+or move them. Setup, preview and publishing are in `START-HERE.md`.
 
 ## What Cut Buddy is
 
