@@ -1,0 +1,76 @@
+# Publishes the site to GitHub Pages, and only the site.
+#
+# Deploying from the branch served every file in the repo, so CLAUDE.md,
+# START-HERE.md, BRIEF.md and theme.html were public on the domain. This
+# copies an allowlist of the site's own files into _site and publishes that
+# alone. A new page has to be added to PAGES below to go live: that's on
+# purpose.
+#
+# Needs Settings → Pages → Build and deployment → Source: "GitHub Actions".
+name: Publish site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copy only the site's files
+        env:
+          # The pages people visit. The app and App Store Connect link
+          # privacy, health-data, guardians, terms, support and approve by
+          # these exact names: never rename them.
+          PAGES: >-
+            index.html privacy.html health-data.html guardians.html
+            terms.html support.html approve.html
+          STYLES: theme.css style.css
+        run: |
+          set -euo pipefail
+          mkdir _site
+          for f in $PAGES $STYLES CNAME; do
+            if [ -f "$f" ]; then cp "$f" _site/; fi
+          done
+          [ -d assets ] && cp -R assets _site/assets
+          # Notes for the people building it (a README in assets/screens) aren't the site.
+          find _site -name '*.md' -delete
+      - name: Refuse anything that isn't a site file
+        run: |
+          set -euo pipefail
+          for f in index.html privacy.html health-data.html guardians.html approve.html; do
+            [ -f "_site/$f" ] || { echo "missing $f"; exit 1; }
+          done
+          bad=""
+          while IFS= read -r f; do
+            case "$f" in
+              _site/CNAME|*.html|*.css|*.png|*.jpg|*.jpeg|*.webp|*.svg|*.ico|*.ttf|*.woff|*.woff2|*.txt) ;;
+              *) bad="$bad $f" ;;
+            esac
+          done < <(find _site -type f)
+          if [ -n "$bad" ]; then echo "Not a site file, refusing to publish:$bad"; exit 1; fi
+          echo "Publishing:"; find _site -type f | sort
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
