@@ -204,17 +204,17 @@ button, input, select, textarea { font: inherit; color: inherit; }
    A transparent canvas behind the hero: gold 0s and 1s falling, drawn by the
    page's script from --cb-gold, --cb-gold-pale, --cb-black and --cb-mono, with a
    soft dark fade keeping the rain out from behind the text. After the intro the
-   layer eases down (ease-out, 1.8 s) to a slow background rain: a little more
-   visible on phones, where it shows only around the text. */
+   script eases it down over about 4 s to a slow background rain at
+   --cb-rain-rest: a little more visible on phones, where it shows only around
+   the text. */
 .cb-rain {
   position: absolute; top: 0; left: 50%; width: 100vw; height: 100%; transform: translateX(-50%); z-index: -1; pointer-events: none;
-  transition: opacity 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+  --cb-rain-rest: 0.22;
   /* soft top and bottom edges, so the rain has no hard line under the bar or above the next section */
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 82%, transparent);
   mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 82%, transparent);
 }
-.cb-rain.is-ambient { opacity: 0.22; }
-@media (max-width: 768px) { .cb-rain.is-ambient { opacity: 0.32; } }
+@media (max-width: 768px) { .cb-rain { --cb-rain-rest: 0.32; } }
 
 /* ---- The wordmark decoding on first load, as "CUT BUDDY" does in the launch
    animation: each letter shows a gold 0 or 1, then resolves to white. The real

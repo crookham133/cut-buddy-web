@@ -230,9 +230,10 @@
      Gold 0s and 1s in 10 px columns, 1–2 drops a column at 34–68 rows a second,
      trails fading by e^(-3.4 t), heads pale gold, on a transparent canvas. A soft
      dark fade keeps it out from behind the text block from the first frame.
-     After ~2.3 s it settles, never cutting: no new intro drops, the ones falling
-     finish their fall, trails lengthen, slow drops start from above the top, and
-     the layer eases down to a background level (CSS, 1.8 s ease-out).
+     From 2 s it settles over 4 s, gradually: the intro streams retire one
+     by one at random times, each new drop falls a little slower than the last,
+     trails lengthen, slow drops drift in from above, and the whole layer eases
+     down (a sine ease, gentle at both ends) to --cb-rain-rest.
      Paused whenever the hero is off-screen or the tab is hidden; a resize or a
      rotation keeps what's falling. With reduced motion there's no rain at all. */
   var cv = document.getElementById("rain");
@@ -244,18 +245,21 @@
   var BLACK = css.getPropertyValue("--cb-black").trim();
   var MONO = css.getPropertyValue("--cb-mono").trim();
   var textBlock = hero.querySelector(".split > .cb-stack");
-  var CELL = 10, SETTLE = 2.3, EASE = 1.8;   // seconds: when it settles, and how long the settle takes
+  var CELL = 10, SETTLE = 2.0, EASE = 4.0, RETIRE = 3.2;   // seconds: settle start, its length, the spread of stream retirements
   var W = 0, H = 0, COLS = 0, ROWS = 0, dpr = 1, bright, ch, drops = [], clearBox, zone;
   var live = [], lit;   // the lit cells only, so a frame never scans the whole grid
   var hole;             // the cells the dark fade covers completely: never drawn
   var t = 0, last = null, raf = 0, visible = true, settled = false;
+  var level = 1, rest = 0.22, eased = 0;   // the layer's brightness: 1 in the intro, easing to rest
 
   // Intro drops as the reference, sped up in proportion when the hero is taller
   // than its 85-row screen; slow drops after the settle.
   function drop(col, slow, y) {
-    return { col: col, slow: slow, prev: null,
+    var fast = (34 + Math.random() * 34) * Math.max(1, ROWS / 85), calm = 4 + Math.random() * 6;
+    return { col: col, slow: slow, prev: null, retire: SETTLE + Math.random() * RETIRE,
       y: y !== undefined ? y : slow ? -Math.random() * ROWS : -Math.random() * ROWS * 0.9,
-      v: slow ? 4 + Math.random() * 6 : (34 + Math.random() * 34) * Math.max(1, ROWS / 85) };
+      // an intro drop born during the settle falls slower the further the settle has gone
+      v: slow ? calm : fast + (calm * 2 - fast) * eased };
   }
   function addDrops(fromCol) {
     for (var c = fromCol; c < COLS; c++) {
@@ -267,6 +271,7 @@
   // Size the canvas to the hero (devicePixelRatio, capped at 3, and lower for a
   // very large canvas), keeping what's already on it and what's falling.
   function size() {
+    rest = parseFloat(getComputedStyle(cv).getPropertyValue("--cb-rain-rest")) || 0.22;   // differs by width
     var r = cv.getBoundingClientRect();
     var w = Math.max(1, Math.round(r.width)), h = Math.max(1, Math.round(r.height));
     var d = Math.min(window.devicePixelRatio || 1, 3);
@@ -315,14 +320,17 @@
         if (!lit[idx]) { lit[idx] = 1; live.push(idx); }
       }
       if (dr.y > ROWS + 4) {
-        if (dr.slow || !settled) { var nd = drop(dr.col, dr.slow, dr.slow ? -Math.random() * 12 : -Math.random() * 12); dr.y = nd.y; dr.v = nd.v; dr.prev = null; }
-        else dr.dead = true;   // after the settle, an intro stream finishes its fall and stops
+        if (dr.slow || t < dr.retire) { var nd = drop(dr.col, dr.slow, -Math.random() * 12); dr.y = nd.y; dr.v = nd.v; dr.prev = null; }
+        else dr.dead = true;   // past its own retirement time, an intro stream finishes its fall and stops
       }
     }
     if (settled) drops = drops.filter(function (dr) { return !dr.dead; });
-    // Trails: the reference's e^(-3.4 t), lengthening to e^(-1.2 t) over the settle.
+    // The settle's progress, eased (sine in-out): it drives the layer's brightness
+    // and lengthens the trails from the reference's e^(-3.4 t) to e^(-1.2 t).
     var k = settled ? Math.min(1, (t - SETTLE) / EASE) : 0;
-    var decay = Math.exp(-dt * (3.4 - 2.2 * (1 - Math.pow(1 - k, 3))));
+    eased = (1 - Math.cos(Math.PI * k)) / 2;
+    level = 1 - (1 - rest) * eased;
+    var decay = Math.exp(-dt * (3.4 - 2.2 * eased));
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.globalAlpha = 1; ctx.clearRect(0, 0, cv.width, cv.height);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -337,7 +345,7 @@
       if (col >= hole.c0 && col <= hole.c1 && row >= hole.r0 && row <= hole.r1) continue;   // under the dark fade
       var head = b > 0.93, f = head ? PALE : GOLD;
       if (f !== fill) { ctx.fillStyle = fill = f; }
-      ctx.globalAlpha = head ? b : b * 0.9;
+      ctx.globalAlpha = (head ? b : b * 0.9) * level;
       ctx.fillText(ch[i] ? "1" : "0", col * CELL + 2, row * CELL - 1);
     }
     live.length = keep;
@@ -353,10 +361,11 @@
     t += dt;
     if (t >= 0.25) draw(dt);
     if (!settled && t >= SETTLE) {
-      settled = true; cv.classList.add("is-ambient");
-      addDrops(0);   // the slow rain begins above the top; the intro streams keep falling
+      settled = true;
+      addDrops(0);   // the slow rain begins above the top; the intro streams keep falling until they retire
     }
     cv.dataset.frames = (+cv.dataset.frames || 0) + 1;   // a frame count, for checking that it pauses
+    cv.dataset.phase = !settled ? "intro" : eased < 1 ? "settling" : "rest";
     raf = requestAnimationFrame(tick);
   }
   function resume() { if (!raf && visible) raf = requestAnimationFrame(tick); }
