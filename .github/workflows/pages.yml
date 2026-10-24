@@ -37,10 +37,13 @@ jobs:
             index.html privacy.html health-data.html guardians.html
             terms.html support.html approve.html join.html 404.html
           STYLES: theme.css style.css
+          # The link preview image and the home-screen icon, at the root
+          # where link previews and iOS look for them.
+          IMAGES: og-image.png apple-touch-icon.png
         run: |
           set -euo pipefail
           mkdir _site
-          for f in $PAGES $STYLES CNAME; do
+          for f in $PAGES $STYLES $IMAGES CNAME; do
             if [ -f "$f" ]; then cp "$f" _site/; fi
           done
           [ -d assets ] && cp -R assets _site/assets
