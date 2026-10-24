@@ -1,18 +1,24 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex, nofollow"><meta name="description" content="Cut Buddy builds your meals and water around your training, and changes the plan when your week does. Coming soon to iPhone."><link rel="icon" href="assets/app-icon-1024.png"><meta property="og:type" content="website"><meta property="og:site_name" content="Cut Buddy"><meta property="og:url" content="https://cutbuddyapp.com/"><meta property="og:title" content="Cut Buddy · Know what to eat, and when."><meta property="og:description" content="Nutrition that adapts to your training, travel and life. Coming soon to iPhone."><meta property="og:image" content="https://cutbuddyapp.com/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="The Cut Buddy logo, a gold C around a smiling apple, on black, with the words Cut Buddy"><meta name="twitter:card" content="summary_large_image"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="stylesheet" href="theme.css"><title>Cut Buddy: know what to eat, and when</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="color-scheme" content="dark"><style>html{background:#000;color-scheme:dark}</style><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex, nofollow"><meta name="description" content="Cut Buddy builds your meals and water around your training, and changes the plan when your week does. Coming soon to iPhone."><link rel="icon" href="assets/app-icon-1024.png"><meta property="og:type" content="website"><meta property="og:site_name" content="Cut Buddy"><meta property="og:url" content="https://cutbuddyapp.com/"><meta property="og:title" content="Cut Buddy · Know what to eat, and when."><meta property="og:description" content="Nutrition that adapts to your training, travel and life. Coming soon to iPhone."><meta property="og:image" content="https://cutbuddyapp.com/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="The Cut Buddy logo, a gold C around a smiling apple, on black, with the words Cut Buddy"><meta name="twitter:card" content="summary_large_image"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="preload" href="assets/fonts/SpaceGrotesk-Variable.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="theme.css"><script>/* The wordmark decodes on load (script after the header); until then its letters stay hidden. A failsafe shows them after 2.5 s. */if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("cb-wm-wait");setTimeout(function(){document.documentElement.classList.remove("cb-wm-wait")},2500)}</script><title>Cut Buddy: know what to eat, and when</title>
 <style>
   /* Home-page layout only. Every value comes from theme.css. */
   .split { display: grid; gap: var(--cb-space-xl); align-items: center; }
   .shot { margin: 0; display: grid; justify-items: center; }
   .shot .cb-phone { justify-self: center; }
-  .crop { margin: 0; width: min(100%, calc(var(--cb-page) * 0.4)); justify-self: center; }
+  /* 804 px crops on wide screens: the image at most 402 px wide (2x), so it's never
+     upscaled; the card's padding and border go on top. */
+  .crop { margin: 0; width: min(100%, calc(402px + 2 * var(--cb-space-md) + 2px)); justify-self: center; }
   .crop img { display: block; width: 100%; height: auto; border-radius: var(--cb-radius-sm); }
   .chart { margin: 0; }
   .chart img { display: block; width: 100%; height: auto; }
-  .hero { padding-top: var(--cb-space-sm); }
+  html { scroll-padding-top: calc(var(--cb-tap) + var(--cb-space-xl)); }  /* keeps focused things clear of the sticky bar */
+  main { overflow-x: clip; }  /* the desktop slides start off-screen; clip, not hidden, so nothing else changes */
+  .hero { padding-top: var(--cb-space-sm); position: relative; isolation: isolate; }
   .hero .cb-display .hl { color: var(--cb-gold); }
   .lede { font-size: var(--cb-body-size); color: var(--cb-muted); max-width: 34em; margin: 0; }
   .h2 { font-size: calc(var(--cb-display-size) * 0.62); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
   .pair { display: grid; gap: var(--cb-space-xl); align-items: start; }
+  @media (max-width: 768px) { .crop { width: min(100%, calc(var(--cb-page) * 0.4)); } }  /* phones: as the live site */
+  .crop.crop-radar { width: min(100%, calc(366px + 2 * var(--cb-space-md) + 2px)); }  /* 732 px wide: 366 at 2x */
   @media (min-width: 900px) {
     .split { grid-template-columns: 1fr 1fr; gap: calc(var(--cb-space-xl) * 2); }
     .split.flip > :first-child { order: 2; }
@@ -20,41 +26,69 @@
     .cb-section { padding-block: calc(var(--cb-space-xl) * 2); }
   }
 </style></head><body>
-<header class="cb-wrap cb-header">
-  <a class="cb-brand" href="index.html"><img src="assets/logo-mark.png" alt="" width="390" height="427"><span class="cb-wordmark">Cut Buddy</span></a>
+<div class="cb-topbar" id="topbar"><header class="cb-wrap cb-header">
+  <a class="cb-brand" href="index.html" aria-label="Cut Buddy, home"><img src="assets/logo-mark.png" alt="" width="390" height="427"><span class="cb-wordmark" id="wordmark">Cut Buddy</span></a>
   <span class="cb-pill is-dim">Coming soon</span>
-</header>
+</header></div>
+<script>
+/* "CUT BUDDY" resolves from 0s and 1s into its letters, once, in about 1.1 s:
+   each letter shows a gold digit, then turns white, left to right, as in the
+   app's launch animation. The letters stay in place (transparent) under the
+   digits, so nothing changes width. Time only runs while the tab is visible. */
+(function () {
+  var html = document.documentElement, wm = document.getElementById("wordmark");
+  if (!html.classList.contains("cb-wm-wait") || !wm) return;
+  var spans = [], text = wm.textContent;
+  wm.textContent = "";
+  text.split("").forEach(function (c) {
+    if (c === " ") { wm.appendChild(document.createTextNode(" ")); return; }
+    var s = document.createElement("span"); s.textContent = c; s.className = "is-digit";
+    s.setAttribute("data-d", Math.random() < 0.5 ? "0" : "1"); wm.appendChild(s); spans.push(s);
+  });
+  html.classList.remove("cb-wm-wait");
+  var START = 0.3, STEP = 0.11, FLIP = 0.07;   // seconds
+  var t = 0, last = null, flip = 0;
+  function frame(now) {
+    if (document.hidden) { last = null; requestAnimationFrame(frame); return; }
+    var dt = last === null ? 0 : Math.min(0.05, (now - last) / 1000); last = now;
+    t += dt; flip += dt;
+    var left = 0;
+    spans.forEach(function (s, i) {
+      if (t >= START + i * STEP) { if (s.className) s.className = ""; }
+      else { left++; if (flip >= FLIP) s.setAttribute("data-d", Math.random() < 0.5 ? "0" : "1"); }
+    });
+    if (flip >= FLIP) flip = 0;
+    if (left) requestAnimationFrame(frame);   // the spans stay: putting plain text back would re-kern it by a pixel
+  }
+  document.addEventListener("visibilitychange", function () { last = null; });
+  requestAnimationFrame(frame);
+})();
+</script>
 <main>
 
-<section class="cb-wrap cb-section hero" aria-labelledby="hero-heading">
+<section class="cb-wrap cb-section hero" id="hero" aria-labelledby="hero-heading">
+  <canvas class="cb-rain" id="rain" aria-hidden="true"></canvas>
   <div class="split">
     <div class="cb-stack">
       <h1 class="cb-display" id="hero-heading">Know what to eat, <span class="hl">and when.</span></h1>
       <p class="lede">Cut Buddy builds your meals and water around your training, and changes the plan when your week does. Every number comes from a tested engine, with safety built in.</p>
       <p class="cb-muted">Coming soon to iPhone. Questions: <a class="cb-link" href="mailto:cutbuddyapp@gmail.com">cutbuddyapp@gmail.com</a></p>
     </div>
-    <figure class="shot">
+    <figure class="shot" data-slide="exit">
       <div class="cb-phone"><img src="assets/screens/plan.png" alt="The Plan screen for a sample athlete: protein, carbs and fat left for a hard day, 1,473 calories left, breakfast logged, and 54 of 108 ounces of water." width="804" height="1748"></div>
-      <figcaption class="cb-sample">Sample data</figcaption>
     </figure>
   </div>
 </section>
 
 <section class="cb-wrap cb-section" aria-labelledby="plan-heading">
-  <div class="split flip">
-    <div class="cb-stack">
-      <span><span class="cb-pill">For athletes</span></span>
-      <h2 class="h2" id="plan-heading">Planned around your training.</h2>
-      <div class="cb-card">
-        <p class="cb-label">Your day</p>
-        <p>Hard days get more fuel than rest days. Meals are timed around practice and lifts: a pre-fuel before, recovery after.</p>
-        <p class="cb-muted">A competition on the calendar counts the plan down to it. Water too, in the unit you use.</p>
-      </div>
+  <div class="cb-stack">
+    <span><span class="cb-pill">For athletes</span></span>
+    <h2 class="h2" id="plan-heading">Planned around your training.</h2>
+    <div class="cb-card">
+      <p class="cb-label">Your day</p>
+      <p>Hard days get more fuel than rest days. Meals are timed around practice and lifts: a pre-fuel before, recovery after.</p>
+      <p class="cb-muted">A competition on the calendar counts the plan down to it. Water too, in the unit you use.</p>
     </div>
-    <figure class="crop cb-card">
-      <img src="assets/screens/plan-week.png" alt="The week on the Plan screen, with Wednesday marked a hard day: protein, carbs and fat left for the day." width="804" height="545" loading="lazy">
-      <figcaption class="cb-sample">Sample data</figcaption>
-    </figure>
   </div>
 </section>
 
@@ -68,9 +102,8 @@
         <p class="cb-muted">Nothing goes in your day until you confirm.</p>
       </div>
     </div>
-    <figure class="crop cb-card">
-      <img src="assets/screens/chat-confirm.png" alt="Buddy chat: someone typed &quot;Drank 20 oz&quot;, and Buddy answers &quot;Here's what I heard, check it and I'll log it&quot; with a Log this? card for 20 ounces of water, a Log it button, Edit and Not that." width="804" height="600" loading="lazy">
-      <figcaption class="cb-sample">Sample data</figcaption>
+    <figure class="crop cb-card" data-slide="right">
+      <img src="assets/screens/chat-confirm.png" alt="Buddy chat: someone typed &quot;Drank 20 oz&quot;, and Buddy answers &quot;Here's what I heard, check it and I'll log it&quot; with a Log this? card for 20 ounces of water, a Log it button, Edit and Not that." width="804" height="600" loading="lazy" decoding="async">
     </figure>
   </div>
 </section>
@@ -80,17 +113,15 @@
     <h2 class="h2" id="trend-heading">See the trend, not the noise.</h2>
     <div class="pair">
       <div class="cb-stack">
-        <figure class="cb-card chart">
+        <figure class="cb-card chart" data-slide="left">
           <p class="cb-label">Weight against plan</p>
-          <img src="assets/screens/weight-chart.png" alt="A sample weight chart: daily weigh-ins as gray dots, the 7-day average as a gold line following the dashed plan line down to today." width="1106" height="752" loading="lazy">
-          <figcaption class="cb-sample">Sample data</figcaption>
+          <img src="assets/screens/weight-chart.png" alt="A sample weight chart: daily weigh-ins as gray dots, the 7-day average as a gold line following the dashed plan line down to today." width="1106" height="752" loading="lazy" decoding="async">
         </figure>
         <p class="cb-muted">Daily weigh-ins bounce. Cut Buddy shows your 7-day average against your plan line, and tells you plainly where you stand: on the line, behind, or going too fast.</p>
       </div>
       <div class="cb-stack">
-        <figure class="shot">
-          <div class="cb-phone"><img src="assets/screens/radar.png" alt="This week's score for a sample athlete: 74, a solid week, across protein, energy, weight, fueling, water and logging." width="804" height="1748" loading="lazy"></div>
-          <figcaption class="cb-sample">Sample data</figcaption>
+        <figure class="crop crop-radar cb-card" data-slide="right">
+          <img src="assets/screens/radar-card.png" alt="This week's score for a sample athlete: 74, a solid week, with a radar of the six areas: protein, energy, weight, fueling, water and logging." width="732" height="590" loading="lazy" decoding="async">
         </figure>
         <p class="cb-muted">Six areas you chose (protein, water, fueling around training, logging and more) scored each week, so you know what to work on.</p>
       </div>
@@ -126,9 +157,8 @@
         <p class="cb-muted">Athletes choose what you see, parents approve for under-18s, and every look is shown to the athlete.</p>
       </div>
     </div>
-    <figure class="shot">
-      <div class="cb-phone"><img src="assets/screens/coach-roster.png" alt="A sample coach's team screen: a heads-up that one athlete is losing faster than the safe rate, then the team grouped as too fast, behind and on track." width="804" height="1748" loading="lazy"></div>
-      <figcaption class="cb-sample">Sample data</figcaption>
+    <figure class="shot" data-slide="left">
+      <div class="cb-phone"><img src="assets/screens/coach-roster.png" alt="A sample coach's team screen: a heads-up that one athlete is losing faster than the safe rate, then the team grouped as too fast, behind and on track." width="804" height="1748" loading="lazy" decoding="async"></div>
     </figure>
   </div>
 </section>
@@ -154,4 +184,202 @@
 <!-- helplines:end -->
   <p>© 2026 Cut Buddy</p>
 </footer>
+<script>
+/* The home page's motion: the sticky bar's line, the launch rain behind the
+   hero, and (wide screens only) the screenshots sliding in. No libraries,
+   nothing loaded, nothing stored. Colours and the digit font come from theme.css. */
+(function () {
+  "use strict";
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var wide = window.matchMedia("(min-width: 769px)");   // phones (768 px and under) get no scroll motion
+
+  /* ---- Sticky bar: a line under it once the page has scrolled ---- */
+  var bar = document.getElementById("topbar");
+  function onScrollBar() { bar.classList.toggle("is-scrolled", window.scrollY > 4); }
+
+  /* ---- Wide screens: screenshots slide in from their side, and back out once
+     they've fully left; whenever any of one is on screen it's fully opaque ---- */
+  var hero = document.getElementById("hero");
+  var heroShot = hero.querySelector('[data-slide="exit"]');
+  if (!reduced && "IntersectionObserver" in window) {
+    document.documentElement.classList.add("cb-motion");
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) e.target.classList.add("is-in");
+        else e.target.classList.remove("is-in");
+      });
+    }, { threshold: 0, rootMargin: "0px 0px -10% 0px" });
+    document.querySelectorAll('[data-slide="left"], [data-slide="right"]').forEach(function (el) { io.observe(el); });
+  }
+  // The hero phone follows the scroll off to the right as the hero leaves (wide screens only).
+  function onScrollHero() {
+    var p = reduced || !wide.matches ? 0 : Math.min(1, Math.max(0, window.scrollY / Math.max(1, hero.offsetHeight * 0.85)));
+    heroShot.style.transform = p === 0 ? "" : "translate3d(" + (40 * p).toFixed(2) + "vw,0,0)";
+    heroShot.style.opacity = p === 0 ? "" : (1 - p).toFixed(3);
+  }
+
+  var ticking = false;
+  window.addEventListener("scroll", function () {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(function () { ticking = false; onScrollBar(); onScrollHero(); });
+  }, { passive: true });
+  wide.addEventListener("change", onScrollHero);
+  onScrollBar(); onScrollHero();
+
+  /* ---- The launch rain (cut-buddy-ai design/launch-animation, the reference) ----
+     Gold 0s and 1s in 10 px columns, 1–2 drops a column at 34–68 rows a second,
+     trails fading by e^(-3.4 t), heads pale gold, on a transparent canvas. A soft
+     dark fade keeps it out from behind the text block from the first frame.
+     From 2 s it settles over 4 s, gradually: the intro streams retire one
+     by one at random times, each new drop falls a little slower than the last,
+     trails lengthen, slow drops drift in from above, and the whole layer eases
+     down (a sine ease, gentle at both ends) to --cb-rain-rest.
+     Paused whenever the hero is off-screen or the tab is hidden; a resize or a
+     rotation keeps what's falling. With reduced motion there's no rain at all. */
+  var cv = document.getElementById("rain");
+  var ctx = !reduced && cv.getContext && cv.getContext("2d");
+  if (!ctx) { cv.hidden = true; return; }
+  var css = getComputedStyle(document.documentElement);
+  var GOLD = css.getPropertyValue("--cb-gold").trim();
+  var PALE = css.getPropertyValue("--cb-gold-pale").trim();
+  var BLACK = css.getPropertyValue("--cb-black").trim();
+  var MONO = css.getPropertyValue("--cb-mono").trim();
+  var textBlock = hero.querySelector(".split > .cb-stack");
+  var CELL = 10, SETTLE = 2.0, EASE = 4.0, RETIRE = 3.2;   // seconds: settle start, its length, the spread of stream retirements
+  var W = 0, H = 0, COLS = 0, ROWS = 0, dpr = 1, bright, ch, drops = [], clearBox, zone;
+  var live = [], lit;   // the lit cells only, so a frame never scans the whole grid
+  var hole;             // the cells the dark fade covers completely: never drawn
+  var t = 0, last = null, raf = 0, visible = true, settled = false;
+  var level = 1, rest = 0.22, eased = 0;   // the layer's brightness: 1 in the intro, easing to rest
+
+  // Intro drops as the reference, sped up in proportion when the hero is taller
+  // than its 85-row screen; slow drops after the settle.
+  function drop(col, slow, y) {
+    var fast = (34 + Math.random() * 34) * Math.max(1, ROWS / 85), calm = 4 + Math.random() * 6;
+    return { col: col, slow: slow, prev: null, retire: SETTLE + Math.random() * RETIRE,
+      y: y !== undefined ? y : slow ? -Math.random() * ROWS : -Math.random() * ROWS * 0.9,
+      // an intro drop born during the settle falls slower the further the settle has gone
+      v: slow ? calm : fast + (calm * 2 - fast) * eased };
+  }
+  function addDrops(fromCol) {
+    for (var c = fromCol; c < COLS; c++) {
+      if (settled) { if (c % 3 === 0) drops.push(drop(c, true)); continue; }
+      var n = 1 + (Math.random() < 0.55 ? 1 : 0);
+      for (var d = 0; d < n; d++) drops.push(drop(c, false));
+    }
+  }
+  // Size the canvas to the hero (devicePixelRatio, capped at 3, and lower for a
+  // very large canvas), keeping what's already on it and what's falling.
+  function size() {
+    rest = parseFloat(getComputedStyle(cv).getPropertyValue("--cb-rain-rest")) || 0.22;   // differs by width
+    var r = cv.getBoundingClientRect();
+    var w = Math.max(1, Math.round(r.width)), h = Math.max(1, Math.round(r.height));
+    var d = Math.min(window.devicePixelRatio || 1, 3);
+    while (d > 1 && w * h * d * d > 8e6) d -= 0.5;
+    var b = textBlock.getBoundingClientRect();
+    var box = { x: b.left - r.left, y: b.top - r.top, w: b.width, h: b.height };
+    var moved = !clearBox || box.x !== clearBox.x || box.y !== clearBox.y || box.w !== clearBox.w || box.h !== clearBox.h;
+    clearBox = box;
+    if (moved || d !== dpr) makeZone(d);
+    hole = { c0: Math.ceil((box.x - PAD) / CELL), c1: Math.floor((box.x + box.w + PAD) / CELL) - 1,
+             r0: Math.ceil((box.y - PAD) / CELL) + 1, r1: Math.floor((box.y + box.h + PAD) / CELL) - 2 };
+    if (w === W && h === H && d === dpr) return;
+    var cols = Math.ceil(w / CELL), rows = Math.ceil(h / CELL);
+    var nb = new Float32Array(cols * rows), nc = new Uint8Array(cols * rows);
+    for (var i = 0; i < nc.length; i++) nc[i] = Math.random() < 0.5 ? 0 : 1;
+    if (bright) for (var y = 0; y < Math.min(rows, ROWS); y++) for (var x = 0; x < Math.min(cols, COLS); x++) {
+      nb[y * cols + x] = bright[y * COLS + x]; nc[y * cols + x] = ch[y * COLS + x];
+    }
+    var oldCols = COLS;
+    W = w; H = h; dpr = d; COLS = cols; ROWS = rows; bright = nb; ch = nc;
+    lit = new Uint8Array(cols * rows); live = [];
+    for (var q = 0; q < nb.length; q++) if (nb[q] > 0) { lit[q] = 1; live.push(q); }
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    drops = drops.filter(function (dr) { return dr.col < COLS; });
+    addDrops(oldCols);
+  }
+
+  // The soft dark fade over the text block, blurred once and reused every frame.
+  var PAD = 24, BLUR = 56, M = PAD + BLUR * 2;
+  function makeZone(d) {
+    var k = clearBox, z = document.createElement("canvas");
+    z.width = Math.ceil((k.w + M * 2) * d); z.height = Math.ceil((k.h + M * 2) * d);
+    var x = z.getContext("2d"); x.fillStyle = BLACK; x.shadowColor = BLACK; x.shadowBlur = BLUR * d;
+    x.fillRect((M - PAD) * d, (M - PAD) * d, (k.w + PAD * 2) * d, (k.h + PAD * 2) * d);
+    x.fillRect((M - PAD) * d, (M - PAD) * d, (k.w + PAD * 2) * d, (k.h + PAD * 2) * d);
+    zone = z;
+  }
+
+  function draw(dt) {
+    for (var d = 0; d < drops.length; d++) {
+      var dr = drops[d]; if (dr.dead) continue;
+      var from = Math.floor(dr.prev === null ? dr.y : dr.prev); dr.prev = dr.y;
+      dr.y += dr.v * dt; var to = Math.floor(dr.y);
+      for (var row = Math.max(0, from); row <= Math.min(ROWS - 1, to); row++) {
+        var idx = row * COLS + dr.col; bright[idx] = 1; ch[idx] = Math.random() < 0.5 ? 0 : 1;
+        if (!lit[idx]) { lit[idx] = 1; live.push(idx); }
+      }
+      if (dr.y > ROWS + 4) {
+        if (dr.slow || t < dr.retire) { var nd = drop(dr.col, dr.slow, -Math.random() * 12); dr.y = nd.y; dr.v = nd.v; dr.prev = null; }
+        else dr.dead = true;   // past its own retirement time, an intro stream finishes its fall and stops
+      }
+    }
+    if (settled) drops = drops.filter(function (dr) { return !dr.dead; });
+    // The settle's progress, eased (sine in-out): it drives the layer's brightness
+    // and lengthens the trails from the reference's e^(-3.4 t) to e^(-1.2 t).
+    var k = settled ? Math.min(1, (t - SETTLE) / EASE) : 0;
+    eased = (1 - Math.cos(Math.PI * k)) / 2;
+    level = 1 - (1 - rest) * eased;
+    var decay = Math.exp(-dt * (3.4 - 2.2 * eased));
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.globalAlpha = 1; ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.font = "500 11px " + MONO; ctx.textBaseline = "top";
+    var fill = "";
+    var keep = 0;
+    for (var n = 0; n < live.length; n++) {
+      var i = live[n], b = bright[i];
+      if (b < 0.05) { bright[i] = 0; lit[i] = 0; continue; }   // too faint to see: retired
+      live[keep++] = i; bright[i] = b * decay;
+      var col = i % COLS, row = (i - col) / COLS;
+      if (col >= hole.c0 && col <= hole.c1 && row >= hole.r0 && row <= hole.r1) continue;   // under the dark fade
+      var head = b > 0.93, f = head ? PALE : GOLD;
+      if (f !== fill) { ctx.fillStyle = fill = f; }
+      ctx.globalAlpha = (head ? b : b * 0.9) * level;
+      ctx.fillText(ch[i] ? "1" : "0", col * CELL + 2, row * CELL - 1);
+    }
+    live.length = keep;
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1;
+    ctx.drawImage(zone, Math.round((clearBox.x - M) * dpr), Math.round((clearBox.y - M) * dpr));
+  }
+
+  function tick(now) {
+    raf = 0;
+    if (!visible) { last = null; return; }
+    // Time only moves while it's drawn: a frame after a pause counts as one frame, never a burst.
+    var dt = last === null ? 1 / 60 : Math.min(0.05, (now - last) / 1000); last = now;
+    t += dt;
+    if (t >= 0.25) draw(dt);
+    if (!settled && t >= SETTLE) {
+      settled = true;
+      addDrops(0);   // the slow rain begins above the top; the intro streams keep falling until they retire
+    }
+    cv.dataset.frames = (+cv.dataset.frames || 0) + 1;   // a frame count, for checking that it pauses
+    cv.dataset.phase = !settled ? "intro" : eased < 1 ? "settling" : "rest";
+    raf = requestAnimationFrame(tick);
+  }
+  function resume() { if (!raf && visible) raf = requestAnimationFrame(tick); }
+
+  size();
+  // Resizes, rotations and late layout (fonts, images) re-size the canvas without restarting it.
+  var pending = false;
+  new ResizeObserver(function () { if (pending) return; pending = true; requestAnimationFrame(function () { pending = false; size(); }); }).observe(hero);
+  var onScreen = true;
+  function update() { visible = onScreen && !document.hidden; last = null; if (visible) resume(); }
+  new IntersectionObserver(function (e) { onScreen = e[0].isIntersecting; update(); }).observe(hero);
+  document.addEventListener("visibilitychange", update);
+  window.addEventListener("pageshow", function (e) { if (e.persisted) update(); });   // back/forward cache
+  resume();
+})();
+</script>
 </body></html>
