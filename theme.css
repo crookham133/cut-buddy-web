@@ -201,36 +201,34 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 
 /* ---- The launch rain (design/launch-animation in cut-buddy-ai) ----
-   A canvas behind the hero: gold 0s and 1s falling, drawn by the page's script
-   from --cb-gold, --cb-gold-pale, --cb-black and --cb-mono. After the intro it
-   keeps falling, slow: faint everywhere (.is-faint), or a little stronger with
-   the text block kept clear (.is-ambient). */
+   A transparent canvas behind the hero: gold 0s and 1s falling, drawn by the
+   page's script from --cb-gold, --cb-gold-pale, --cb-black and --cb-mono, with a
+   soft dark fade keeping the rain out from behind the text. After the intro the
+   layer eases down (ease-out, 1.8 s) to a slow background rain: a little more
+   visible on phones, where it shows only around the text. */
 .cb-rain {
-  position: absolute; top: 0; left: 50%; width: 100vw; height: 100%; transform: translateX(-50%); z-index: -1; pointer-events: none; transition: opacity 0.6s ease;
+  position: absolute; top: 0; left: 50%; width: 100vw; height: 100%; transform: translateX(-50%); z-index: -1; pointer-events: none;
+  transition: opacity 1.8s cubic-bezier(0.16, 1, 0.3, 1);
   /* soft top and bottom edges, so the rain has no hard line under the bar or above the next section */
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 82%, transparent);
   mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 82%, transparent);
 }
-.cb-rain.is-faint { opacity: 0.12; }
 .cb-rain.is-ambient { opacity: 0.22; }
-.cb-rain.is-done { opacity: 0; }
-/* The headline decoding as the rain falls, as "CUT BUDDY" does in the launch
-   animation. Every character is there from the start as a faint ghost, so the
-   words always read; each one flickers through a small 0 or 1 in its own
-   colour (white digits for white words, gold for the gold part, .is-gold)
-   and then resolves. The digit sits inside the character's own box. */
-.cb-decode { --cb-digit: var(--cb-white); }
-.cb-decode .is-gold { --cb-digit: var(--cb-gold); --cb-ghost: var(--cb-gold); }
-.cb-decode > span, .cb-decode span { position: relative; }
-.cb-decode > span.is-wait, .cb-decode > span.is-digit { color: transparent; }
-.cb-decode > span.is-wait::before, .cb-decode > span.is-digit::before { content: attr(data-c); position: absolute; left: 0; top: 0; color: var(--cb-ghost, var(--cb-white)); opacity: 0.16; }
-.cb-decode > span.is-digit::after {
-  content: attr(data-d); position: absolute; left: 50%; top: 50%; transform: translate(-50%, -45%);
-  font: 500 0.5em/1 var(--cb-mono); color: var(--cb-digit); text-shadow: 0 0 12px var(--cb-digit);
+@media (max-width: 768px) { .cb-rain.is-ambient { opacity: 0.32; } }
+
+/* ---- The wordmark decoding on first load, as "CUT BUDDY" does in the launch
+   animation: each letter shows a gold 0 or 1, then resolves to white. The real
+   letter stays in place, transparent, so every letter keeps its own width and
+   nothing moves; the digit is drawn over it, centred on the glyph (the letter's
+   box includes the tracking after it, hence the width). Until the script has
+   started, .cb-wm-wait on <html> keeps the letters from flashing first. ---- */
+.cb-wm-wait #wordmark { color: transparent; }
+.cb-wordmark > span { position: relative; }
+.cb-wordmark > span.is-digit { color: transparent; }
+.cb-wordmark > span.is-digit::after {
+  content: attr(data-d); position: absolute; left: 0; top: 0; width: calc(100% - 0.29em);
+  text-align: center; letter-spacing: 0; color: var(--cb-gold);
 }
-/* The rest of the hero's text waits for the rain to clear, then fades in. */
-.cb-hold { opacity: 0; }
-.cb-fade { transition: opacity 0.6s ease; }
 
 /* ---- Sticky top bar: black, with a line under it once the page has scrolled ---- */
 .cb-topbar { position: sticky; top: 0; z-index: 10; background: var(--cb-black); border-bottom: 1px solid transparent; transition: border-color 0.2s ease; }

@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex, nofollow"><meta name="description" content="Cut Buddy builds your meals and water around your training, and changes the plan when your week does. Coming soon to iPhone."><link rel="icon" href="assets/app-icon-1024.png"><meta property="og:type" content="website"><meta property="og:site_name" content="Cut Buddy"><meta property="og:url" content="https://cutbuddyapp.com/"><meta property="og:title" content="Cut Buddy · Know what to eat, and when."><meta property="og:description" content="Nutrition that adapts to your training, travel and life. Coming soon to iPhone."><meta property="og:image" content="https://cutbuddyapp.com/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="The Cut Buddy logo, a gold C around a smiling apple, on black, with the words Cut Buddy"><meta name="twitter:card" content="summary_large_image"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="stylesheet" href="theme.css"><title>Cut Buddy: know what to eat, and when</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="color-scheme" content="dark"><style>html{background:#000;color-scheme:dark}</style><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex, nofollow"><meta name="description" content="Cut Buddy builds your meals and water around your training, and changes the plan when your week does. Coming soon to iPhone."><link rel="icon" href="assets/app-icon-1024.png"><meta property="og:type" content="website"><meta property="og:site_name" content="Cut Buddy"><meta property="og:url" content="https://cutbuddyapp.com/"><meta property="og:title" content="Cut Buddy · Know what to eat, and when."><meta property="og:description" content="Nutrition that adapts to your training, travel and life. Coming soon to iPhone."><meta property="og:image" content="https://cutbuddyapp.com/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="The Cut Buddy logo, a gold C around a smiling apple, on black, with the words Cut Buddy"><meta name="twitter:card" content="summary_large_image"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="preload" href="assets/fonts/SpaceGrotesk-Variable.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="theme.css"><script>/* The wordmark decodes on load (script after the header); until then its letters stay hidden. A failsafe shows them after 2.5 s. */if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("cb-wm-wait");setTimeout(function(){document.documentElement.classList.remove("cb-wm-wait")},2500)}</script><title>Cut Buddy: know what to eat, and when</title>
 <style>
   /* Home-page layout only. Every value comes from theme.css. */
   .split { display: grid; gap: var(--cb-space-xl); align-items: center; }
@@ -18,6 +18,7 @@
   .h2 { font-size: calc(var(--cb-display-size) * 0.62); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
   .pair { display: grid; gap: var(--cb-space-xl); align-items: start; }
   @media (max-width: 768px) { .crop { width: min(100%, calc(var(--cb-page) * 0.4)); } }  /* phones: as the live site */
+  .crop.crop-radar { width: min(100%, calc(366px + 2 * var(--cb-space-md) + 2px)); }  /* 732 px wide: 366 at 2x */
   @media (min-width: 900px) {
     .split { grid-template-columns: 1fr 1fr; gap: calc(var(--cb-space-xl) * 2); }
     .split.flip > :first-child { order: 2; }
@@ -26,12 +27,46 @@
   }
 </style></head><body>
 <div class="cb-topbar" id="topbar"><header class="cb-wrap cb-header">
-  <a class="cb-brand" href="index.html"><img src="assets/logo-mark.png" alt="" width="390" height="427"><span class="cb-wordmark">Cut Buddy</span></a>
+  <a class="cb-brand" href="index.html" aria-label="Cut Buddy, home"><img src="assets/logo-mark.png" alt="" width="390" height="427"><span class="cb-wordmark" id="wordmark">Cut Buddy</span></a>
   <span class="cb-pill is-dim">Coming soon</span>
 </header></div>
+<script>
+/* "CUT BUDDY" resolves from 0s and 1s into its letters, once, in about 1.1 s:
+   each letter shows a gold digit, then turns white, left to right, as in the
+   app's launch animation. The letters stay in place (transparent) under the
+   digits, so nothing changes width. Time only runs while the tab is visible. */
+(function () {
+  var html = document.documentElement, wm = document.getElementById("wordmark");
+  if (!html.classList.contains("cb-wm-wait") || !wm) return;
+  var spans = [], text = wm.textContent;
+  wm.textContent = "";
+  text.split("").forEach(function (c) {
+    if (c === " ") { wm.appendChild(document.createTextNode(" ")); return; }
+    var s = document.createElement("span"); s.textContent = c; s.className = "is-digit";
+    s.setAttribute("data-d", Math.random() < 0.5 ? "0" : "1"); wm.appendChild(s); spans.push(s);
+  });
+  html.classList.remove("cb-wm-wait");
+  var START = 0.3, STEP = 0.11, FLIP = 0.07;   // seconds
+  var t = 0, last = null, flip = 0;
+  function frame(now) {
+    if (document.hidden) { last = null; requestAnimationFrame(frame); return; }
+    var dt = last === null ? 0 : Math.min(0.05, (now - last) / 1000); last = now;
+    t += dt; flip += dt;
+    var left = 0;
+    spans.forEach(function (s, i) {
+      if (t >= START + i * STEP) { if (s.className) s.className = ""; }
+      else { left++; if (flip >= FLIP) s.setAttribute("data-d", Math.random() < 0.5 ? "0" : "1"); }
+    });
+    if (flip >= FLIP) flip = 0;
+    if (left) requestAnimationFrame(frame);   // the spans stay: putting plain text back would re-kern it by a pixel
+  }
+  document.addEventListener("visibilitychange", function () { last = null; });
+  requestAnimationFrame(frame);
+})();
+</script>
 <main>
 
-<section class="cb-wrap cb-section hero" id="hero" aria-labelledby="hero-heading" data-rain="fade">
+<section class="cb-wrap cb-section hero" id="hero" aria-labelledby="hero-heading">
   <canvas class="cb-rain" id="rain" aria-hidden="true"></canvas>
   <div class="split">
     <div class="cb-stack">
@@ -46,19 +81,14 @@
 </section>
 
 <section class="cb-wrap cb-section" aria-labelledby="plan-heading">
-  <div class="split flip">
-    <div class="cb-stack">
-      <span><span class="cb-pill">For athletes</span></span>
-      <h2 class="h2" id="plan-heading">Planned around your training.</h2>
-      <div class="cb-card">
-        <p class="cb-label">Your day</p>
-        <p>Hard days get more fuel than rest days. Meals are timed around practice and lifts: a pre-fuel before, recovery after.</p>
-        <p class="cb-muted">A competition on the calendar counts the plan down to it. Water too, in the unit you use.</p>
-      </div>
+  <div class="cb-stack">
+    <span><span class="cb-pill">For athletes</span></span>
+    <h2 class="h2" id="plan-heading">Planned around your training.</h2>
+    <div class="cb-card">
+      <p class="cb-label">Your day</p>
+      <p>Hard days get more fuel than rest days. Meals are timed around practice and lifts: a pre-fuel before, recovery after.</p>
+      <p class="cb-muted">A competition on the calendar counts the plan down to it. Water too, in the unit you use.</p>
     </div>
-    <figure class="crop cb-card" data-slide="left">
-      <img src="assets/screens/plan-week.png" alt="The week on the Plan screen, with Wednesday marked a hard day: protein, carbs and fat left for the day." width="804" height="545" loading="lazy" decoding="async">
-    </figure>
   </div>
 </section>
 
@@ -90,8 +120,8 @@
         <p class="cb-muted">Daily weigh-ins bounce. Cut Buddy shows your 7-day average against your plan line, and tells you plainly where you stand: on the line, behind, or going too fast.</p>
       </div>
       <div class="cb-stack">
-        <figure class="shot" data-slide="right">
-          <div class="cb-phone"><img src="assets/screens/radar.png" alt="This week's score for a sample athlete: 74, a solid week, across protein, energy, weight, fueling, water and logging." width="804" height="1748" loading="lazy" decoding="async"></div>
+        <figure class="crop crop-radar cb-card" data-slide="right">
+          <img src="assets/screens/radar-card.png" alt="This week's score for a sample athlete: 74, a solid week, with a radar of the six areas: protein, energy, weight, fueling, water and logging." width="732" height="590" loading="lazy" decoding="async">
         </figure>
         <p class="cb-muted">Six areas you chose (protein, water, fueling around training, logging and more) scored each week, so you know what to work on.</p>
       </div>
@@ -155,10 +185,9 @@
   <p>© 2026 Cut Buddy</p>
 </footer>
 <script>
-/* The home page's motion: the sticky bar's line, the launch rain and the
-   headline decoding behind the hero, and (wide screens only) the screenshots
-   sliding in. No libraries, nothing loaded, nothing stored. Colours and the
-   digit font come from theme.css. */
+/* The home page's motion: the sticky bar's line, the launch rain behind the
+   hero, and (wide screens only) the screenshots sliding in. No libraries,
+   nothing loaded, nothing stored. Colours and the digit font come from theme.css. */
 (function () {
   "use strict";
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -199,14 +228,13 @@
 
   /* ---- The launch rain (cut-buddy-ai design/launch-animation, the reference) ----
      Gold 0s and 1s in 10 px columns, 1–2 drops a column at 34–68 rows a second,
-     trails fading by e^(-3.4 t), heads pale gold. It rains for about two seconds
-     while the headline decodes; then a slow rain keeps falling, in one of two ways
-     (data-rain on the hero; ?rain=fade or ?rain=clear to compare):
-       fade   the whole rain drops to a faint background, 12% (.is-faint);
-       clear  a soft dark fade keeps the rain out from behind the text block,
-              from the first frame, and the rain stays at 22% (.is-ambient).
-     Paused whenever the hero is off-screen or the tab is hidden. With reduced
-     motion there's no rain and the headline is simply there. */
+     trails fading by e^(-3.4 t), heads pale gold, on a transparent canvas. A soft
+     dark fade keeps it out from behind the text block from the first frame.
+     After ~2.3 s it settles, never cutting: no new intro drops, the ones falling
+     finish their fall, trails lengthen, slow drops start from above the top, and
+     the layer eases down to a background level (CSS, 1.8 s ease-out).
+     Paused whenever the hero is off-screen or the tab is hidden; a resize or a
+     rotation keeps what's falling. With reduced motion there's no rain at all. */
   var cv = document.getElementById("rain");
   var ctx = !reduced && cv.getContext && cv.getContext("2d");
   if (!ctx) { cv.hidden = true; return; }
@@ -215,144 +243,133 @@
   var PALE = css.getPropertyValue("--cb-gold-pale").trim();
   var BLACK = css.getPropertyValue("--cb-black").trim();
   var MONO = css.getPropertyValue("--cb-mono").trim();
-  var asked = new URLSearchParams(location.search).get("rain");
-  var mode = asked === "fade" || asked === "clear" ? asked : hero.getAttribute("data-rain");
   var textBlock = hero.querySelector(".split > .cb-stack");
-  var CELL = 10, W, H, COLS, ROWS, dpr, bright, ch, drops, clearBox;
-  var T = { start: 0.25, wordA: 0.9, textIn: 2.0, rainEnd: 2.4 };   // seconds; the reference's 0.25 start
-  var t0 = null, last = null, raf = 0, visible = true, phase = "intro";
+  var CELL = 10, SETTLE = 2.3, EASE = 1.8;   // seconds: when it settles, and how long the settle takes
+  var W = 0, H = 0, COLS = 0, ROWS = 0, dpr = 1, bright, ch, drops = [], clearBox, zone;
+  var live = [], lit;   // the lit cells only, so a frame never scans the whole grid
+  var hole;             // the cells the dark fade covers completely: never drawn
+  var t = 0, last = null, raf = 0, visible = true, settled = false;
 
-  function size() {
-    var r = cv.getBoundingClientRect();
-    W = Math.max(1, Math.round(r.width)); H = Math.max(1, Math.round(r.height));
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    cv.width = W * dpr; cv.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    COLS = Math.ceil(W / CELL); ROWS = Math.ceil(H / CELL);
-    bright = new Float32Array(COLS * ROWS); ch = new Uint8Array(COLS * ROWS);
-    for (var i = 0; i < ch.length; i++) ch[i] = Math.random() < 0.5 ? 0 : 1;
-    drops = [];
-    for (var c = 0; c < COLS; c++) {
-      if (phase === "ambient" && c % 3) continue;
-      var n = phase === "ambient" ? 1 : 1 + (Math.random() < 0.55 ? 1 : 0);
-      for (var d = 0; d < n; d++) drops.push(drop(c, true));
-    }
-    var b = textBlock.getBoundingClientRect();
-    clearBox = { x: b.left - r.left, y: b.top - r.top, w: b.width, h: b.height };
-  }
   // Intro drops as the reference, sped up in proportion when the hero is taller
-  // than its 85-row screen so the rain still fills it in time; later ones fewer and slower.
-  function drop(col, initial) {
-    var slow = phase === "ambient";
-    return { col: col, prev: null,
-      y: initial ? -Math.random() * ROWS * 0.9 : -Math.random() * (slow ? ROWS : 12),
+  // than its 85-row screen; slow drops after the settle.
+  function drop(col, slow, y) {
+    return { col: col, slow: slow, prev: null,
+      y: y !== undefined ? y : slow ? -Math.random() * ROWS : -Math.random() * ROWS * 0.9,
       v: slow ? 4 + Math.random() * 6 : (34 + Math.random() * 34) * Math.max(1, ROWS / 85) };
   }
+  function addDrops(fromCol) {
+    for (var c = fromCol; c < COLS; c++) {
+      if (settled) { if (c % 3 === 0) drops.push(drop(c, true)); continue; }
+      var n = 1 + (Math.random() < 0.55 ? 1 : 0);
+      for (var d = 0; d < n; d++) drops.push(drop(c, false));
+    }
+  }
+  // Size the canvas to the hero (devicePixelRatio, capped at 3, and lower for a
+  // very large canvas), keeping what's already on it and what's falling.
+  function size() {
+    var r = cv.getBoundingClientRect();
+    var w = Math.max(1, Math.round(r.width)), h = Math.max(1, Math.round(r.height));
+    var d = Math.min(window.devicePixelRatio || 1, 3);
+    while (d > 1 && w * h * d * d > 8e6) d -= 0.5;
+    var b = textBlock.getBoundingClientRect();
+    var box = { x: b.left - r.left, y: b.top - r.top, w: b.width, h: b.height };
+    var moved = !clearBox || box.x !== clearBox.x || box.y !== clearBox.y || box.w !== clearBox.w || box.h !== clearBox.h;
+    clearBox = box;
+    if (moved || d !== dpr) makeZone(d);
+    hole = { c0: Math.ceil((box.x - PAD) / CELL), c1: Math.floor((box.x + box.w + PAD) / CELL) - 1,
+             r0: Math.ceil((box.y - PAD) / CELL) + 1, r1: Math.floor((box.y + box.h + PAD) / CELL) - 2 };
+    if (w === W && h === H && d === dpr) return;
+    var cols = Math.ceil(w / CELL), rows = Math.ceil(h / CELL);
+    var nb = new Float32Array(cols * rows), nc = new Uint8Array(cols * rows);
+    for (var i = 0; i < nc.length; i++) nc[i] = Math.random() < 0.5 ? 0 : 1;
+    if (bright) for (var y = 0; y < Math.min(rows, ROWS); y++) for (var x = 0; x < Math.min(cols, COLS); x++) {
+      nb[y * cols + x] = bright[y * COLS + x]; nc[y * cols + x] = ch[y * COLS + x];
+    }
+    var oldCols = COLS;
+    W = w; H = h; dpr = d; COLS = cols; ROWS = rows; bright = nb; ch = nc;
+    lit = new Uint8Array(cols * rows); live = [];
+    for (var q = 0; q < nb.length; q++) if (nb[q] > 0) { lit[q] = 1; live.push(q); }
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    drops = drops.filter(function (dr) { return dr.col < COLS; });
+    addDrops(oldCols);
+  }
 
-  function draw(dt, rainOn) {
+  // The soft dark fade over the text block, blurred once and reused every frame.
+  var PAD = 24, BLUR = 56, M = PAD + BLUR * 2;
+  function makeZone(d) {
+    var k = clearBox, z = document.createElement("canvas");
+    z.width = Math.ceil((k.w + M * 2) * d); z.height = Math.ceil((k.h + M * 2) * d);
+    var x = z.getContext("2d"); x.fillStyle = BLACK; x.shadowColor = BLACK; x.shadowBlur = BLUR * d;
+    x.fillRect((M - PAD) * d, (M - PAD) * d, (k.w + PAD * 2) * d, (k.h + PAD * 2) * d);
+    x.fillRect((M - PAD) * d, (M - PAD) * d, (k.w + PAD * 2) * d, (k.h + PAD * 2) * d);
+    zone = z;
+  }
+
+  function draw(dt) {
     for (var d = 0; d < drops.length; d++) {
       var dr = drops[d]; if (dr.dead) continue;
       var from = Math.floor(dr.prev === null ? dr.y : dr.prev); dr.prev = dr.y;
       dr.y += dr.v * dt; var to = Math.floor(dr.y);
-      for (var row = from; row <= to; row++) {
-        if (row < 0 || row >= ROWS) continue;
+      for (var row = Math.max(0, from); row <= Math.min(ROWS - 1, to); row++) {
         var idx = row * COLS + dr.col; bright[idx] = 1; ch[idx] = Math.random() < 0.5 ? 0 : 1;
+        if (!lit[idx]) { lit[idx] = 1; live.push(idx); }
       }
       if (dr.y > ROWS + 4) {
-        if (rainOn) { var nd = drop(dr.col, false); dr.y = nd.y; dr.v = nd.v; dr.prev = null; } else dr.dead = true;
+        if (dr.slow || !settled) { var nd = drop(dr.col, dr.slow, dr.slow ? -Math.random() * 12 : -Math.random() * 12); dr.y = nd.y; dr.v = nd.v; dr.prev = null; }
+        else dr.dead = true;   // after the settle, an intro stream finishes its fall and stops
       }
     }
-    var decay = Math.exp(-dt * (phase === "ambient" ? 1.2 : 3.4));
-    ctx.globalAlpha = 1; ctx.fillStyle = BLACK; ctx.fillRect(0, 0, W, H);
+    if (settled) drops = drops.filter(function (dr) { return !dr.dead; });
+    // Trails: the reference's e^(-3.4 t), lengthening to e^(-1.2 t) over the settle.
+    var k = settled ? Math.min(1, (t - SETTLE) / EASE) : 0;
+    var decay = Math.exp(-dt * (3.4 - 2.2 * (1 - Math.pow(1 - k, 3))));
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.globalAlpha = 1; ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.font = "500 11px " + MONO; ctx.textBaseline = "top";
-    for (var i = 0; i < bright.length; i++) {
-      var b = bright[i]; if (b < 0.04) continue; bright[i] *= decay;
-      ctx.fillStyle = b > 0.93 ? PALE : GOLD; ctx.globalAlpha = b > 0.93 ? b : b * 0.9;
-      ctx.fillText(ch[i] ? "1" : "0", (i % COLS) * CELL + 2, Math.floor(i / COLS) * CELL - 1);
+    var fill = "";
+    var keep = 0;
+    for (var n = 0; n < live.length; n++) {
+      var i = live[n], b = bright[i];
+      if (b < 0.05) { bright[i] = 0; lit[i] = 0; continue; }   // too faint to see: retired
+      live[keep++] = i; bright[i] = b * decay;
+      var col = i % COLS, row = (i - col) / COLS;
+      if (col >= hole.c0 && col <= hole.c1 && row >= hole.r0 && row <= hole.r1) continue;   // under the dark fade
+      var head = b > 0.93, f = head ? PALE : GOLD;
+      if (f !== fill) { ctx.fillStyle = fill = f; }
+      ctx.globalAlpha = head ? b : b * 0.9;
+      ctx.fillText(ch[i] ? "1" : "0", col * CELL + 2, row * CELL - 1);
     }
-    if (mode === "clear") {
-      // A soft dark fade over the text block: black, its edges blurred well past the text.
-      var pad = 24, k = clearBox;
-      ctx.globalAlpha = 1; ctx.fillStyle = BLACK; ctx.shadowColor = BLACK; ctx.shadowBlur = 56 * dpr;
-      ctx.fillRect(k.x - pad, k.y - pad, k.w + pad * 2, k.h + pad * 2);
-      ctx.fillRect(k.x - pad, k.y - pad, k.w + pad * 2, k.h + pad * 2);
-      ctx.shadowBlur = 0;
-    }
-  }
-
-  /* The headline decodes character by character: each one flickers through a
-     0 or 1 and then resolves. "Know what to eat" uses white digits; ", and when."
-     uses gold ones and resolves last. Screen readers get the whole headline from
-     aria-label meanwhile. */
-  var h1 = document.getElementById("hero-heading");
-  var plain = h1.innerHTML, letters = [];
-  // On wide screens the lede waits for the rain to clear (fade mode only); on phones nothing fades in.
-  var held = mode === "fade" && wide.matches ? Array.prototype.slice.call(hero.querySelectorAll(".lede, .cb-stack > .cb-muted")) : [];
-  function prepareDecode() {
-    h1.setAttribute("aria-label", h1.textContent);
-    var gold = false;
-    (function wrap(node) {
-      Array.prototype.slice.call(node.childNodes).forEach(function (n) {
-        if (n.nodeType === 3) {
-          var frag = document.createDocumentFragment();
-          n.textContent.split("").forEach(function (c) {
-            if (c === " ") { frag.appendChild(document.createTextNode(" ")); return; }
-            if (c === ",") gold = true;   // ", and when." is the gold group, comma included
-            var s = document.createElement("span"); s.textContent = c; s.setAttribute("data-c", c); s.setAttribute("aria-hidden", "true");
-            s._base = gold ? "is-gold " : ""; s.className = s._base + "is-wait";
-            frag.appendChild(s); letters.push(s);
-          });
-          node.replaceChild(frag, n);
-        } else if (n.nodeType === 1) { n.classList.add("cb-decode"); wrap(n); }
-      });
-    })(h1);
-    h1.classList.add("cb-decode");
-    // Start times: the white words left to right, then a short beat, then the gold group.
-    var t = T.wordA;
-    letters.forEach(function (s, i) {
-      if (s._base && (i === 0 || !letters[i - 1]._base)) t += 0.12;
-      s._at = t; t += s._base ? 0.06 : 0.035;
-    });
-    held.forEach(function (el) { el.classList.add("cb-fade", "cb-hold"); });
-  }
-  function decode(t) {
-    var done = true;
-    for (var i = 0; i < letters.length; i++) {
-      var s = letters[i];
-      if (t < s._at) { done = false; continue; }
-      if (t < s._at + 0.2) { done = false; s.className = s._base + "is-digit"; s.setAttribute("data-d", Math.random() < 0.5 ? "0" : "1"); }
-      else s.className = s._base;
-    }
-    if (done) { h1.innerHTML = plain; h1.classList.remove("cb-decode"); h1.removeAttribute("aria-label"); letters = []; }
-    return done;
+    live.length = keep;
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1;
+    ctx.drawImage(zone, Math.round((clearBox.x - M) * dpr), Math.round((clearBox.y - M) * dpr));
   }
 
   function tick(now) {
     raf = 0;
     if (!visible) { last = null; return; }
-    if (t0 === null) t0 = now;
-    if (last === null) last = now;
-    var dt = Math.min(0.05, (now - last) / 1000); last = now;
-    var t = (now - t0) / 1000;
-    if (phase === "intro") {
-      if (letters.length) decode(t);
-      if (t >= T.textIn && held.length) { held.forEach(function (el) { el.classList.remove("cb-hold"); }); held = []; }
-      if (t >= T.start) draw(dt, t < T.rainEnd - 0.35);
-      if (t >= T.rainEnd && !letters.length) {
-        // The headline has resolved: on to the slow rain.
-        phase = "ambient"; cv.classList.add(mode === "clear" ? "is-ambient" : "is-faint");
-        drops = drops.filter(function (d, i) { return i % 3 === 0; }).map(function (d) { var n = drop(d.col, true); n.y = d.y; return n; });
-      }
-    } else draw(dt, true);
+    // Time only moves while it's drawn: a frame after a pause counts as one frame, never a burst.
+    var dt = last === null ? 1 / 60 : Math.min(0.05, (now - last) / 1000); last = now;
+    t += dt;
+    if (t >= 0.25) draw(dt);
+    if (!settled && t >= SETTLE) {
+      settled = true; cv.classList.add("is-ambient");
+      addDrops(0);   // the slow rain begins above the top; the intro streams keep falling
+    }
     cv.dataset.frames = (+cv.dataset.frames || 0) + 1;   // a frame count, for checking that it pauses
     raf = requestAnimationFrame(tick);
   }
   function resume() { if (!raf && visible) raf = requestAnimationFrame(tick); }
 
-  size(); prepareDecode();
-  window.addEventListener("resize", function () { if (phase === "ambient") size(); });
-  new IntersectionObserver(function (e) { visible = e[0].isIntersecting && !document.hidden; if (visible) resume(); }).observe(hero);
-  document.addEventListener("visibilitychange", function () { visible = !document.hidden; if (visible) resume(); });
+  size();
+  // Resizes, rotations and late layout (fonts, images) re-size the canvas without restarting it.
+  var pending = false;
+  new ResizeObserver(function () { if (pending) return; pending = true; requestAnimationFrame(function () { pending = false; size(); }); }).observe(hero);
+  var onScreen = true;
+  function update() { visible = onScreen && !document.hidden; last = null; if (visible) resume(); }
+  new IntersectionObserver(function (e) { onScreen = e[0].isIntersecting; update(); }).observe(hero);
+  document.addEventListener("visibilitychange", update);
+  window.addEventListener("pageshow", function (e) { if (e.persisted) update(); });   // back/forward cache
   resume();
 })();
 </script>
