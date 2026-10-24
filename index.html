@@ -4,15 +4,20 @@
   .split { display: grid; gap: var(--cb-space-xl); align-items: center; }
   .shot { margin: 0; display: grid; justify-items: center; }
   .shot .cb-phone { justify-self: center; }
-  .crop { margin: 0; width: min(100%, calc(var(--cb-page) * 0.4)); justify-self: center; }
+  /* 804 px crops: the image at most 402 px wide (2x), 268 px on phones (3x), so it's
+     never upscaled. The card's padding and border go on top. */
+  .crop { margin: 0; width: min(100%, calc(402px + 2 * var(--cb-space-md) + 2px)); justify-self: center; }
   .crop img { display: block; width: 100%; height: auto; border-radius: var(--cb-radius-sm); }
   .chart { margin: 0; }
   .chart img { display: block; width: 100%; height: auto; }
-  .hero { padding-top: var(--cb-space-sm); }
+  html { scroll-padding-top: calc(var(--cb-tap) + var(--cb-space-xl)); }  /* keeps focused things clear of the sticky bar */
+  main { overflow-x: clip; }  /* the slides start off-screen; clip, not hidden, so nothing else changes */
+  .hero { padding-top: var(--cb-space-sm); position: relative; isolation: isolate; }
   .hero .cb-display .hl { color: var(--cb-gold); }
   .lede { font-size: var(--cb-body-size); color: var(--cb-muted); max-width: 34em; margin: 0; }
   .h2 { font-size: calc(var(--cb-display-size) * 0.62); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
   .pair { display: grid; gap: var(--cb-space-xl); align-items: start; }
+  @media (max-width: 768px) { .crop { width: min(100%, calc(268px + 2 * var(--cb-space-md) + 2px)); } }
   @media (min-width: 900px) {
     .split { grid-template-columns: 1fr 1fr; gap: calc(var(--cb-space-xl) * 2); }
     .split.flip > :first-child { order: 2; }
@@ -20,22 +25,22 @@
     .cb-section { padding-block: calc(var(--cb-space-xl) * 2); }
   }
 </style></head><body>
-<header class="cb-wrap cb-header">
+<div class="cb-topbar" id="topbar"><header class="cb-wrap cb-header">
   <a class="cb-brand" href="index.html"><img src="assets/logo-mark.png" alt="" width="390" height="427"><span class="cb-wordmark">Cut Buddy</span></a>
   <span class="cb-pill is-dim">Coming soon</span>
-</header>
+</header></div>
 <main>
 
-<section class="cb-wrap cb-section hero" aria-labelledby="hero-heading">
+<section class="cb-wrap cb-section hero" id="hero" aria-labelledby="hero-heading" data-rain="ambient">
+  <canvas class="cb-rain" id="rain" aria-hidden="true"></canvas>
   <div class="split">
     <div class="cb-stack">
       <h1 class="cb-display" id="hero-heading">Know what to eat, <span class="hl">and when.</span></h1>
       <p class="lede">Cut Buddy builds your meals and water around your training, and changes the plan when your week does. Every number comes from a tested engine, with safety built in.</p>
       <p class="cb-muted">Coming soon to iPhone. Questions: <a class="cb-link" href="mailto:cutbuddyapp@gmail.com">cutbuddyapp@gmail.com</a></p>
     </div>
-    <figure class="shot">
+    <figure class="shot" data-slide="exit">
       <div class="cb-phone"><img src="assets/screens/plan.png" alt="The Plan screen for a sample athlete: protein, carbs and fat left for a hard day, 1,473 calories left, breakfast logged, and 54 of 108 ounces of water." width="804" height="1748"></div>
-      <figcaption class="cb-sample">Sample data</figcaption>
     </figure>
   </div>
 </section>
@@ -51,9 +56,8 @@
         <p class="cb-muted">A competition on the calendar counts the plan down to it. Water too, in the unit you use.</p>
       </div>
     </div>
-    <figure class="crop cb-card">
-      <img src="assets/screens/plan-week.png" alt="The week on the Plan screen, with Wednesday marked a hard day: protein, carbs and fat left for the day." width="804" height="545" loading="lazy">
-      <figcaption class="cb-sample">Sample data</figcaption>
+    <figure class="crop cb-card" data-slide="left">
+      <img src="assets/screens/plan-week.png" alt="The week on the Plan screen, with Wednesday marked a hard day: protein, carbs and fat left for the day." width="804" height="545" loading="lazy" decoding="async">
     </figure>
   </div>
 </section>
@@ -68,9 +72,8 @@
         <p class="cb-muted">Nothing goes in your day until you confirm.</p>
       </div>
     </div>
-    <figure class="crop cb-card">
-      <img src="assets/screens/chat-confirm.png" alt="Buddy chat: someone typed &quot;Drank 20 oz&quot;, and Buddy answers &quot;Here's what I heard, check it and I'll log it&quot; with a Log this? card for 20 ounces of water, a Log it button, Edit and Not that." width="804" height="600" loading="lazy">
-      <figcaption class="cb-sample">Sample data</figcaption>
+    <figure class="crop cb-card" data-slide="right">
+      <img src="assets/screens/chat-confirm.png" alt="Buddy chat: someone typed &quot;Drank 20 oz&quot;, and Buddy answers &quot;Here's what I heard, check it and I'll log it&quot; with a Log this? card for 20 ounces of water, a Log it button, Edit and Not that." width="804" height="600" loading="lazy" decoding="async">
     </figure>
   </div>
 </section>
@@ -80,17 +83,15 @@
     <h2 class="h2" id="trend-heading">See the trend, not the noise.</h2>
     <div class="pair">
       <div class="cb-stack">
-        <figure class="cb-card chart">
+        <figure class="cb-card chart" data-slide="left">
           <p class="cb-label">Weight against plan</p>
-          <img src="assets/screens/weight-chart.png" alt="A sample weight chart: daily weigh-ins as gray dots, the 7-day average as a gold line following the dashed plan line down to today." width="1106" height="752" loading="lazy">
-          <figcaption class="cb-sample">Sample data</figcaption>
+          <img src="assets/screens/weight-chart.png" alt="A sample weight chart: daily weigh-ins as gray dots, the 7-day average as a gold line following the dashed plan line down to today." width="1106" height="752" loading="lazy" decoding="async">
         </figure>
         <p class="cb-muted">Daily weigh-ins bounce. Cut Buddy shows your 7-day average against your plan line, and tells you plainly where you stand: on the line, behind, or going too fast.</p>
       </div>
       <div class="cb-stack">
-        <figure class="shot">
-          <div class="cb-phone"><img src="assets/screens/radar.png" alt="This week's score for a sample athlete: 74, a solid week, across protein, energy, weight, fueling, water and logging." width="804" height="1748" loading="lazy"></div>
-          <figcaption class="cb-sample">Sample data</figcaption>
+        <figure class="shot" data-slide="right">
+          <div class="cb-phone"><img src="assets/screens/radar.png" alt="This week's score for a sample athlete: 74, a solid week, across protein, energy, weight, fueling, water and logging." width="804" height="1748" loading="lazy" decoding="async"></div>
         </figure>
         <p class="cb-muted">Six areas you chose (protein, water, fueling around training, logging and more) scored each week, so you know what to work on.</p>
       </div>
@@ -126,9 +127,8 @@
         <p class="cb-muted">Athletes choose what you see, parents approve for under-18s, and every look is shown to the athlete.</p>
       </div>
     </div>
-    <figure class="shot">
-      <div class="cb-phone"><img src="assets/screens/coach-roster.png" alt="A sample coach's team screen: a heads-up that one athlete is losing faster than the safe rate, then the team grouped as too fast, behind and on track." width="804" height="1748" loading="lazy"></div>
-      <figcaption class="cb-sample">Sample data</figcaption>
+    <figure class="shot" data-slide="left">
+      <div class="cb-phone"><img src="assets/screens/coach-roster.png" alt="A sample coach's team screen: a heads-up that one athlete is losing faster than the safe rate, then the team grouped as too fast, behind and on track." width="804" height="1748" loading="lazy" decoding="async"></div>
     </figure>
   </div>
 </section>
@@ -154,4 +154,190 @@
 <!-- helplines:end -->
   <p>© 2026 Cut Buddy</p>
 </footer>
+<script>
+/* The home page's motion: the sticky bar's line, the screenshots sliding in,
+   and the launch rain behind the hero. No libraries, nothing loaded, nothing
+   stored. Colours and the digit font come from theme.css. */
+(function () {
+  "use strict";
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var narrow = window.matchMedia("(max-width: 768px)");
+
+  /* ---- Sticky bar: a line under it once the page has scrolled ---- */
+  var bar = document.getElementById("topbar");
+  function onScrollBar() { bar.classList.toggle("is-scrolled", window.scrollY > 4); }
+
+  /* ---- Screenshots: in from their side as they come into view, out as they leave ---- */
+  var hero = document.getElementById("hero");
+  var heroShot = hero.querySelector('[data-slide="exit"]');
+  if (!reduced && "IntersectionObserver" in window) {
+    document.documentElement.classList.add("cb-motion");
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { e.target.classList.toggle("is-in", e.isIntersecting); });
+    }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+    document.querySelectorAll('[data-slide="left"], [data-slide="right"]').forEach(function (el) { io.observe(el); });
+  }
+  // The hero phone follows the scroll: off to the right as the hero leaves (up and out on phones).
+  function onScrollHero() {
+    if (reduced) return;
+    var p = Math.min(1, Math.max(0, window.scrollY / Math.max(1, hero.offsetHeight * 0.85)));
+    heroShot.style.transform = p === 0 ? "" : narrow.matches
+      ? "translate3d(0," + (-48 * p).toFixed(1) + "px,0)"
+      : "translate3d(" + (40 * p).toFixed(2) + "vw,0,0)";
+    heroShot.style.opacity = p === 0 ? "" : (1 - p).toFixed(3);
+  }
+
+  var ticking = false;
+  window.addEventListener("scroll", function () {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(function () { ticking = false; onScrollBar(); onScrollHero(); });
+  }, { passive: true });
+  onScrollBar(); onScrollHero();
+
+  /* ---- The launch rain (cut-buddy-ai design/launch-animation, the reference) ----
+     Gold 0s and 1s in 10 px columns, 1–2 drops a column at 34–68 rows a second,
+     trails fading by e^(-3.4 t), heads pale gold. The intro rains for about two
+     seconds while the headline decodes, then the rain either keeps falling, slow
+     and faint, behind the hero (data-rain="ambient") or fades out ("intro").
+     ?rain=intro or ?rain=ambient overrides it, to compare the two. */
+  var cv = document.getElementById("rain");
+  var ctx = cv.getContext && cv.getContext("2d");
+  if (!ctx) return;
+  var css = getComputedStyle(document.documentElement);
+  var GOLD = css.getPropertyValue("--cb-gold").trim();
+  var PALE = css.getPropertyValue("--cb-gold-pale").trim();
+  var BLACK = css.getPropertyValue("--cb-black").trim();
+  var MONO = css.getPropertyValue("--cb-mono").trim();
+  var asked = new URLSearchParams(location.search).get("rain");
+  var mode = asked === "intro" || asked === "ambient" ? asked : hero.getAttribute("data-rain");
+  var CELL = 10, W, H, COLS, ROWS, dpr, bright, ch, drops;
+  var T = { start: 0.25, wordA: 1.25, rainEnd: 2.3 };   // seconds; the reference's 0.25 start and 2.3 end
+  var t0 = null, last = null, raf = 0, visible = true, phase = "intro";
+
+  function size() {
+    var r = cv.getBoundingClientRect();
+    W = Math.max(1, Math.round(r.width)); H = Math.max(1, Math.round(r.height));
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    COLS = Math.ceil(W / CELL); ROWS = Math.ceil(H / CELL);
+    bright = new Float32Array(COLS * ROWS); ch = new Uint8Array(COLS * ROWS);
+    for (var i = 0; i < ch.length; i++) ch[i] = Math.random() < 0.5 ? 0 : 1;
+    drops = [];
+    for (var c = 0; c < COLS; c++) {
+      if (phase === "ambient" && c % 3) continue;
+      var n = phase === "ambient" ? 1 : 1 + (Math.random() < 0.55 ? 1 : 0);
+      for (var d = 0; d < n; d++) drops.push(drop(c, true));
+    }
+  }
+  // Intro drops as the reference; ambient ones fewer and slower.
+  function drop(col, initial) {
+    var slow = phase === "ambient";
+    return { col: col, prev: null,
+      y: initial ? -Math.random() * ROWS * 0.9 : -Math.random() * (slow ? ROWS : 12),
+      v: slow ? 4 + Math.random() * 6 : 34 + Math.random() * 34 };
+  }
+
+  function draw(dt, rainOn) {
+    for (var d = 0; d < drops.length; d++) {
+      var dr = drops[d]; if (dr.dead) continue;
+      var from = Math.floor(dr.prev === null ? dr.y : dr.prev); dr.prev = dr.y;
+      dr.y += dr.v * dt; var to = Math.floor(dr.y);
+      for (var row = from; row <= to; row++) {
+        if (row < 0 || row >= ROWS) continue;
+        var idx = row * COLS + dr.col; bright[idx] = 1; ch[idx] = Math.random() < 0.5 ? 0 : 1;
+      }
+      if (dr.y > ROWS + 4) {
+        if (rainOn) { var nd = drop(dr.col, false); dr.y = nd.y; dr.v = nd.v; dr.prev = null; } else dr.dead = true;
+      }
+    }
+    var decay = Math.exp(-dt * (phase === "ambient" ? 1.2 : 3.4));
+    ctx.globalAlpha = 1; ctx.fillStyle = BLACK; ctx.fillRect(0, 0, W, H);
+    ctx.font = "500 11px " + MONO; ctx.textBaseline = "top";
+    for (var i = 0; i < bright.length; i++) {
+      var b = bright[i]; if (b < 0.04) continue; bright[i] *= decay;
+      ctx.fillStyle = b > 0.93 ? PALE : GOLD; ctx.globalAlpha = b > 0.93 ? b : b * 0.9;
+      ctx.fillText(ch[i] ? "1" : "0", (i % COLS) * CELL + 2, Math.floor(i / COLS) * CELL - 1);
+    }
+  }
+
+  // A still frame for reduced motion: rain caught mid-fall, as faint as the ambient rain.
+  function still() {
+    phase = "ambient"; size();
+    for (var c = 0; c < COLS; c++) {
+      if (Math.random() < 0.45) continue;
+      var head = Math.floor(Math.random() * ROWS), len = 4 + Math.floor(Math.random() * 14);
+      for (var k = 0; k < len; k++) { var row = head - k; if (row >= 0) bright[row * COLS + c] = Math.exp(-k * 0.28); }
+    }
+    draw(0, false);
+    cv.classList.add("is-ambient");
+  }
+
+  /* The headline decodes letter by letter: a gold 0 or 1, then the letter.
+     Screen readers get the whole headline from aria-label meanwhile. */
+  var h1 = document.getElementById("hero-heading");
+  var plain = h1.innerHTML, letters = [];
+  function prepareDecode() {
+    h1.setAttribute("aria-label", h1.textContent);
+    (function wrap(node) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+        if (n.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          n.textContent.split("").forEach(function (c) {
+            if (c === " ") { frag.appendChild(document.createTextNode(" ")); return; }
+            var s = document.createElement("span"); s.textContent = c; s.className = "is-wait"; s.setAttribute("aria-hidden", "true");
+            frag.appendChild(s); letters.push(s);
+          });
+          node.replaceChild(frag, n);
+        } else if (n.nodeType === 1) { n.classList.add("cb-decode"); wrap(n); }
+      });
+    })(h1);
+    h1.classList.add("cb-decode");
+  }
+  function decode(t) {
+    var done = true;
+    for (var i = 0; i < letters.length; i++) {
+      var at = T.wordA + i * 0.035, s = letters[i];
+      if (t < at) { done = false; continue; }
+      if (t < at + 0.18) { done = false; s.className = "is-digit"; s.setAttribute("data-d", Math.random() < 0.5 ? "0" : "1"); }
+      else s.className = "";
+    }
+    if (done) { h1.innerHTML = plain; h1.classList.remove("cb-decode"); h1.removeAttribute("aria-label"); letters = []; }
+    return done;
+  }
+
+  function tick(now) {
+    raf = 0;
+    if (!visible) { last = null; return; }
+    if (t0 === null) t0 = now;
+    if (last === null) last = now;
+    var dt = Math.min(0.05, (now - last) / 1000); last = now;
+    var t = (now - t0) / 1000;
+    if (phase === "intro") {
+      if (letters.length) decode(t);
+      if (t >= T.start) draw(dt, t < T.rainEnd - 0.35);
+      if (t >= T.rainEnd) {
+        if (letters.length) decode(99);
+        if (mode === "ambient") {
+          phase = "ambient"; cv.classList.add("is-ambient");
+          // Thin to about one slow drop in three columns.
+          drops = drops.filter(function (d, i) { return i % 3 === 0; }).map(function (d) { var n = drop(d.col, true); n.y = d.y; return n; });
+        } else { phase = "done"; cv.classList.add("is-done"); return; }
+      }
+    } else if (phase === "ambient") {
+      draw(dt, true);
+    } else return;
+    raf = requestAnimationFrame(tick);
+  }
+  function resume() { if (!raf && phase !== "done" && visible) raf = requestAnimationFrame(tick); }
+
+  if (reduced) { still(); window.addEventListener("resize", still); return; }
+  size(); prepareDecode();
+  window.addEventListener("resize", function () { if (phase === "ambient") size(); });
+  // Paused whenever the hero is off-screen or the tab is hidden.
+  new IntersectionObserver(function (e) { visible = e[0].isIntersecting && !document.hidden; if (visible) resume(); }).observe(hero);
+  document.addEventListener("visibilitychange", function () { visible = !document.hidden; if (visible) resume(); });
+  resume();
+})();
+</script>
 </body></html>

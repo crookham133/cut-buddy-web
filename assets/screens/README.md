@@ -14,8 +14,8 @@ them in `.cb-phone` (theme.css).
 | `coach-roster.png` | Coach's team: Too fast, Behind, On track | Coach Dana Whitfield (fictional) | Section 6 |
 | `buddy.png` | Buddy: the greeting, pre-fuel countdown, the day strip and water. No warnings showing | Owen Fischer (fictional) | Section 2 |
 
-Show each in `.cb-phone` with a "Sample data" caption (`.cb-sample`) under
-it. **No weight figures anywhere on the site** (Ryan, 21 Oct): no weights, axis values or targets in any image or text.
+Show each in `.cb-phone`, with no caption: "Sample data" captions were
+dropped on 24 Oct (Ryan). **No weight figures anywhere on the site** (Ryan, 21 Oct): no weights, axis values or targets in any image or text.
 
 Never replace these with a real account's screens. New ones come from
 Ryan, taken the same way.
