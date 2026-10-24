@@ -5,8 +5,8 @@ What to build, in what order, and why. Styles come only from `theme.css`
 from fictional demo accounts with plain names and fake data, never a real
 account.
 
-Screenshots carry no "Sample data" caption (Ryan, 24 Oct). They still come
-only from the demo accounts, with fictional names.
+**Every phone mockup gets a small "Sample data" caption**, under or beside
+it: `<span class="cb-sample">Sample data</span>` (theme.css).
 
 ## Positioning (decided 22 Oct)
 
