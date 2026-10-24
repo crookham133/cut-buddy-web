@@ -4,20 +4,20 @@
   .split { display: grid; gap: var(--cb-space-xl); align-items: center; }
   .shot { margin: 0; display: grid; justify-items: center; }
   .shot .cb-phone { justify-self: center; }
-  /* 804 px crops: the image at most 402 px wide (2x), 268 px on phones (3x), so it's
-     never upscaled. The card's padding and border go on top. */
+  /* 804 px crops on wide screens: the image at most 402 px wide (2x), so it's never
+     upscaled; the card's padding and border go on top. */
   .crop { margin: 0; width: min(100%, calc(402px + 2 * var(--cb-space-md) + 2px)); justify-self: center; }
   .crop img { display: block; width: 100%; height: auto; border-radius: var(--cb-radius-sm); }
   .chart { margin: 0; }
   .chart img { display: block; width: 100%; height: auto; }
   html { scroll-padding-top: calc(var(--cb-tap) + var(--cb-space-xl)); }  /* keeps focused things clear of the sticky bar */
-  main { overflow-x: clip; }  /* the slides start off-screen; clip, not hidden, so nothing else changes */
+  main { overflow-x: clip; }  /* the desktop slides start off-screen; clip, not hidden, so nothing else changes */
   .hero { padding-top: var(--cb-space-sm); position: relative; isolation: isolate; }
   .hero .cb-display .hl { color: var(--cb-gold); }
   .lede { font-size: var(--cb-body-size); color: var(--cb-muted); max-width: 34em; margin: 0; }
   .h2 { font-size: calc(var(--cb-display-size) * 0.62); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
   .pair { display: grid; gap: var(--cb-space-xl); align-items: start; }
-  @media (max-width: 768px) { .crop { width: min(100%, calc(268px + 2 * var(--cb-space-md) + 2px)); } }
+  @media (max-width: 768px) { .crop { width: min(100%, calc(var(--cb-page) * 0.4)); } }  /* phones: as the live site */
   @media (min-width: 900px) {
     .split { grid-template-columns: 1fr 1fr; gap: calc(var(--cb-space-xl) * 2); }
     .split.flip > :first-child { order: 2; }
@@ -31,7 +31,7 @@
 </header></div>
 <main>
 
-<section class="cb-wrap cb-section hero" id="hero" aria-labelledby="hero-heading" data-rain="ambient">
+<section class="cb-wrap cb-section hero" id="hero" aria-labelledby="hero-heading" data-rain="fade">
   <canvas class="cb-rain" id="rain" aria-hidden="true"></canvas>
   <div class="split">
     <div class="cb-stack">
@@ -155,35 +155,37 @@
   <p>© 2026 Cut Buddy</p>
 </footer>
 <script>
-/* The home page's motion: the sticky bar's line, the screenshots sliding in,
-   and the launch rain behind the hero. No libraries, nothing loaded, nothing
-   stored. Colours and the digit font come from theme.css. */
+/* The home page's motion: the sticky bar's line, the launch rain and the
+   headline decoding behind the hero, and (wide screens only) the screenshots
+   sliding in. No libraries, nothing loaded, nothing stored. Colours and the
+   digit font come from theme.css. */
 (function () {
   "use strict";
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var narrow = window.matchMedia("(max-width: 768px)");
+  var wide = window.matchMedia("(min-width: 769px)");   // phones (768 px and under) get no scroll motion
 
   /* ---- Sticky bar: a line under it once the page has scrolled ---- */
   var bar = document.getElementById("topbar");
   function onScrollBar() { bar.classList.toggle("is-scrolled", window.scrollY > 4); }
 
-  /* ---- Screenshots: in from their side as they come into view, out as they leave ---- */
+  /* ---- Wide screens: screenshots slide in from their side, and back out once
+     they've fully left; whenever any of one is on screen it's fully opaque ---- */
   var hero = document.getElementById("hero");
   var heroShot = hero.querySelector('[data-slide="exit"]');
   if (!reduced && "IntersectionObserver" in window) {
     document.documentElement.classList.add("cb-motion");
     var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { e.target.classList.toggle("is-in", e.isIntersecting); });
-    }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+      entries.forEach(function (e) {
+        if (e.isIntersecting) e.target.classList.add("is-in");
+        else e.target.classList.remove("is-in");
+      });
+    }, { threshold: 0, rootMargin: "0px 0px -10% 0px" });
     document.querySelectorAll('[data-slide="left"], [data-slide="right"]').forEach(function (el) { io.observe(el); });
   }
-  // The hero phone follows the scroll: off to the right as the hero leaves (up and out on phones).
+  // The hero phone follows the scroll off to the right as the hero leaves (wide screens only).
   function onScrollHero() {
-    if (reduced) return;
-    var p = Math.min(1, Math.max(0, window.scrollY / Math.max(1, hero.offsetHeight * 0.85)));
-    heroShot.style.transform = p === 0 ? "" : narrow.matches
-      ? "translate3d(0," + (-48 * p).toFixed(1) + "px,0)"
-      : "translate3d(" + (40 * p).toFixed(2) + "vw,0,0)";
+    var p = reduced || !wide.matches ? 0 : Math.min(1, Math.max(0, window.scrollY / Math.max(1, hero.offsetHeight * 0.85)));
+    heroShot.style.transform = p === 0 ? "" : "translate3d(" + (40 * p).toFixed(2) + "vw,0,0)";
     heroShot.style.opacity = p === 0 ? "" : (1 - p).toFixed(3);
   }
 
@@ -192,26 +194,32 @@
     if (ticking) return; ticking = true;
     requestAnimationFrame(function () { ticking = false; onScrollBar(); onScrollHero(); });
   }, { passive: true });
+  wide.addEventListener("change", onScrollHero);
   onScrollBar(); onScrollHero();
 
   /* ---- The launch rain (cut-buddy-ai design/launch-animation, the reference) ----
      Gold 0s and 1s in 10 px columns, 1–2 drops a column at 34–68 rows a second,
-     trails fading by e^(-3.4 t), heads pale gold. The intro rains for about two
-     seconds while the headline decodes, then the rain either keeps falling, slow
-     and faint, behind the hero (data-rain="ambient") or fades out ("intro").
-     ?rain=intro or ?rain=ambient overrides it, to compare the two. */
+     trails fading by e^(-3.4 t), heads pale gold. It rains for about two seconds
+     while the headline decodes; then a slow rain keeps falling, in one of two ways
+     (data-rain on the hero; ?rain=fade or ?rain=clear to compare):
+       fade   the whole rain drops to a faint background, 12% (.is-faint);
+       clear  a soft dark fade keeps the rain out from behind the text block,
+              from the first frame, and the rain stays at 22% (.is-ambient).
+     Paused whenever the hero is off-screen or the tab is hidden. With reduced
+     motion there's no rain and the headline is simply there. */
   var cv = document.getElementById("rain");
-  var ctx = cv.getContext && cv.getContext("2d");
-  if (!ctx) return;
+  var ctx = !reduced && cv.getContext && cv.getContext("2d");
+  if (!ctx) { cv.hidden = true; return; }
   var css = getComputedStyle(document.documentElement);
   var GOLD = css.getPropertyValue("--cb-gold").trim();
   var PALE = css.getPropertyValue("--cb-gold-pale").trim();
   var BLACK = css.getPropertyValue("--cb-black").trim();
   var MONO = css.getPropertyValue("--cb-mono").trim();
   var asked = new URLSearchParams(location.search).get("rain");
-  var mode = asked === "intro" || asked === "ambient" ? asked : hero.getAttribute("data-rain");
-  var CELL = 10, W, H, COLS, ROWS, dpr, bright, ch, drops;
-  var T = { start: 0.25, wordA: 1.0, textIn: 2.0, rainEnd: 2.3 };   // seconds; the reference's 0.25 start and 2.3 end
+  var mode = asked === "fade" || asked === "clear" ? asked : hero.getAttribute("data-rain");
+  var textBlock = hero.querySelector(".split > .cb-stack");
+  var CELL = 10, W, H, COLS, ROWS, dpr, bright, ch, drops, clearBox;
+  var T = { start: 0.25, wordA: 0.9, textIn: 2.0, rainEnd: 2.4 };   // seconds; the reference's 0.25 start
   var t0 = null, last = null, raf = 0, visible = true, phase = "intro";
 
   function size() {
@@ -229,9 +237,11 @@
       var n = phase === "ambient" ? 1 : 1 + (Math.random() < 0.55 ? 1 : 0);
       for (var d = 0; d < n; d++) drops.push(drop(c, true));
     }
+    var b = textBlock.getBoundingClientRect();
+    clearBox = { x: b.left - r.left, y: b.top - r.top, w: b.width, h: b.height };
   }
   // Intro drops as the reference, sped up in proportion when the hero is taller
-  // than its 85-row screen so the rain still fills it in time; ambient ones fewer and slower.
+  // than its 85-row screen so the rain still fills it in time; later ones fewer and slower.
   function drop(col, initial) {
     var slow = phase === "ambient";
     return { col: col, prev: null,
@@ -260,52 +270,58 @@
       ctx.fillStyle = b > 0.93 ? PALE : GOLD; ctx.globalAlpha = b > 0.93 ? b : b * 0.9;
       ctx.fillText(ch[i] ? "1" : "0", (i % COLS) * CELL + 2, Math.floor(i / COLS) * CELL - 1);
     }
-  }
-
-  // A still frame for reduced motion: rain caught mid-fall, as faint as the ambient rain.
-  function still() {
-    phase = "ambient"; size();
-    for (var c = 0; c < COLS; c++) {
-      if (Math.random() < 0.45) continue;
-      var head = Math.floor(Math.random() * ROWS), len = 4 + Math.floor(Math.random() * 14);
-      for (var k = 0; k < len; k++) { var row = head - k; if (row >= 0) bright[row * COLS + c] = Math.exp(-k * 0.28); }
+    if (mode === "clear") {
+      // A soft dark fade over the text block: black, its edges blurred well past the text.
+      var pad = 24, k = clearBox;
+      ctx.globalAlpha = 1; ctx.fillStyle = BLACK; ctx.shadowColor = BLACK; ctx.shadowBlur = 56 * dpr;
+      ctx.fillRect(k.x - pad, k.y - pad, k.w + pad * 2, k.h + pad * 2);
+      ctx.fillRect(k.x - pad, k.y - pad, k.w + pad * 2, k.h + pad * 2);
+      ctx.shadowBlur = 0;
     }
-    draw(0, false);
-    cv.classList.add("is-ambient");
   }
 
-  /* "Know what to eat," decodes letter by letter: a gold 0 or 1, then the letter.
-     Screen readers get the whole headline from aria-label meanwhile. */
+  /* The headline decodes character by character: each one flickers through a
+     0 or 1 and then resolves. "Know what to eat" uses white digits; ", and when."
+     uses gold ones and resolves last. Screen readers get the whole headline from
+     aria-label meanwhile. */
   var h1 = document.getElementById("hero-heading");
   var plain = h1.innerHTML, letters = [];
-  var held = Array.prototype.slice.call(hero.querySelectorAll(".lede, .cb-stack > .cb-muted"));
+  // On wide screens the lede waits for the rain to clear (fade mode only); on phones nothing fades in.
+  var held = mode === "fade" && wide.matches ? Array.prototype.slice.call(hero.querySelectorAll(".lede, .cb-stack > .cb-muted")) : [];
   function prepareDecode() {
     h1.setAttribute("aria-label", h1.textContent);
+    var gold = false;
     (function wrap(node) {
       Array.prototype.slice.call(node.childNodes).forEach(function (n) {
         if (n.nodeType === 3) {
           var frag = document.createDocumentFragment();
           n.textContent.split("").forEach(function (c) {
-            // Only letters decode; spaces and punctuation (the comma) stay as they are.
-            if (!/[A-Za-z]/.test(c)) { frag.appendChild(document.createTextNode(c)); return; }
-            var s = document.createElement("span"); s.textContent = c; s.className = "is-wait"; s.setAttribute("data-c", c); s.setAttribute("aria-hidden", "true");
+            if (c === " ") { frag.appendChild(document.createTextNode(" ")); return; }
+            if (c === ",") gold = true;   // ", and when." is the gold group, comma included
+            var s = document.createElement("span"); s.textContent = c; s.setAttribute("data-c", c); s.setAttribute("aria-hidden", "true");
+            s._base = gold ? "is-gold " : ""; s.className = s._base + "is-wait";
             frag.appendChild(s); letters.push(s);
           });
           node.replaceChild(frag, n);
-        } else if (n.nodeType === 1 && !n.classList.contains("hl")) { n.classList.add("cb-decode"); wrap(n); }
-        // The gold "and when." never decodes: it's there, solid, from the first frame.
+        } else if (n.nodeType === 1) { n.classList.add("cb-decode"); wrap(n); }
       });
     })(h1);
     h1.classList.add("cb-decode");
+    // Start times: the white words left to right, then a short beat, then the gold group.
+    var t = T.wordA;
+    letters.forEach(function (s, i) {
+      if (s._base && (i === 0 || !letters[i - 1]._base)) t += 0.12;
+      s._at = t; t += s._base ? 0.06 : 0.035;
+    });
     held.forEach(function (el) { el.classList.add("cb-fade", "cb-hold"); });
   }
   function decode(t) {
     var done = true;
     for (var i = 0; i < letters.length; i++) {
-      var at = T.wordA + i * 0.035, s = letters[i];
-      if (t < at) { done = false; continue; }
-      if (t < at + 0.18) { done = false; s.className = "is-digit"; s.setAttribute("data-d", Math.random() < 0.5 ? "0" : "1"); }
-      else s.className = "";
+      var s = letters[i];
+      if (t < s._at) { done = false; continue; }
+      if (t < s._at + 0.2) { done = false; s.className = s._base + "is-digit"; s.setAttribute("data-d", Math.random() < 0.5 ? "0" : "1"); }
+      else s.className = s._base;
     }
     if (done) { h1.innerHTML = plain; h1.classList.remove("cb-decode"); h1.removeAttribute("aria-label"); letters = []; }
     return done;
@@ -322,25 +338,19 @@
       if (letters.length) decode(t);
       if (t >= T.textIn && held.length) { held.forEach(function (el) { el.classList.remove("cb-hold"); }); held = []; }
       if (t >= T.start) draw(dt, t < T.rainEnd - 0.35);
-      if (t >= T.rainEnd) {
-        if (letters.length) decode(99);
-        if (mode === "ambient") {
-          phase = "ambient"; cv.classList.add("is-ambient");
-          // Thin to about one slow drop in three columns.
-          drops = drops.filter(function (d, i) { return i % 3 === 0; }).map(function (d) { var n = drop(d.col, true); n.y = d.y; return n; });
-        } else { phase = "done"; cv.classList.add("is-done"); return; }
+      if (t >= T.rainEnd && !letters.length) {
+        // The headline has resolved: on to the slow rain.
+        phase = "ambient"; cv.classList.add(mode === "clear" ? "is-ambient" : "is-faint");
+        drops = drops.filter(function (d, i) { return i % 3 === 0; }).map(function (d) { var n = drop(d.col, true); n.y = d.y; return n; });
       }
-    } else if (phase === "ambient") {
-      draw(dt, true);
-    } else return;
+    } else draw(dt, true);
+    cv.dataset.frames = (+cv.dataset.frames || 0) + 1;   // a frame count, for checking that it pauses
     raf = requestAnimationFrame(tick);
   }
-  function resume() { if (!raf && phase !== "done" && visible) raf = requestAnimationFrame(tick); }
+  function resume() { if (!raf && visible) raf = requestAnimationFrame(tick); }
 
-  if (reduced) { still(); window.addEventListener("resize", still); return; }
   size(); prepareDecode();
   window.addEventListener("resize", function () { if (phase === "ambient") size(); });
-  // Paused whenever the hero is off-screen or the tab is hidden.
   new IntersectionObserver(function (e) { visible = e[0].isIntersecting && !document.hidden; if (visible) resume(); }).observe(hero);
   document.addEventListener("visibilitychange", function () { visible = !document.hidden; if (visible) resume(); });
   resume();

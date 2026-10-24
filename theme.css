@@ -178,54 +178,55 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .cb-chart text { fill: var(--cb-muted); font: 11px var(--cb-font); }
 
 /* ---- Phone frame for app screenshots ----
-   The screens are 804 px wide (2x of 402 pt), so the screen inside the frame is
-   never shown wider than 402 px, and on phones (3x displays) no wider than
-   268 px (804 / 3): a 284 px frame. Shown any larger, they're upscaled and soft.
-   Recaptured at 3x (1206 x 2622), the phone cap can go. */
+   The screens are 804 px wide (2x of 402 pt): sharp on desktop. On 3x phones
+   the 304 px screen is a little upscaled; recaptured at 3x (1206 x 2622) it won't be. */
 .cb-phone {
   width: min(320px, 100%); aspect-ratio: 1206 / 2622; border-radius: 44px; overflow: hidden;
   border: 8px solid #1c1c1e; background: var(--cb-black);
   box-shadow: 0 30px 80px rgba(255, 205, 0, 0.08), 0 10px 40px rgba(0, 0, 0, 0.6);
 }
 .cb-phone > img { width: 100%; height: 100%; object-fit: cover; display: block; }
-@media (max-width: 768px) { .cb-phone { width: min(284px, 100%); } }
 
-/* ---- Scroll motion (home page) ----
+/* ---- Scroll motion (home page, wide screens only) ----
    A screenshot with data-slide="left|right" slides in from that side as it
-   comes into view and back out as it leaves; on phones it fades up instead.
-   The page's script adds .cb-motion to <html> only when motion is allowed, so
-   without the script, or with reduced motion, everything simply shows.
-   Transform and opacity only. */
-.cb-motion [data-slide] { transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.8s ease; }
-.cb-motion [data-slide="left"]:not(.is-in) { transform: translate3d(-30vw, 0, 0); opacity: 0; }
-.cb-motion [data-slide="right"]:not(.is-in) { transform: translate3d(30vw, 0, 0); opacity: 0; }
-.cb-motion [data-slide="exit"] { transition: none; will-change: transform, opacity; }
-@media (max-width: 768px) {
-  .cb-motion [data-slide="left"]:not(.is-in), .cb-motion [data-slide="right"]:not(.is-in) { transform: translate3d(0, 32px, 0); }
+   comes into view and back out once it has left. It's fully opaque whenever
+   any of it is on screen. The page's script adds .cb-motion to <html> only when
+   motion is allowed; on phones (768 px and under) nothing moves on scroll, so
+   these rules don't apply there at all. Transform and opacity only. */
+@media (min-width: 769px) {
+  .cb-motion [data-slide] { transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.8s ease; }
+  .cb-motion [data-slide="left"]:not(.is-in) { transform: translate3d(-30vw, 0, 0); opacity: 0; }
+  .cb-motion [data-slide="right"]:not(.is-in) { transform: translate3d(30vw, 0, 0); opacity: 0; }
+  .cb-motion [data-slide="exit"] { transition: none; will-change: transform, opacity; }
 }
 
 /* ---- The launch rain (design/launch-animation in cut-buddy-ai) ----
    A canvas behind the hero: gold 0s and 1s falling, drawn by the page's script
-   from --cb-gold, --cb-gold-pale and --cb-mono. After the intro it either keeps
-   falling, slow and faint (.is-ambient), or fades out (.is-done). */
+   from --cb-gold, --cb-gold-pale, --cb-black and --cb-mono. After the intro it
+   keeps falling, slow: faint everywhere (.is-faint), or a little stronger with
+   the text block kept clear (.is-ambient). */
 .cb-rain {
   position: absolute; top: 0; left: 50%; width: 100vw; height: 100%; transform: translateX(-50%); z-index: -1; pointer-events: none; transition: opacity 0.6s ease;
   /* soft top and bottom edges, so the rain has no hard line under the bar or above the next section */
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 82%, transparent);
   mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 82%, transparent);
 }
+.cb-rain.is-faint { opacity: 0.12; }
 .cb-rain.is-ambient { opacity: 0.22; }
 .cb-rain.is-done { opacity: 0; }
-/* The headline decoding as the rain clears, as "CUT BUDDY" does in the launch
-   animation. Every letter is there from the start as a faint ghost, so the
-   words always read; each one flickers through a small gold 0 or 1 and then
-   resolves. The digit sits inside the letter's own box, never wider. */
-.cb-decode > span { position: relative; }
+/* The headline decoding as the rain falls, as "CUT BUDDY" does in the launch
+   animation. Every character is there from the start as a faint ghost, so the
+   words always read; each one flickers through a small 0 or 1 in its own
+   colour (white digits for white words, gold for the gold part, .is-gold)
+   and then resolves. The digit sits inside the character's own box. */
+.cb-decode { --cb-digit: var(--cb-white); }
+.cb-decode .is-gold { --cb-digit: var(--cb-gold); --cb-ghost: var(--cb-gold); }
+.cb-decode > span, .cb-decode span { position: relative; }
 .cb-decode > span.is-wait, .cb-decode > span.is-digit { color: transparent; }
 .cb-decode > span.is-wait::before, .cb-decode > span.is-digit::before { content: attr(data-c); position: absolute; left: 0; top: 0; color: var(--cb-ghost, var(--cb-white)); opacity: 0.16; }
 .cb-decode > span.is-digit::after {
   content: attr(data-d); position: absolute; left: 50%; top: 50%; transform: translate(-50%, -45%);
-  font: 500 0.5em/1 var(--cb-mono); color: var(--cb-gold); text-shadow: 0 0 12px var(--cb-gold);
+  font: 500 0.5em/1 var(--cb-mono); color: var(--cb-digit); text-shadow: 0 0 12px var(--cb-digit);
 }
 /* The rest of the hero's text waits for the rain to clear, then fades in. */
 .cb-hold { opacity: 0; }
