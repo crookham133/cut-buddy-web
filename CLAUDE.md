@@ -82,10 +82,10 @@ it are in `assets/screens/`, demo data only. This table is the status.
 | Page | File | Status | Notes |
 |---|---|---|---|
 | Home: hero and waitlist | `index.html` | **To build** | Replaces the privacy policy currently at `index.html` (a copy is now at `privacy.html`) |
-| Privacy policy | `privacy.html` | Live draft | Newer text on the `policy-drafts` branch |
-| Consumer health data policy | `health-data.html` | Live draft | Washington, Nevada and similar laws |
-| For parents and guardians | `guardians.html` | Live draft | Teens 13–17 |
-| Terms of use | `terms.html` | **To write** | Draft for counsel |
+| Privacy policy | `privacy.html` | Live | Text of 24 Oct; no draft banner (Ryan, 24 Oct) |
+| Consumer health data policy | `health-data.html` | Live | Washington, Nevada and similar laws |
+| For parents and guardians | `guardians.html` | Live | Teens 13–17 |
+| Terms of use | `terms.html` | Live | For counsel to review; no draft banner |
 | Support | `support.html` | **To build** | Apple requires a support URL |
 | Guardian approval | `approve.html` | Live, wired to the app | **Don't edit** (see rules) |
 
@@ -122,19 +122,21 @@ it are in `assets/screens/`, demo data only. This table is the status.
 - **Footer:**
   - links to privacy, health data, parents, terms and support;
   - "Cut Buddy gives nutrition information, not medical advice";
-  - © the company. Its name is still to come: leave the placeholder
-    `<span class="ph">company name to come</span>`.
+  - "© 2026 Cut Buddy App LLC". The company is Cut Buddy App LLC; use that
+    name wherever a page names who runs Cut Buddy.
 
 ### Policies (privacy, health data, parents, terms)
 
-- **Drafts awaiting counsel.** Keep the red "draft" banner until Ryan says
-  counsel has approved them.
+- **No draft banner.** Ryan decided on 24 Oct that the policies and the
+  terms carry no "Draft, under legal review" banner. Don't add one back.
+  Counsel may still revise the text; when a page's text changes, update its
+  "Last updated" date.
 - **The words must match what the app actually does.** Don't change what a
   policy says the app collects, shares or keeps. Layout, typography and
   navigation are yours; substance is Ryan's.
 - **The source of the policy text** is `docs/legal/drafts-for-counsel.html` in
-  cut-buddy-ai. The newest page versions are on this repo's `policy-drafts`
-  branch, unpublished until the domain exists.
+  cut-buddy-ai. The pages on `main` carry the newest text (24 Oct); the
+  `policy-drafts` and `policy-updates-oct22` branches are superseded.
 - **Terms of use:** start from a short plain-language structure:
   - who can use it (13+, under-18s with a guardian's OK for teams);
   - not medical advice;
@@ -144,7 +146,7 @@ it are in `assets/screens/`, demo data only. This table is the status.
   - ending your account;
   - contact.
 
-  Mark it a draft for counsel.
+  Counsel reviews it; the page carries no draft banner.
 
 ### Support
 
