@@ -133,7 +133,7 @@ story around them is told.
 | Page | Notes |
 |---|---|
 | `support.html` | Contact: cutbuddyapp@gmail.com until the domain exists. FAQ wording is in the review on PR #1. |
-| `terms.html` | Draft for counsel, with the red banner. |
+| `terms.html` | For counsel to review. No draft banner (Ryan, 24 Oct). |
 | `privacy.html`, `health-data.html`, `guardians.html` | The text is Ryan's. Restyle with theme.css only. |
 | `approve.html` | Don't edit (CLAUDE.md, rule 6). |
 
