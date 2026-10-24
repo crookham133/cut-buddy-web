@@ -305,8 +305,8 @@ by Ryan's server.
      their written OK, through Ryan.
    - App screenshots come only from the demo team: fictional people with
      plain names and fake data, never a real account. Ask Ryan for them.
-   - Every phone mockup carries a small "Sample data" caption
-     (`.cb-sample` in theme.css).
+   - No "Sample data" caption is needed under screenshots (Ryan, 24 Oct).
+     The demo-accounts-only rule above still holds.
 10. **Pre-launch:** pages carry `<meta name="robots" content="noindex, nofollow">`.
     Keep it until Ryan says launch.
 11. **Build quality:**
