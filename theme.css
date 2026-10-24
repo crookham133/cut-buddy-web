@@ -205,7 +205,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .cb-header { display: flex; align-items: center; justify-content: space-between; gap: var(--cb-space-md); padding-block: var(--cb-space-md); }
 .cb-brand { display: inline-flex; align-items: center; gap: var(--cb-space-sm); min-height: var(--cb-tap); color: var(--cb-white); text-decoration: none; }
 .cb-brand img { width: calc(var(--cb-space-lg) + var(--cb-space-xs)); height: auto; }
-.cb-section { padding-block: calc(var(--cb-space-xl) * 2); }
+.cb-section { padding-block: var(--cb-space-xl); }
 .cb-stack { display: grid; gap: var(--cb-space-md); }
 .cb-link { font-weight: 600; text-decoration: none; }   /* gold text link: "Email us ›" */
 .cb-list { margin: 0; padding-left: var(--cb-space-md); display: grid; gap: var(--cb-space-sm); }
