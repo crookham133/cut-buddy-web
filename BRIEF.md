@@ -8,6 +8,18 @@ account.
 **Every phone mockup gets a small "Sample data" caption**, under or beside
 it: `<span class="cb-sample">Sample data</span>` (theme.css).
 
+## Positioning (decided 22 Oct)
+
+- **The brand:** nutrition that adapts to your life, for everyone. That's
+  the promise in every headline.
+- **The origin story:** born in a wrestling room. It's where Cut Buddy comes
+  from, and the site can say so once, plainly (the About or story line, the
+  footer), never as who it's for.
+- **The go-to-market:** wrestlers and combat athletes (wrestling, judo,
+  jiu-jitsu, boxing, MMA), their coaches and parents. They're who we reach
+  first: ambassadors, the /join page, coach copy. Sections can speak to them
+  by name; the headline and the hero don't.
+
 ## Home: cutbuddyapp.com
 
 The page has one job: show, in the app's own screens, that Cut Buddy plans
@@ -132,4 +144,5 @@ story around them is told.
 - **No hype words**, no "AI-powered".
 - **No weight numbers as a selling point.**
 - **No sport-only framing in headlines.** Athletes in the copy, everyone in
-  the promise.
+  the promise. Weigh-ins and weight classes appear only where the section is
+  about them (the coach section, an athlete's example), never as the default.
