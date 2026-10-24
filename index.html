@@ -13,7 +13,7 @@
   html { scroll-padding-top: calc(var(--cb-tap) + var(--cb-space-xl)); }  /* keeps focused things clear of the sticky bar */
   main { overflow-x: clip; }  /* the slides start off-screen; clip, not hidden, so nothing else changes */
   .hero { padding-top: var(--cb-space-sm); position: relative; isolation: isolate; }
-  .hero .cb-display .hl { color: var(--cb-gold); --cb-ghost: var(--cb-gold); }
+  .hero .cb-display .hl { color: var(--cb-gold); }
   .lede { font-size: var(--cb-body-size); color: var(--cb-muted); max-width: 34em; margin: 0; }
   .h2 { font-size: calc(var(--cb-display-size) * 0.62); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
   .pair { display: grid; gap: var(--cb-space-xl); align-items: start; }
@@ -274,7 +274,7 @@
     cv.classList.add("is-ambient");
   }
 
-  /* The headline decodes letter by letter: a gold 0 or 1, then the letter.
+  /* "Know what to eat," decodes letter by letter: a gold 0 or 1, then the letter.
      Screen readers get the whole headline from aria-label meanwhile. */
   var h1 = document.getElementById("hero-heading");
   var plain = h1.innerHTML, letters = [];
@@ -291,7 +291,8 @@
             frag.appendChild(s); letters.push(s);
           });
           node.replaceChild(frag, n);
-        } else if (n.nodeType === 1) { n.classList.add("cb-decode"); wrap(n); }
+        } else if (n.nodeType === 1 && !n.classList.contains("hl")) { n.classList.add("cb-decode"); wrap(n); }
+        // The gold "and when." never decodes: it's there, solid, from the first frame.
       });
     })(h1);
     h1.classList.add("cb-decode");
