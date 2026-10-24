@@ -286,7 +286,8 @@
         if (n.nodeType === 3) {
           var frag = document.createDocumentFragment();
           n.textContent.split("").forEach(function (c) {
-            if (c === " ") { frag.appendChild(document.createTextNode(" ")); return; }
+            // Only letters decode; spaces and punctuation (the comma) stay as they are.
+            if (!/[A-Za-z]/.test(c)) { frag.appendChild(document.createTextNode(c)); return; }
             var s = document.createElement("span"); s.textContent = c; s.className = "is-wait"; s.setAttribute("data-c", c); s.setAttribute("aria-hidden", "true");
             frag.appendChild(s); letters.push(s);
           });
