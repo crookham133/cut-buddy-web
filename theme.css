@@ -209,19 +209,27 @@ button, input, select, textarea { font: inherit; color: inherit; }
    from --cb-gold, --cb-gold-pale and --cb-mono. After the intro it either keeps
    falling, slow and faint (.is-ambient), or fades out (.is-done). */
 .cb-rain {
-  position: absolute; top: 0; bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%); z-index: -1; pointer-events: none; transition: opacity 0.6s ease;
+  position: absolute; top: 0; left: 50%; width: 100vw; height: 100%; transform: translateX(-50%); z-index: -1; pointer-events: none; transition: opacity 0.6s ease;
   /* soft top and bottom edges, so the rain has no hard line under the bar or above the next section */
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 82%, transparent);
   mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 82%, transparent);
 }
 .cb-rain.is-ambient { opacity: 0.22; }
 .cb-rain.is-done { opacity: 0; }
-/* The headline decoding as the rain clears: each letter shows a gold 0 or 1
-   for a moment, then resolves, as "CUT BUDDY" does in the launch animation. */
+/* The headline decoding as the rain clears, as "CUT BUDDY" does in the launch
+   animation. Every letter is there from the start as a faint ghost, so the
+   words always read; each one flickers through a small gold 0 or 1 and then
+   resolves. The digit sits inside the letter's own box, never wider. */
 .cb-decode > span { position: relative; }
-.cb-decode > span.is-wait { opacity: 0; }
-.cb-decode > span.is-digit { color: transparent; }
-.cb-decode > span.is-digit::after { content: attr(data-d); position: absolute; left: 50%; top: 0; transform: translateX(-50%); color: var(--cb-gold); }
+.cb-decode > span.is-wait, .cb-decode > span.is-digit { color: transparent; }
+.cb-decode > span.is-wait::before, .cb-decode > span.is-digit::before { content: attr(data-c); position: absolute; left: 0; top: 0; color: var(--cb-ghost, var(--cb-white)); opacity: 0.16; }
+.cb-decode > span.is-digit::after {
+  content: attr(data-d); position: absolute; left: 50%; top: 50%; transform: translate(-50%, -45%);
+  font: 500 0.5em/1 var(--cb-mono); color: var(--cb-gold); text-shadow: 0 0 12px var(--cb-gold);
+}
+/* The rest of the hero's text waits for the rain to clear, then fades in. */
+.cb-hold { opacity: 0; }
+.cb-fade { transition: opacity 0.6s ease; }
 
 /* ---- Sticky top bar: black, with a line under it once the page has scrolled ---- */
 .cb-topbar { position: sticky; top: 0; z-index: 10; background: var(--cb-black); border-bottom: 1px solid transparent; transition: border-color 0.2s ease; }
@@ -241,7 +249,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   font-display: swap;
 }
 :root { --cb-wordmark-font: "Space Grotesk", var(--cb-font); }
-.cb-wordmark { font-family: var(--cb-wordmark-font); font-weight: 600; letter-spacing: 0.29em; text-transform: uppercase; }
+.cb-wordmark { font-family: var(--cb-wordmark-font); font-weight: 600; letter-spacing: 0.29em; text-transform: uppercase; margin-right: -0.29em; }  /* no tracking after the last letter */
 
 /* ---- Site chrome, built from the tokens above ---- */
 .cb-header { display: flex; align-items: center; justify-content: space-between; gap: var(--cb-space-md); padding-block: var(--cb-space-md); }

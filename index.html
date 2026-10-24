@@ -13,7 +13,7 @@
   html { scroll-padding-top: calc(var(--cb-tap) + var(--cb-space-xl)); }  /* keeps focused things clear of the sticky bar */
   main { overflow-x: clip; }  /* the slides start off-screen; clip, not hidden, so nothing else changes */
   .hero { padding-top: var(--cb-space-sm); position: relative; isolation: isolate; }
-  .hero .cb-display .hl { color: var(--cb-gold); }
+  .hero .cb-display .hl { color: var(--cb-gold); --cb-ghost: var(--cb-gold); }
   .lede { font-size: var(--cb-body-size); color: var(--cb-muted); max-width: 34em; margin: 0; }
   .h2 { font-size: calc(var(--cb-display-size) * 0.62); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
   .pair { display: grid; gap: var(--cb-space-xl); align-items: start; }
@@ -211,7 +211,7 @@
   var asked = new URLSearchParams(location.search).get("rain");
   var mode = asked === "intro" || asked === "ambient" ? asked : hero.getAttribute("data-rain");
   var CELL = 10, W, H, COLS, ROWS, dpr, bright, ch, drops;
-  var T = { start: 0.25, wordA: 1.25, rainEnd: 2.3 };   // seconds; the reference's 0.25 start and 2.3 end
+  var T = { start: 0.25, wordA: 1.0, textIn: 2.0, rainEnd: 2.3 };   // seconds; the reference's 0.25 start and 2.3 end
   var t0 = null, last = null, raf = 0, visible = true, phase = "intro";
 
   function size() {
@@ -230,12 +230,13 @@
       for (var d = 0; d < n; d++) drops.push(drop(c, true));
     }
   }
-  // Intro drops as the reference; ambient ones fewer and slower.
+  // Intro drops as the reference, sped up in proportion when the hero is taller
+  // than its 85-row screen so the rain still fills it in time; ambient ones fewer and slower.
   function drop(col, initial) {
     var slow = phase === "ambient";
     return { col: col, prev: null,
       y: initial ? -Math.random() * ROWS * 0.9 : -Math.random() * (slow ? ROWS : 12),
-      v: slow ? 4 + Math.random() * 6 : 34 + Math.random() * 34 };
+      v: slow ? 4 + Math.random() * 6 : (34 + Math.random() * 34) * Math.max(1, ROWS / 85) };
   }
 
   function draw(dt, rainOn) {
@@ -277,6 +278,7 @@
      Screen readers get the whole headline from aria-label meanwhile. */
   var h1 = document.getElementById("hero-heading");
   var plain = h1.innerHTML, letters = [];
+  var held = Array.prototype.slice.call(hero.querySelectorAll(".lede, .cb-stack > .cb-muted"));
   function prepareDecode() {
     h1.setAttribute("aria-label", h1.textContent);
     (function wrap(node) {
@@ -285,7 +287,7 @@
           var frag = document.createDocumentFragment();
           n.textContent.split("").forEach(function (c) {
             if (c === " ") { frag.appendChild(document.createTextNode(" ")); return; }
-            var s = document.createElement("span"); s.textContent = c; s.className = "is-wait"; s.setAttribute("aria-hidden", "true");
+            var s = document.createElement("span"); s.textContent = c; s.className = "is-wait"; s.setAttribute("data-c", c); s.setAttribute("aria-hidden", "true");
             frag.appendChild(s); letters.push(s);
           });
           node.replaceChild(frag, n);
@@ -293,6 +295,7 @@
       });
     })(h1);
     h1.classList.add("cb-decode");
+    held.forEach(function (el) { el.classList.add("cb-fade", "cb-hold"); });
   }
   function decode(t) {
     var done = true;
@@ -315,6 +318,7 @@
     var t = (now - t0) / 1000;
     if (phase === "intro") {
       if (letters.length) decode(t);
+      if (t >= T.textIn && held.length) { held.forEach(function (el) { el.classList.remove("cb-hold"); }); held = []; }
       if (t >= T.start) draw(dt, t < T.rainEnd - 0.35);
       if (t >= T.rainEnd) {
         if (letters.length) decode(99);
