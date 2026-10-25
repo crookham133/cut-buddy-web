@@ -298,6 +298,9 @@ by Ryan's server.
 8. **Safety in the marketing copy:**
    - No weight-cutting tactics, and no "make weight fast", "drop X lb in a
      week", dehydration, sauna, spitting, laxatives or fasting language.
+     That includes saying what the app won't do: the safety list promises
+     "It never suggests unsafe ways to make weight" rather than naming
+     tactics (Ryan, 25 Oct).
    - No before-and-after bodies and no weight numbers as selling points.
    - No medical claims (treats, cures, prevents).
    - No university logos, uniforms or marks.

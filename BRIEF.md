@@ -33,7 +33,7 @@ sentences. Sections run in this order.
   difference in five words: timing around training, not just totals.
 - **Under it:** "Cut Buddy builds your meals and water around your
   training, and changes the plan when your week does. Every number comes
-  from a tested engine, with safety built in."
+  from tested nutrition math, with safety built in."
 - **The button** (gold, one on the page): "Join the waitlist" at launch. Until
   then, the plain text "Coming soon to iPhone", with no button.
 - **The phone:** `plan.png` (Plan: protein, carbs and fat left, the ring,
@@ -44,30 +44,30 @@ sentences. Sections run in this order.
 
 ### 2. Planned around your training: `plan.png` (or `buddy.png`)
 
-- **Copy:** "Hard days get more fuel than rest days. Meals are timed around
-  practice and lifts: a pre-fuel before, recovery after. A competition on
-  the calendar counts the plan down to it."
-- **Water lives here,** as one line: "Water too, in the unit you use." It
-  doesn't need its own section.
+- **Copy:** "Hard days get more food than rest days, and meals are timed
+  around practice and lifts: fuel before, recovery after. Add a competition
+  and the plan counts down to it."
+- **Water lives here,** as one line: "Your water target is planned too, in
+  ounces or milliliters." It doesn't need its own section.
 - **This is the core.** Most apps count calories after the fact; this plans
   the day ahead.
 
 ### 3. Log it by saying it: `chat.png`
 
 - **Copy:** "Tell Buddy what you ate or drank, in your own words. You see
-  exactly what it heard and tap Log it. Nothing goes in your day until you
+  exactly what it heard and tap Log it. Nothing is logged until you
   confirm."
 - **Say the confirm step out loud.** It's the reason to trust a chat
   logger, and nobody else leads with it.
 
 ### 4. See the trend, not the noise: `weight.png`, then `radar.png`
 
-- **The weight chart:** "Daily weigh-ins bounce. Cut Buddy shows your 7-day
-  average against your plan line, and tells you plainly where you stand:
-  on the line, behind, or going too fast."
-- **The weekly score (radar):** "Six areas you chose (protein, water,
-  fueling around training, logging...) scored each week, so you know what to
-  work on."
+- **The weight chart:** "Daily weigh-ins go up and down. Cut Buddy compares
+  your 7-day average with your plan and tells you where you stand: on track,
+  behind, or losing too fast."
+- **The weekly score (radar):** "Each week, Cut Buddy scores the six areas
+  you picked, like protein, water and logging, so you know what to work on
+  next."
 - **Two screenshots side by side** on desktop, stacked on phones.
 
 ### 5. Safety isn't a setting
@@ -75,18 +75,18 @@ sentences. Sections run in this order.
 The section that sets Cut Buddy apart for parents, coaches and athletic
 trainers. No screenshot; a short list in a card:
 
-- Weight loss is capped at a safe weekly rate, and the plan slows itself if
-  you lose faster.
-- It never plans below your certified minimum weight, or below your resting
-  energy.
-- No dehydration, saunas, spitting, laxatives or fasting to make weight,
-  ever.
-- Your health answers change what you're shown. Someone the app shouldn't
-  show numbers to doesn't see them.
-- Every number comes from a tested nutrition engine. The AI writes words,
-  never numbers.
-- Not medical advice: it points you to a doctor, athletic trainer or
-  registered dietitian.
+- Weight loss is capped at a safe weekly rate. If you lose faster than that,
+  the plan slows down on its own.
+- Your plan never goes below what your body needs at rest, or below your
+  certified minimum weight if your sport sets one.
+- It never suggests unsafe ways to make weight. (Say it this way: the site
+  doesn't list tactics, CLAUDE.md rule 8.)
+- What you tell us about your health shapes what the app shows you. If
+  numbers like calories or weight could do you harm, you won't see them.
+- Every number comes from tested nutrition math, not the AI. Buddy only
+  writes the words.
+- It isn't medical advice. For medical questions, it points you to a doctor,
+  athletic trainer or registered dietitian.
 
 **Only claims the app enforces today.** Check any new line with Ryan before
 it goes up.
@@ -95,8 +95,8 @@ it goes up.
 
 - **Copy:** "See your team at a glance: on track, behind, or losing too
   fast, with a heads-up when someone needs a check-in. Athletes choose what
-  you see, parents approve for under-18s, and every look is shown to the
-  athlete."
+  you see, a parent approves for anyone under 18, and athletes can see each
+  time you look."
 - **Never rank weight on the site,** and don't show a weight leaderboard.
   The app doesn't have one.
 
