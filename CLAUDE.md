@@ -148,9 +148,10 @@ it are in `assets/screens/`, demo data only. This table is the status.
 
 ### Support
 
-- **How to reach us:** **cutbuddyapp@gmail.com** until the domain exists,
-  as plain text with a copy button. The same address goes in the terms, the
-  footer and the policies' contact lines.
+- **How to reach us:** **support@cutbuddyapp.com** (from 24 Oct; Cloudflare
+  Email Routing forwards it to the team inbox), as plain text with a copy
+  button. The same address goes in the terms, the footer and the policies'
+  contact lines.
 - **FAQ:**
   - how do I delete my account (Settings → Privacy and data → Delete my
     account and data; it's immediate and permanent) or export my data (Export
