@@ -104,7 +104,7 @@ it goes up.
 
 The form from "The waitlist endpoint" in CLAUDE.md, once the privacy policy
 that covers it is published on cutbuddyapp.com. Until then, a line instead:
-"Coming soon to iPhone. Questions: cutbuddyapp@gmail.com."
+"Coming soon to iPhone. Questions: support@cutbuddyapp.com."
 
 ### 8. Footer
 
@@ -132,7 +132,7 @@ story around them is told.
 
 | Page | Notes |
 |---|---|
-| `support.html` | Contact: cutbuddyapp@gmail.com until the domain exists. FAQ wording is in the review on PR #1. |
+| `support.html` | Contact: support@cutbuddyapp.com. FAQ wording is in the review on PR #1. |
 | `terms.html` | Draft for counsel, with the red banner. |
 | `privacy.html`, `health-data.html`, `guardians.html` | The text is Ryan's. Restyle with theme.css only. |
 | `approve.html` | Don't edit (CLAUDE.md, rule 6). |
