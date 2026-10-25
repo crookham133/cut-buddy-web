@@ -79,9 +79,8 @@ trainers. No screenshot; a short list in a card:
   the plan slows down on its own.
 - Your plan never goes below what your body needs at rest, or below your
   certified minimum weight if your sport sets one.
-- It never suggests unsafe ways to make weight, like cutting water or
-  skipping meals. (Say it this way: the site doesn't list tactics, CLAUDE.md
-  rule 8.)
+- It never suggests unsafe ways to make weight. (Say it this way: the site
+  doesn't list tactics, CLAUDE.md rule 8.)
 - What you tell us about your health shapes what the app shows you. If
   numbers like calories or weight could do you harm, you won't see them.
 - Every number comes from tested nutrition math, not the AI. Buddy only
