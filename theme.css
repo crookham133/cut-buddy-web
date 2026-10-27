@@ -142,6 +142,28 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 .cb-input:focus { border-color: var(--cb-gold); outline: none; }
 
+/* ---- Forms: the ambassador application (and the waitlist, at launch) ----
+   A label above each field (caption size, muted), the field at body size.
+   The honeypot sits off-screen, not display:none, which bots skip. A form's
+   status line is empty until there's something to say. No red: a form error
+   isn't a safety warning. */
+.cb-form { display: grid; gap: var(--cb-space-md); }
+.cb-field { display: grid; gap: var(--cb-space-xs); font-size: var(--cb-caption-size); color: var(--cb-muted); }
+.cb-field .cb-input { font-size: var(--cb-body-size); color: var(--cb-white); }
+textarea.cb-input { min-height: calc(var(--cb-tap) * 2.5); resize: vertical; line-height: 1.45; }
+.cb-check { display: flex; align-items: center; gap: var(--cb-space-sm); min-height: var(--cb-tap); }
+.cb-check input { width: 22px; height: 22px; margin: 0; accent-color: var(--cb-gold); }
+.cb-trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.cb-status { margin: 0; font-weight: 600; }
+/* A refusal shown under the field it's about (the server's own sentence). */
+.cb-field-error { margin: var(--cb-space-xs) 0 0; font-size: var(--cb-caption-size); font-weight: 600; color: var(--cb-white); }
+.cb-field-wrap { min-width: 0; }
+.cb-input[aria-invalid="true"] { border-color: var(--cb-white); }
+/* A group of fields under one label, like a form's social accounts. */
+.cb-fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: var(--cb-space-md); }
+.cb-fieldset > legend { padding: 0; margin-bottom: var(--cb-space-sm); font-size: var(--cb-caption-size); color: var(--cb-muted); }
+.cb-status:empty { display: none; }
+
 /* ---- Macro bars: an 8px track in the line colour, filled to share eaten ----
    <div class="cb-macro"><span>Protein</span><span>103g left</span>
      <div class="cb-bar protein"><i style="width:40%"></i></div></div> */

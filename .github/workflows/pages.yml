@@ -36,6 +36,7 @@ jobs:
           PAGES: >-
             index.html privacy.html health-data.html guardians.html
             terms.html support.html approve.html join.html 404.html
+            ambassadors.html
           STYLES: theme.css style.css
           # The link preview image and the home-screen icon, at the root
           # where link previews and iOS look for them.

@@ -36,6 +36,9 @@ sentences. Sections run in this order.
   from tested nutrition math, with safety built in."
 - **The button** (gold, one on the page): "Join the waitlist" at launch. Until
   then, the plain text "Coming soon to iPhone", with no button.
+- **Ambassadors:** one line under "Coming soon to iPhone. Questions:
+  support@cutbuddyapp.com": "Apply for ambassadorship →", linking to
+  `ambassadors.html`, styled like the email link (27 Oct, Ryan).
 - **The phone:** `plan.png` (Plan: protein, carbs and fat left, the ring,
   breakfast logged). It's the screen people use every day, and it shows real
   numbers from someone's real day at a glance.
@@ -136,6 +139,7 @@ story around them is told.
 | `terms.html` | Draft for counsel, with the red banner. |
 | `privacy.html`, `health-data.html`, `guardians.html` | The text is Ryan's. Restyle with theme.css only. |
 | `approve.html` | Don't edit (CLAUDE.md, rule 6). |
+| `ambassadors.html` | "Apply to be an ambassador", for athletes and coaches 18+. Fields and errors exactly as `apply_ambassador` in cut-buddy-ai PR #21: first and last name, email, sport, level, an optional weight class, one to three social accounts with follower counts, why (500 characters), 18+; each refusal shown under its field. No photo upload. Linked from every footer and quietly under the hero. Goes live with the policy that covers applications (PR #11). |
 
 ## Writing
 
