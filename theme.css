@@ -155,6 +155,13 @@ textarea.cb-input { min-height: calc(var(--cb-tap) * 2.5); resize: vertical; lin
 .cb-check input { width: 22px; height: 22px; margin: 0; accent-color: var(--cb-gold); }
 .cb-trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .cb-status { margin: 0; font-weight: 600; }
+/* A refusal shown under the field it's about (the server's own sentence). */
+.cb-field-error { margin: var(--cb-space-xs) 0 0; font-size: var(--cb-caption-size); font-weight: 600; color: var(--cb-white); }
+.cb-field-wrap { min-width: 0; }
+.cb-input[aria-invalid="true"] { border-color: var(--cb-white); }
+/* A group of fields under one label, like a form's social accounts. */
+.cb-fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: var(--cb-space-md); }
+.cb-fieldset > legend { padding: 0; margin-bottom: var(--cb-space-sm); font-size: var(--cb-caption-size); color: var(--cb-muted); }
 .cb-status:empty { display: none; }
 /* A quiet text link: muted and underlined, for a secondary path next to the gold button. */
 .cb-quiet { color: var(--cb-muted); text-underline-offset: 3px; }

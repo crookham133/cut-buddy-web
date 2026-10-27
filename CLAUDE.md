@@ -88,7 +88,7 @@ it are in `assets/screens/`, demo data only. This table is the status.
 | Terms of use | `terms.html` | **To write** | Draft for counsel |
 | Support | `support.html` | **To build** | Apple requires a support URL |
 | Guardian approval | `approve.html` | Live, wired to the app | **Don't edit** (see rules) |
-| Ambassador applications | `ambassadors.html` | On a branch until launch | Same launch condition as the waitlist; also needs `apply_ambassador` in cut-buddy-ai |
+| Ambassador applications | `ambassadors.html` | On a branch until launch | Same launch condition as the waitlist; posts to `apply_ambassador` (cut-buddy-ai PR #21), whose description is the contract |
 
 ### Home: hero and waitlist
 
@@ -103,9 +103,11 @@ it are in `assets/screens/`, demo data only. This table is the status.
   - **Fields:** email; first name; "I'm a…" (athlete, coach, parent, other);
     a required "I'm 13 or older" checkbox (Cut Buddy isn't for under-13s).
     All four are required.
-  - **Consent line under the button:** "We'll email you when Cut Buddy
-    launches. Nothing else, and you can unsubscribe anytime," with a link to
-    the privacy policy.
+  - **Consent line under the button:** "We'll email you when your spot
+    opens. Nothing else, and you can unsubscribe anytime," with a link to the
+    privacy policy (27 Oct).
+  - **The submit button is outline, not gold:** the hero's "Request early
+    access" is the one gold button (27 Oct).
   - **Success state:** "You're on the list. We'll email you when your spot
     opens." (early access by invitation, 27 Oct). Show the same message
     whether the address was new or already on the list; the server answers

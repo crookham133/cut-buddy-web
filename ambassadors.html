@@ -2,6 +2,12 @@
 <style>
   /* Ambassador page layout only. Every value comes from theme.css. */
   .apply { gap: var(--cb-space-md); }
+  .pair, .social { display: grid; gap: var(--cb-space-md); }
+  .social + .social { padding-top: var(--cb-space-md); border-top: 1px solid var(--cb-line); }
+  @media (min-width: 600px) {
+    .pair { grid-template-columns: 1fr 1fr; }
+    .social { grid-template-columns: 1fr 1.4fr 1fr; }
+  }
 </style></head><body class="cb-text">
 <header class="cb-wrap cb-header">
   <a class="cb-brand" href="index.html"><img src="assets/logo-mark.png" alt="" width="390" height="427"><span class="cb-wordmark">Cut Buddy</span></a>
@@ -14,22 +20,71 @@
 <div class="cb-card apply">
   <p class="cb-label">Your application</p>
   <form id="apply" class="cb-form" novalidate>
-    <label class="cb-field">Full name <input class="cb-input" name="full_name" autocomplete="name" required maxlength="80"></label>
-    <label class="cb-field">Email <input class="cb-input" name="email" type="email" autocomplete="email" inputmode="email" required></label>
-    <label class="cb-field">I'm a…
-      <select class="cb-input" name="role" required>
-        <option value="" selected disabled>Choose one</option>
-        <option value="athlete">Athlete</option><option value="coach">Coach</option>
-      </select>
-    </label>
-    <label class="cb-field">Sport and level <input class="cb-input" name="sport_level" required maxlength="120" placeholder="For example: judo, national level"></label>
-    <label class="cb-field">Where you post, with follower counts <textarea class="cb-input" name="socials" required maxlength="500" placeholder="For example: Instagram @yourname, 12k"></textarea></label>
-    <label class="cb-field">A few sentences about you (optional) <textarea class="cb-input" name="bio" maxlength="500"></textarea></label>
-    <label class="cb-check"><input name="age" type="checkbox" required> I'm 18 or older</label>
+    <div class="pair">
+      <div class="cb-field-wrap" data-for="invalid_name"><label class="cb-field">First name <input class="cb-input" name="first_name" autocomplete="given-name" required maxlength="60"></label></div>
+      <div class="cb-field-wrap" data-for="invalid_name"><label class="cb-field">Last name <input class="cb-input" name="last_name" autocomplete="family-name" required maxlength="60"></label></div>
+    </div>
+    <p class="cb-field-error" id="err-invalid_name" hidden></p>
+    <div class="cb-field-wrap" data-for="invalid_email"><label class="cb-field">Email <input class="cb-input" name="email" type="email" autocomplete="email" inputmode="email" required></label>
+      <p class="cb-field-error" id="err-invalid_email" hidden></p></div>
+    <div class="pair">
+      <div class="cb-field-wrap" data-for="invalid_sport"><label class="cb-field">Sport <input class="cb-input" name="sport" required maxlength="60" placeholder="For example: judo"></label>
+        <p class="cb-field-error" id="err-invalid_sport" hidden></p></div>
+      <div class="cb-field-wrap" data-for="invalid_level"><label class="cb-field">Level
+        <select class="cb-input" name="level" required>
+          <option value="" selected disabled>Choose one</option>
+          <option value="high_school">High school</option><option value="college">College</option>
+          <option value="club">Club</option><option value="professional">Professional</option><option value="other">Other</option>
+        </select></label>
+        <p class="cb-field-error" id="err-invalid_level" hidden></p></div>
+    </div>
+    <div class="cb-field-wrap" data-for="invalid_weight_class"><label class="cb-field">Weight class, if your sport has them (optional) <input class="cb-input" name="weight_class" maxlength="30" placeholder="For example: 70 kg"></label>
+      <p class="cb-field-error" id="err-invalid_weight_class" hidden></p></div>
+    <fieldset class="cb-fieldset cb-field-wrap" data-for="invalid_socials">
+      <legend>Where you post: one to three accounts, with follower counts</legend>
+      <div class="social" data-social="1">
+        <label class="cb-field">Platform
+          <select class="cb-input" name="platform1" required>
+            <option value="" disabled selected>Choose one</option>
+            <option value="instagram">Instagram</option><option value="tiktok">TikTok</option><option value="x">X</option>
+            <option value="youtube">YouTube</option><option value="other">Other</option>
+          </select>
+        </label>
+        <label class="cb-field">Handle <input class="cb-input" name="handle1" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="61" placeholder="@yourname" required></label>
+        <label class="cb-field">Followers <input class="cb-input" name="followers1" type="number" inputmode="numeric" min="0" max="1000000000" step="1" placeholder="1200" required></label>
+      </div>
+      <div class="social" data-social="2">
+        <label class="cb-field">Platform
+          <select class="cb-input" name="platform2">
+            <option value="" selected>None</option>
+            <option value="instagram">Instagram</option><option value="tiktok">TikTok</option><option value="x">X</option>
+            <option value="youtube">YouTube</option><option value="other">Other</option>
+          </select>
+        </label>
+        <label class="cb-field">Handle <input class="cb-input" name="handle2" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="61" placeholder="@yourname"></label>
+        <label class="cb-field">Followers <input class="cb-input" name="followers2" type="number" inputmode="numeric" min="0" max="1000000000" step="1" placeholder="1200"></label>
+      </div>
+      <div class="social" data-social="3">
+        <label class="cb-field">Platform
+          <select class="cb-input" name="platform3">
+            <option value="" selected>None</option>
+            <option value="instagram">Instagram</option><option value="tiktok">TikTok</option><option value="x">X</option>
+            <option value="youtube">YouTube</option><option value="other">Other</option>
+          </select>
+        </label>
+        <label class="cb-field">Handle <input class="cb-input" name="handle3" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="61" placeholder="@yourname"></label>
+        <label class="cb-field">Followers <input class="cb-input" name="followers3" type="number" inputmode="numeric" min="0" max="1000000000" step="1" placeholder="1200"></label>
+      </div>
+      <p class="cb-field-error" id="err-invalid_socials" hidden></p>
+    </fieldset>
+    <div class="cb-field-wrap" data-for="invalid_why"><label class="cb-field">Why do you want to be a Cut Buddy ambassador? <textarea class="cb-input" name="why" required maxlength="500"></textarea></label>
+      <p class="cb-field-error" id="err-invalid_why" hidden></p></div>
+    <div class="cb-field-wrap" data-for="under_18"><label class="cb-check"><input name="age" type="checkbox" required> I'm 18 or older</label>
+      <p class="cb-field-error" id="err-under_18" hidden></p></div>
     <div class="cb-trap" aria-hidden="true">
       <label>Website <input name="website" tabindex="-1" autocomplete="off"></label>
     </div>
-    <button type="submit" class="cb-btn">Send application</button>
+    <button type="submit" class="cb-btn is-outline">Send application</button>
     <p class="cb-caption">We use this only to review your application. See our <a href="privacy.html">privacy policy</a>.</p>
     <p id="apply-status" class="cb-status" role="status"></p>
   </form>
@@ -42,32 +97,62 @@
   <p>© 2026 Cut Buddy</p>
 </footer>
 <script>
-/* The application posts to apply_ambassador with the site's public key, the
-   same way the waitlist posts to join_waitlist: one JSON body with every key,
-   the honeypot always sent, the server's message shown as is on a refusal.
-   The endpoint must exist in cut-buddy-ai, with this exact body, before this
-   page goes live (see the PR). */
+/* The application posts to apply_ambassador (cut-buddy-ai PR #21, whose
+   description is the contract) with the site's public key, the waitlist's
+   pattern: every key sent every time, the honeypot always sent. A refusal's
+   message is shown as is, under the field its hint names; rate_limited and
+   anything unexpected show under the button. The same thank-you for a new
+   applicant and one who has already applied: the server answers the same. */
 (function () {
   var URL_ = "https://xbbfsizidhtdkhirwvqx.supabase.co/rest/v1/rpc/apply_ambassador";
   var KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhiYmZzaXppZGh0ZGtoaXJ3dnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1Mjg5MjYsImV4cCI6MjEwNjEwNDkyNn0.q8qyZ0KMQ-FtB7YgVzEe4syFeYTT7DtjE6NzoEeleIQ";
+  var FIELD_HINTS = ["invalid_name", "invalid_email", "invalid_sport", "invalid_level", "invalid_weight_class", "invalid_socials", "invalid_why", "under_18"];
   var form = document.getElementById("apply");
+  var status = document.getElementById("apply-status");
+
+  function clearErrors() {
+    FIELD_HINTS.forEach(function (h) { var e = document.getElementById("err-" + h); e.hidden = true; e.textContent = ""; });
+    form.querySelectorAll("[aria-invalid]").forEach(function (el) { el.removeAttribute("aria-invalid"); el.removeAttribute("aria-describedby"); });
+    status.textContent = "";
+  }
+  function showError(hint, message) {
+    var e = document.getElementById("err-" + hint);
+    if (!e) { status.textContent = message; return; }
+    e.textContent = message; e.hidden = false;
+    var fields = form.querySelectorAll('[data-for="' + hint + '"] input, [data-for="' + hint + '"] select, [data-for="' + hint + '"] textarea');
+    fields.forEach(function (f) { f.setAttribute("aria-invalid", "true"); f.setAttribute("aria-describedby", e.id); });
+    if (fields[0]) fields[0].focus();
+  }
+  // Social accounts: the rows with anything in them, 1 to 3. Followers go as a JSON number.
+  function socials(el) {
+    var out = [];
+    [1, 2, 3].forEach(function (n) {
+      var platform = el["platform" + n].value, handle = el["handle" + n].value.trim(), f = el["followers" + n].value.trim();
+      if (!platform && !handle && !f) return;
+      out.push({ platform: platform, handle: handle, followers: f === "" ? null : Number(f) });
+    });
+    return out;
+  }
+
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
-    var el = form.elements, status = document.getElementById("apply-status");
-    var button = form.querySelector("button"); button.disabled = true; status.textContent = "";
+    var el = form.elements, button = form.querySelector("button[type=submit]");
+    clearErrors(); button.disabled = true;
+    var weightClass = el.weight_class.value.trim();
     try {
       var res = await fetch(URL_, {
         method: "POST",
         headers: { apikey: KEY, Authorization: "Bearer " + KEY, "Content-Type": "application/json" },
         body: JSON.stringify({
-          p_full_name: el.full_name.value, p_email: el.email.value, p_role: el.role.value,
-          p_sport_level: el.sport_level.value, p_socials: el.socials.value, p_bio: el.bio.value,
-          p_is_18_or_older: el.age.checked, p_website: el.website.value,
+          p_first_name: el.first_name.value, p_last_name: el.last_name.value, p_email: el.email.value,
+          p_sport: el.sport.value, p_level: el.level.value, p_weight_class: weightClass === "" ? null : weightClass,
+          p_socials: socials(el), p_why: el.why.value, p_is_18_or_older: el.age.checked, p_website: el.website.value,
         }),
       });
       var body = await res.json().catch(function () { return {}; });
       if (res.ok && body.ok) { form.reset(); status.textContent = "Thanks for applying. We'll email you once we've reviewed it."; }
-      else status.textContent = body.message || "Something went wrong. Try again in a minute.";
+      else if (body.message) showError(body.hint, body.message);
+      else status.textContent = "Something went wrong. Try again in a minute.";
     } catch (err) {
       status.textContent = "Something went wrong. Try again in a minute.";
     } finally { button.disabled = false; }

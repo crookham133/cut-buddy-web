@@ -149,7 +149,7 @@ story around them is told.
 | `terms.html` | Draft for counsel, with the red banner. |
 | `privacy.html`, `health-data.html`, `guardians.html` | The text is Ryan's. Restyle with theme.css only. |
 | `approve.html` | Don't edit (CLAUDE.md, rule 6). |
-| `ambassadors.html` | "Apply to be an ambassador", for athletes and coaches 18+. Posts to `apply_ambassador`, the waitlist's pattern (honeypot, the server's message on refusal). No photo upload. Linked from every footer and quietly under the hero. Goes live with the policy that covers applications. |
+| `ambassadors.html` | "Apply to be an ambassador", for athletes and coaches 18+. Fields and errors exactly as `apply_ambassador` in cut-buddy-ai PR #21: first and last name, email, sport, level, an optional weight class, one to three social accounts with follower counts, why (500 characters), 18+; each refusal shown under its field. No photo upload. Linked from every footer and quietly under the hero. Goes live with the policy that covers applications (PR #11). |
 
 ## Writing
 
