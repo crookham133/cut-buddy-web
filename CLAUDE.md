@@ -88,6 +88,7 @@ it are in `assets/screens/`, demo data only. This table is the status.
 | Terms of use | `terms.html` | **To write** | Draft for counsel |
 | Support | `support.html` | **To build** | Apple requires a support URL |
 | Guardian approval | `approve.html` | Live, wired to the app | **Don't edit** (see rules) |
+| Ambassador applications | `ambassadors.html` | On a branch until launch | Same launch condition as the waitlist; also needs `apply_ambassador` in cut-buddy-ai |
 
 ### Home: hero and waitlist
 
@@ -105,9 +106,10 @@ it are in `assets/screens/`, demo data only. This table is the status.
   - **Consent line under the button:** "We'll email you when Cut Buddy
     launches. Nothing else, and you can unsubscribe anytime," with a link to
     the privacy policy.
-  - **Success state:** "You're on the list. We'll email you when Cut Buddy is
-    ready." Show the same message whether the address was new or already on
-    the list; the server answers the same on purpose.
+  - **Success state:** "You're on the list. We'll email you when your spot
+    opens." (early access by invitation, 27 Oct). Show the same message
+    whether the address was new or already on the list; the server answers
+    the same on purpose.
   - **The form goes live together with the published privacy policy, on
     cutbuddyapp.com** (decided 21 Oct). There's no public form before then,
     on GitHub Pages or anywhere else. The policy text that covers the waitlist

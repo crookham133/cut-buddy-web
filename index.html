@@ -14,6 +14,9 @@
   main { overflow-x: clip; }  /* the desktop slides start off-screen; clip, not hidden, so nothing else changes */
   .hero { padding-top: var(--cb-space-sm); position: relative; isolation: isolate; }
   .hero .cb-display .hl { color: var(--cb-gold); }
+  .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cb-space-md) var(--cb-space-lg); }
+  .early { max-width: calc(var(--cb-page) * 0.55); margin-inline: auto; gap: var(--cb-space-md); }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
   .lede { font-size: var(--cb-body-size); color: var(--cb-muted); max-width: 34em; margin: 0; }
   .h2 { font-size: calc(var(--cb-display-size) * 0.62); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
   .pair { display: grid; gap: var(--cb-space-xl); align-items: start; }
@@ -72,7 +75,10 @@
     <div class="cb-stack">
       <h1 class="cb-display" id="hero-heading">Know what to eat, <span class="hl">and when.</span></h1>
       <p class="lede">Cut Buddy builds your meals and water around your training, and changes the plan when your week does. Every number comes from tested nutrition math, with safety built&nbsp;in.</p>
-      <p class="cb-muted">Coming soon to iPhone. Questions: <a class="cb-link" href="mailto:support@cutbuddyapp.com">support@cutbuddyapp.com</a></p>
+      <div class="hero-actions">
+        <a class="cb-btn" href="#early-access">Request early access</a>
+        <a class="cb-quiet" href="ambassadors.html">Athlete or coach? Apply to be an ambassador</a>
+      </div>
     </div>
     <figure class="shot" data-slide="exit">
       <div class="cb-phone"><img src="assets/screens/plan.png" alt="The Plan screen for a sample athlete: protein, carbs and fat left for a hard day, 1,473 calories left, breakfast logged, and 54 of 108 ounces of water." width="804" height="1748"></div>
@@ -129,6 +135,31 @@
   </div>
 </section>
 
+<section class="cb-wrap cb-section" id="early-access" aria-labelledby="early-heading">
+  <div class="cb-card early">
+    <h2 class="h2" id="early-heading">Request early access</h2>
+    <p class="cb-muted">Early access is by invitation. We're letting people in in small groups.</p>
+    <form id="waitlist" class="cb-form" novalidate>
+      <label class="cb-field">First name <input class="cb-input" name="first_name" autocomplete="given-name" required maxlength="60"></label>
+      <label class="cb-field">Email <input class="cb-input" name="email" type="email" autocomplete="email" inputmode="email" required></label>
+      <label class="cb-field">I'm a…
+        <select class="cb-input" name="role" required>
+          <option value="" selected disabled>Choose one</option>
+          <option value="athlete">Athlete</option><option value="coach">Coach</option>
+          <option value="parent">Parent</option><option value="other">Other</option>
+        </select>
+      </label>
+      <label class="cb-check"><input name="age" type="checkbox" required> I'm 13 or older</label>
+      <div class="cb-trap" aria-hidden="true">
+        <label>Website <input name="website" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <button type="submit" class="cb-btn">Request early access</button>
+      <p class="cb-caption">We'll email you when Cut Buddy launches. Nothing else, and you can unsubscribe anytime. See our <a href="privacy.html">privacy policy</a>.</p>
+      <p id="waitlist-status" class="cb-status" role="status"></p>
+    </form>
+  </div>
+</section>
+
 <section class="cb-wrap cb-section" aria-labelledby="safety-heading">
   <div class="cb-stack">
     <h2 class="h2" id="safety-heading">Safety isn't a setting.</h2>
@@ -168,12 +199,13 @@
     <p class="cb-label" id="soon-heading">Coming soon to iPhone</p>
     <p>Born in a wrestling room. Built for every kind of week.</p>
     <p class="cb-muted">Questions: <a class="cb-link" href="mailto:support@cutbuddyapp.com">support@cutbuddyapp.com</a></p>
+    <p><a class="cb-btn is-outline" href="#early-access">Request early access</a></p>
   </div>
 </section>
 
 </main>
 <footer class="cb-wrap cb-footer">
-  <nav aria-label="Policies and support"><a href="privacy.html">Privacy</a><a href="health-data.html">Health data</a><a href="terms.html">Terms</a><a href="support.html">Support</a><a href="guardians.html">Parents</a></nav>
+  <nav aria-label="Policies and support"><a href="privacy.html">Privacy</a><a href="health-data.html">Health data</a><a href="terms.html">Terms</a><a href="support.html">Support</a><a href="guardians.html">Parents</a><a href="ambassadors.html">Ambassadors</a></nav>
   <p>Cut Buddy gives nutrition information, not medical advice. If you need help now:</p>
 <!-- helplines:start (written by scripts/render-helplines.mjs from src/chat/helplines.ts; don't edit by hand) -->
 <ul class="helplines">
@@ -184,6 +216,38 @@
 <!-- helplines:end -->
   <p>© 2026 Cut Buddy</p>
 </footer>
+<script>
+/* The early-access form: posts to join_waitlist (CLAUDE.md, "The waitlist
+   endpoint") with the public key, the only key allowed on the site. The
+   server answers the same for a new and a known address. */
+(function () {
+  var URL_ = "https://xbbfsizidhtdkhirwvqx.supabase.co/rest/v1/rpc/join_waitlist";
+  var KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhiYmZzaXppZGh0ZGtoaXJ3dnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1Mjg5MjYsImV4cCI6MjEwNjEwNDkyNn0.q8qyZ0KMQ-FtB7YgVzEe4syFeYTT7DtjE6NzoEeleIQ";
+  var form = document.getElementById("waitlist");
+  if (!form) return;
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    // form.elements, not form.role: "role" is every element's ARIA role.
+    var el = form.elements, status = document.getElementById("waitlist-status");
+    var button = form.querySelector("button"); button.disabled = true; status.textContent = "";
+    try {
+      var res = await fetch(URL_, {
+        method: "POST",
+        headers: { apikey: KEY, Authorization: "Bearer " + KEY, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          p_email: el.email.value, p_first_name: el.first_name.value, p_role: el.role.value,
+          p_is_13_or_older: el.age.checked, p_website: el.website.value,
+        }),
+      });
+      var body = await res.json().catch(function () { return {}; });
+      if (res.ok && body.ok) { form.reset(); status.textContent = "You're on the list. We'll email you when your spot opens."; }
+      else status.textContent = body.message || "Something went wrong. Try again in a minute.";
+    } catch (err) {
+      status.textContent = "Something went wrong. Try again in a minute.";
+    } finally { button.disabled = false; }
+  });
+})();
+</script>
 <script>
 /* The home page's motion: the sticky bar's line, the launch rain behind the
    hero, and (wide screens only) the screenshots sliding in. No libraries,

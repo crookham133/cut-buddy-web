@@ -1,0 +1,77 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="color-scheme" content="dark"><style>html{background:#000;color-scheme:dark}</style><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex, nofollow"><meta name="description" content="Athletes and coaches, 18 and older: apply to be a Cut Buddy ambassador."><link rel="icon" href="assets/app-icon-1024.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="stylesheet" href="theme.css"><title>Apply to be a Cut Buddy ambassador</title>
+<style>
+  /* Ambassador page layout only. Every value comes from theme.css. */
+  .apply { gap: var(--cb-space-md); }
+</style></head><body class="cb-text">
+<header class="cb-wrap cb-header">
+  <a class="cb-brand" href="index.html"><img src="assets/logo-mark.png" alt="" width="390" height="427"><span class="cb-wordmark">Cut Buddy</span></a>
+</header>
+<main>
+<h1>Apply to be an ambassador</h1>
+<p>Cut Buddy ambassadors are athletes and coaches, 18 and older, who share how they eat and help the right people find the app.</p>
+<p class="cb-muted">Tell us about yourself. We read every application, and before anyone is approved we confirm that the accounts they list are really theirs.</p>
+
+<div class="cb-card apply">
+  <p class="cb-label">Your application</p>
+  <form id="apply" class="cb-form" novalidate>
+    <label class="cb-field">Full name <input class="cb-input" name="full_name" autocomplete="name" required maxlength="80"></label>
+    <label class="cb-field">Email <input class="cb-input" name="email" type="email" autocomplete="email" inputmode="email" required></label>
+    <label class="cb-field">I'm a…
+      <select class="cb-input" name="role" required>
+        <option value="" selected disabled>Choose one</option>
+        <option value="athlete">Athlete</option><option value="coach">Coach</option>
+      </select>
+    </label>
+    <label class="cb-field">Sport and level <input class="cb-input" name="sport_level" required maxlength="120" placeholder="For example: judo, national level"></label>
+    <label class="cb-field">Where you post, with follower counts <textarea class="cb-input" name="socials" required maxlength="500" placeholder="For example: Instagram @yourname, 12k"></textarea></label>
+    <label class="cb-field">A few sentences about you (optional) <textarea class="cb-input" name="bio" maxlength="500"></textarea></label>
+    <label class="cb-check"><input name="age" type="checkbox" required> I'm 18 or older</label>
+    <div class="cb-trap" aria-hidden="true">
+      <label>Website <input name="website" tabindex="-1" autocomplete="off"></label>
+    </div>
+    <button type="submit" class="cb-btn">Send application</button>
+    <p class="cb-caption">We use this only to review your application. See our <a href="privacy.html">privacy policy</a>.</p>
+    <p id="apply-status" class="cb-status" role="status"></p>
+  </form>
+</div>
+<p class="cb-muted">Questions: <a class="cb-link" href="mailto:support@cutbuddyapp.com">support@cutbuddyapp.com</a></p>
+</main>
+<footer class="cb-wrap cb-footer">
+  <nav aria-label="Policies and support"><a href="privacy.html">Privacy</a><a href="health-data.html">Health data</a><a href="terms.html">Terms</a><a href="support.html">Support</a><a href="guardians.html">Parents</a><a href="ambassadors.html" aria-current="page">Ambassadors</a></nav>
+  <p>Cut Buddy gives nutrition information, not medical advice.</p>
+  <p>© 2026 Cut Buddy</p>
+</footer>
+<script>
+/* The application posts to apply_ambassador with the site's public key, the
+   same way the waitlist posts to join_waitlist: one JSON body with every key,
+   the honeypot always sent, the server's message shown as is on a refusal.
+   The endpoint must exist in cut-buddy-ai, with this exact body, before this
+   page goes live (see the PR). */
+(function () {
+  var URL_ = "https://xbbfsizidhtdkhirwvqx.supabase.co/rest/v1/rpc/apply_ambassador";
+  var KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhiYmZzaXppZGh0ZGtoaXJ3dnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1Mjg5MjYsImV4cCI6MjEwNjEwNDkyNn0.q8qyZ0KMQ-FtB7YgVzEe4syFeYTT7DtjE6NzoEeleIQ";
+  var form = document.getElementById("apply");
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var el = form.elements, status = document.getElementById("apply-status");
+    var button = form.querySelector("button"); button.disabled = true; status.textContent = "";
+    try {
+      var res = await fetch(URL_, {
+        method: "POST",
+        headers: { apikey: KEY, Authorization: "Bearer " + KEY, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          p_full_name: el.full_name.value, p_email: el.email.value, p_role: el.role.value,
+          p_sport_level: el.sport_level.value, p_socials: el.socials.value, p_bio: el.bio.value,
+          p_is_18_or_older: el.age.checked, p_website: el.website.value,
+        }),
+      });
+      var body = await res.json().catch(function () { return {}; });
+      if (res.ok && body.ok) { form.reset(); status.textContent = "Thanks for applying. We'll email you once we've reviewed it."; }
+      else status.textContent = body.message || "Something went wrong. Try again in a minute.";
+    } catch (err) {
+      status.textContent = "Something went wrong. Try again in a minute.";
+    } finally { button.disabled = false; }
+  });
+})();
+</script>
+</body></html>
