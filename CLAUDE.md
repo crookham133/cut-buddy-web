@@ -88,6 +88,7 @@ it are in `assets/screens/`, demo data only. This table is the status.
 | Terms of use | `terms.html` | Live draft | Draft for counsel, with the draft banner |
 | Support | `support.html` | **To build** | Apple requires a support URL |
 | Guardian approval | `approve.html` | Live, wired to the app | **Don't edit** (see rules) |
+| Ambassador applications | `ambassadors.html` | Live (27 Oct) | Linked from the hero, under the support email. Posts to `apply_ambassador` (cut-buddy-ai PR #21), whose description is the contract; covered by `privacy.html` |
 
 ### Home: hero and waitlist
 
