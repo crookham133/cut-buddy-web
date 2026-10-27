@@ -34,10 +34,8 @@ sentences. Sections run in this order.
 - **Under it:** "Cut Buddy builds your meals and water around your
   training, and changes the plan when your week does. Every number comes
   from tested nutrition math, with safety built in."
-- **The button** (gold, the one on the hero): "Request early access", which
-  scrolls to the form (section 7). Under it, a quiet text link: "Athlete or
-  coach? Apply to be an ambassador" (`ambassadors.html`). Until launch, the
-  plain text "Coming soon to iPhone", with no button.
+- **The button** (gold, one on the page): "Join the waitlist" at launch. Until
+  then, the plain text "Coming soon to iPhone", with no button.
 - **The phone:** `plan.png` (Plan: protein, carbs and fat left, the ring,
   breakfast logged). It's the screen people use every day, and it shows real
   numbers from someone's real day at a glance.
@@ -102,22 +100,11 @@ it goes up.
 - **Never rank weight on the site,** and don't show a weight leaderboard.
   The app doesn't have one.
 
-### 7. Early access (at launch only)
+### 7. Waitlist (at launch only)
 
-Right after the "what it does" sections (2–4), before safety. The form from
-"The waitlist endpoint" in CLAUDE.md, once the privacy policy that covers it
-is published on cutbuddyapp.com:
-
-- **Heading and button:** "Request early access".
-- **Copy:** "Early access is by invitation. We're letting people in in small
-  groups."
-- **Success:** "You're on the list. We'll email you when your spot opens."
-- **A compact repeat** near the bottom: an outline "Request early access"
-  button in the "Coming soon" card, back to the form.
-
-Until then, a line instead: "Coming soon to iPhone. Questions:
-support@cutbuddyapp.com." (The form lives on the
-`claude/waitlist-and-ambassadors` branch until launch.)
+The form from "The waitlist endpoint" in CLAUDE.md, once the privacy policy
+that covers it is published on cutbuddyapp.com. Until then, a line instead:
+"Coming soon to iPhone. Questions: support@cutbuddyapp.com."
 
 ### 8. Footer
 
@@ -149,7 +136,6 @@ story around them is told.
 | `terms.html` | Draft for counsel, with the red banner. |
 | `privacy.html`, `health-data.html`, `guardians.html` | The text is Ryan's. Restyle with theme.css only. |
 | `approve.html` | Don't edit (CLAUDE.md, rule 6). |
-| `ambassadors.html` | "Apply to be an ambassador", for athletes and coaches 18+. Fields and errors exactly as `apply_ambassador` in cut-buddy-ai PR #21: first and last name, email, sport, level, an optional weight class, one to three social accounts with follower counts, why (500 characters), 18+; each refusal shown under its field. No photo upload. Linked from every footer and quietly under the hero. Goes live with the policy that covers applications (PR #11). |
 
 ## Writing
 

@@ -77,10 +77,8 @@ back the same way.
 - `main`: what's live. Today that's the privacy policy (`index.html` and its new
   twin `privacy.html`), the consumer health data policy, the page for parents,
   and the guardian approval page.
-- `policy-drafts`: the newest policy text, copied from cut-buddy-ai on 20 Oct.
-  **Not published.** Ryan is holding it until the domain exists. Start policy
-  work from this branch, not from `main`, and don't merge it to `main` until
-  Ryan says.
+- `policy-drafts`, `policy-updates-oct22`: superseded. Their policy text was
+  brought onto `main` on 24 Oct. Start policy work from `main`.
 
 ## Checks that run on this site
 

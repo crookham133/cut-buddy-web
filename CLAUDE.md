@@ -82,13 +82,12 @@ it are in `assets/screens/`, demo data only. This table is the status.
 | Page | File | Status | Notes |
 |---|---|---|---|
 | Home: hero and waitlist | `index.html` | **To build** | Replaces the privacy policy currently at `index.html` (a copy is now at `privacy.html`) |
-| Privacy policy | `privacy.html` | Live draft | Newer text on the `policy-drafts` branch |
+| Privacy policy | `privacy.html` | Live draft | Text of 24 Oct (ambassador applications added 27 Oct), with the draft banner |
 | Consumer health data policy | `health-data.html` | Live draft | Washington, Nevada and similar laws |
 | For parents and guardians | `guardians.html` | Live draft | Teens 13–17 |
-| Terms of use | `terms.html` | **To write** | Draft for counsel |
+| Terms of use | `terms.html` | Live draft | Draft for counsel, with the draft banner |
 | Support | `support.html` | **To build** | Apple requires a support URL |
 | Guardian approval | `approve.html` | Live, wired to the app | **Don't edit** (see rules) |
-| Ambassador applications | `ambassadors.html` | On a branch until launch | Same launch condition as the waitlist; posts to `apply_ambassador` (cut-buddy-ai PR #21), whose description is the contract |
 
 ### Home: hero and waitlist
 
@@ -103,15 +102,12 @@ it are in `assets/screens/`, demo data only. This table is the status.
   - **Fields:** email; first name; "I'm a…" (athlete, coach, parent, other);
     a required "I'm 13 or older" checkbox (Cut Buddy isn't for under-13s).
     All four are required.
-  - **Consent line under the button:** "We'll email you when your spot
-    opens. Nothing else, and you can unsubscribe anytime," with a link to the
-    privacy policy (27 Oct).
-  - **The submit button is outline, not gold:** the hero's "Request early
-    access" is the one gold button (27 Oct).
-  - **Success state:** "You're on the list. We'll email you when your spot
-    opens." (early access by invitation, 27 Oct). Show the same message
-    whether the address was new or already on the list; the server answers
-    the same on purpose.
+  - **Consent line under the button:** "We'll email you when Cut Buddy
+    launches. Nothing else, and you can unsubscribe anytime," with a link to
+    the privacy policy.
+  - **Success state:** "You're on the list. We'll email you when Cut Buddy is
+    ready." Show the same message whether the address was new or already on
+    the list; the server answers the same on purpose.
   - **The form goes live together with the published privacy policy, on
     cutbuddyapp.com** (decided 21 Oct). There's no public form before then,
     on GitHub Pages or anywhere else. The policy text that covers the waitlist
@@ -126,19 +122,20 @@ it are in `assets/screens/`, demo data only. This table is the status.
 - **Footer:**
   - links to privacy, health data, parents, terms and support;
   - "Cut Buddy gives nutrition information, not medical advice";
-  - © the company. Its name is still to come: leave the placeholder
-    `<span class="ph">company name to come</span>`.
+  - "© 2026 Cut Buddy App LLC". The company is Cut Buddy App LLC; use that
+    name wherever a page names who runs Cut Buddy.
 
 ### Policies (privacy, health data, parents, terms)
 
 - **Drafts awaiting counsel.** Keep the red "draft" banner until Ryan says
-  counsel has approved them.
+  counsel has approved them (Ryan, 27 Oct, reversing the 24 Oct "no banner").
+  When a page's text changes, update its "Last updated" date.
 - **The words must match what the app actually does.** Don't change what a
   policy says the app collects, shares or keeps. Layout, typography and
   navigation are yours; substance is Ryan's.
 - **The source of the policy text** is `docs/legal/drafts-for-counsel.html` in
-  cut-buddy-ai. The newest page versions are on this repo's `policy-drafts`
-  branch, unpublished until the domain exists.
+  cut-buddy-ai. The pages on `main` carry the newest text (24 Oct); the
+  `policy-drafts` and `policy-updates-oct22` branches are superseded.
 - **Terms of use:** start from a short plain-language structure:
   - who can use it (13+, under-18s with a guardian's OK for teams);
   - not medical advice;
@@ -332,6 +329,12 @@ by Ryan's server.
    take screenshots.
 3. End every task with a report: what changed, screenshots, anything that
    failed, open questions, and the recommended next step.
-4. Commit with a clear message after Jake approves, then push.
+4. Merging: Claude Code merges its own PRs once CI is green and, for anything
+   touching a screen, navigation or a user flow, the simulator check passes.
+   Ryan does not merge by hand. Ask Ryan for a one-word yes in chat before:
+   merging to cut-buddy-web main (it goes live), applying a migration or any
+   production database change (always after a backup), deploying an edge
+   function, running the paid exam, and anything with billing or legal
+   impact. Report every merge with its commit hash.
 5. Never touch cut-buddy-ai, never add secrets, and ask before installing
    anything new.
