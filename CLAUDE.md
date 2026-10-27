@@ -82,10 +82,10 @@ it are in `assets/screens/`, demo data only. This table is the status.
 | Page | File | Status | Notes |
 |---|---|---|---|
 | Home: hero and waitlist | `index.html` | **To build** | Replaces the privacy policy currently at `index.html` (a copy is now at `privacy.html`) |
-| Privacy policy | `privacy.html` | Live | Text of 24 Oct; no draft banner (Ryan, 24 Oct) |
-| Consumer health data policy | `health-data.html` | Live | Washington, Nevada and similar laws |
-| For parents and guardians | `guardians.html` | Live | Teens 13–17 |
-| Terms of use | `terms.html` | Live | For counsel to review; no draft banner |
+| Privacy policy | `privacy.html` | Live draft | Text of 24 Oct (ambassador applications added 27 Oct), with the draft banner |
+| Consumer health data policy | `health-data.html` | Live draft | Washington, Nevada and similar laws |
+| For parents and guardians | `guardians.html` | Live draft | Teens 13–17 |
+| Terms of use | `terms.html` | Live draft | Draft for counsel, with the draft banner |
 | Support | `support.html` | **To build** | Apple requires a support URL |
 | Guardian approval | `approve.html` | Live, wired to the app | **Don't edit** (see rules) |
 
@@ -127,10 +127,9 @@ it are in `assets/screens/`, demo data only. This table is the status.
 
 ### Policies (privacy, health data, parents, terms)
 
-- **No draft banner.** Ryan decided on 24 Oct that the policies and the
-  terms carry no "Draft, under legal review" banner. Don't add one back.
-  Counsel may still revise the text; when a page's text changes, update its
-  "Last updated" date.
+- **Drafts awaiting counsel.** Keep the red "draft" banner until Ryan says
+  counsel has approved them (Ryan, 27 Oct, reversing the 24 Oct "no banner").
+  When a page's text changes, update its "Last updated" date.
 - **The words must match what the app actually does.** Don't change what a
   policy says the app collects, shares or keeps. Layout, typography and
   navigation are yours; substance is Ryan's.
@@ -146,7 +145,7 @@ it are in `assets/screens/`, demo data only. This table is the status.
   - ending your account;
   - contact.
 
-  Counsel reviews it; the page carries no draft banner.
+  Mark it a draft for counsel.
 
 ### Support
 
@@ -300,6 +299,9 @@ by Ryan's server.
 8. **Safety in the marketing copy:**
    - No weight-cutting tactics, and no "make weight fast", "drop X lb in a
      week", dehydration, sauna, spitting, laxatives or fasting language.
+     That includes saying what the app won't do: the safety list promises
+     "It never suggests unsafe ways to make weight" rather than naming
+     tactics (Ryan, 25 Oct).
    - No before-and-after bodies and no weight numbers as selling points.
    - No medical claims (treats, cures, prevents).
    - No university logos, uniforms or marks.
@@ -308,8 +310,8 @@ by Ryan's server.
      their written OK, through Ryan.
    - App screenshots come only from the demo team: fictional people with
      plain names and fake data, never a real account. Ask Ryan for them.
-   - Every phone mockup carries a small "Sample data" caption
-     (`.cb-sample` in theme.css).
+   - No "Sample data" caption is needed under screenshots (Ryan, 24 Oct).
+     The demo-accounts-only rule above still holds.
 10. **Pre-launch:** pages carry `<meta name="robots" content="noindex, nofollow">`.
     Keep it until Ryan says launch.
 11. **Build quality:**
