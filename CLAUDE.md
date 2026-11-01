@@ -167,6 +167,7 @@ it are in `assets/screens/`, demo data only. This table is the status.
     back (the wording is in the review on PR #1);
   - subscriptions: prices, the trial, how to cancel each kind, refunds (31 Oct).
 - **`subscribed.html`** is where Stripe's checkout and billing pages return. The app's server names it; keep the path.
+- **No checkout and no sign-in on the website** (Ryan, 31 Oct). The site tells people to subscribe in the app; checkout starts there.
 - **The helplines block** (below), under "If you need help now".
 
 ## The waitlist endpoint
