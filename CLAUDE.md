@@ -26,7 +26,7 @@ or move them. Setup, preview and publishing are in `START-HERE.md`.
   wrestling-only or weight-cutting app.
 - **Not medical advice.** It points medical questions to a doctor, athletic
   trainer or registered dietitian.
-- Status: pre-launch (TestFlight next). No public pricing yet.
+- Status: pre-launch (TestFlight next). Pricing is set (Ryan, 31 Oct): Pro $9.99 a month or $59.99 a year, a 7-day Pro trial for every new account, and a free plan. Subscriptions are sold through the App Store and on the web through Stripe.
 
 ## Brand
 
@@ -140,7 +140,7 @@ it are in `assets/screens/`, demo data only. This table is the status.
 - **Terms of use:** start from a short plain-language structure:
   - who can use it (13+, under-18s with a guardian's OK for teams);
   - not medical advice;
-  - subscriptions and cancellation (placeholder until pricing is final);
+  - subscriptions, cancellation and refunds (filled 31 Oct; draft for counsel);
   - acceptable use;
   - AI answers can be wrong;
   - ending your account;
@@ -165,7 +165,8 @@ it are in `assets/screens/`, demo data only. This table is the status.
   - I'm a parent, what does my teen share (link to `guardians.html`);
   - a new phone or a reinstall: sign in with the same account and it comes
     back (the wording is in the review on PR #1);
-  - subscriptions: a placeholder until billing exists.
+  - subscriptions: prices, the trial, how to cancel each kind, refunds (31 Oct).
+- **`subscribed.html`** is where Stripe's checkout and billing pages return. The app's server names it; keep the path.
 - **The helplines block** (below), under "If you need help now".
 
 ## The waitlist endpoint
