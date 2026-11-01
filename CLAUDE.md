@@ -82,10 +82,10 @@ it are in `assets/screens/`, demo data only. This table is the status.
 | Page | File | Status | Notes |
 |---|---|---|---|
 | Home: hero and waitlist | `index.html` | **To build** | Replaces the privacy policy currently at `index.html` (a copy is now at `privacy.html`) |
-| Privacy policy | `privacy.html` | Live draft | Text of 24 Oct (ambassador applications added 27 Oct), with the draft banner |
+| Privacy policy | `privacy.html` | Live draft | Text of 24 Oct (ambassador applications added 27 Oct) |
 | Consumer health data policy | `health-data.html` | Live draft | Washington, Nevada and similar laws |
 | For parents and guardians | `guardians.html` | Live draft | Teens 13–17 |
-| Terms of use | `terms.html` | Live draft | Draft for counsel, with the draft banner |
+| Terms of use | `terms.html` | Live draft | Draft for counsel |
 | Support | `support.html` | **To build** | Apple requires a support URL |
 | Guardian approval | `approve.html` | Live, wired to the app | **Don't edit** (see rules) |
 | Ambassador applications | `ambassadors.html` | Live (27 Oct) | Linked from the hero, under the support email. Posts to `apply_ambassador` (cut-buddy-ai PR #21), whose description is the contract; covered by `privacy.html` |
@@ -128,9 +128,10 @@ it are in `assets/screens/`, demo data only. This table is the status.
 
 ### Policies (privacy, health data, parents, terms)
 
-- **Drafts awaiting counsel.** Keep the red "draft" banner until Ryan says
-  counsel has approved them (Ryan, 27 Oct, reversing the 24 Oct "no banner").
-  When a page's text changes, update its "Last updated" date.
+- **Drafts awaiting counsel, without a banner.** The red "draft" banners came
+  off on 31 Oct (Ryan, reversing his 27 Oct decision). Counsel still reviews
+  the text before launch; that hasn't changed. Each page keeps its "Last
+  updated" line: when a page's text changes, update its date.
 - **The words must match what the app actually does.** Don't change what a
   policy says the app collects, shares or keeps. Layout, typography and
   navigation are yours; substance is Ryan's.
@@ -146,7 +147,23 @@ it are in `assets/screens/`, demo data only. This table is the status.
   - ending your account;
   - contact.
 
-  Mark it a draft for counsel.
+  It's a draft for counsel (no banner since 31 Oct).
+
+### One header on every page (31 Oct, Ryan)
+
+- The bar from the home page (logo, "CUT BUDDY", "Coming soon") is on every
+  page, sticky at the top: `.cb-topbar` > `header.cb-wrap.cb-header`, styled
+  once in `theme.css`, with `assets/site.js` loaded right after it (the line
+  under it on scroll, and the wordmark's decode). Copy the markup exactly;
+  don't restyle it per page.
+- The logo and wordmark link to `index.html`. The wordmark decodes only there,
+  on load, because `index.html`'s `<head>` asks for it (`cb-wm-wait`) unless
+  the visitor has reduced motion on.
+- Header and footer are the same width on every page (`--cb-page`); text
+  pages narrow only their `main`. `scroll-padding-top` keeps a jumped-to
+  heading clear of the bar.
+- `approve.html` (the guardian approval page) has no site header on purpose:
+  it's a one-task page reached from an email.
 
 ### Support
 

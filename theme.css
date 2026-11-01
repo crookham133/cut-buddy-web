@@ -252,12 +252,14 @@ textarea.cb-input { min-height: calc(var(--cb-tap) * 2.5); resize: vertical; lin
   text-align: center; letter-spacing: 0; color: var(--cb-gold);
 }
 
-/* ---- Sticky top bar: black, with a line under it once the page has scrolled ---- */
+/* ---- Sticky top bar, on every page (31 Oct, Ryan): black, with a line under it
+   once the page has scrolled (assets/site.js). The same markup everywhere; a
+   link that jumps to a heading lands below it, not under it. ---- */
+html { scroll-padding-top: calc(var(--cb-tap) + var(--cb-space-md) * 2 + var(--cb-space-sm)); }
 .cb-topbar { position: sticky; top: 0; z-index: 10; background: var(--cb-black); border-bottom: 1px solid transparent; transition: border-color 0.2s ease; }
 .cb-topbar.is-scrolled { border-bottom-color: var(--cb-line); }
 
 /* ---- Legal pages ---- */
-.cb-draft { border: 1.5px solid var(--cb-alert); color: var(--cb-alert); border-radius: var(--cb-radius-sm); padding: 10px 14px; font-size: 14px; }
 .ph { background: var(--cb-surface); border: 1px dashed var(--cb-muted); border-radius: 4px; padding: 0 0.3em; }
 
 /* ---- Wordmark: "CUT BUDDY" in Space Grotesk 600, as the launch animation sets it
@@ -273,7 +275,9 @@ textarea.cb-input { min-height: calc(var(--cb-tap) * 2.5); resize: vertical; lin
 .cb-wordmark { font-family: var(--cb-wordmark-font); font-weight: 600; letter-spacing: 0.29em; text-transform: uppercase; margin-right: -0.29em; }  /* no tracking after the last letter */
 
 /* ---- Site chrome, built from the tokens above ---- */
-.cb-header { display: flex; align-items: center; justify-content: space-between; gap: var(--cb-space-md); padding-block: var(--cb-space-md); }
+.cb-header { display: flex; align-items: center; justify-content: space-between; gap: var(--cb-space-sm); padding-block: var(--cb-space-md); flex-wrap: nowrap; }
+.cb-header .cb-pill { flex: none; white-space: nowrap; }
+.cb-brand { flex: none; }
 .cb-brand { display: inline-flex; align-items: center; gap: var(--cb-space-sm); min-height: var(--cb-tap); color: var(--cb-white); text-decoration: none; }
 .cb-brand img { width: calc(var(--cb-space-lg) + var(--cb-space-xs)); height: auto; }
 .cb-section { padding-block: var(--cb-space-xl); }
@@ -289,17 +293,13 @@ textarea.cb-input { min-height: calc(var(--cb-tap) * 2.5); resize: vertical; lin
 .cb-footer ul { margin: 0; padding-left: var(--cb-space-md); }
 
 /* ---- Text pages (support, terms, the policies) ----
-   <body class="cb-text">. The policy pages' own classes (.mark, .draft, .updated,
+   <body class="cb-text">. The policy pages' own classes (.updated,
    .short) are styled here so their HTML, which is Ryan's, stays as written. */
 .cb-text main { max-width: calc(var(--cb-page) * 0.6); margin: 0 auto; padding: var(--cb-space-md) var(--cb-space-md) var(--cb-space-xl); line-height: 1.6; }
-.cb-text .cb-wrap { max-width: calc(var(--cb-page) * 0.6); }
 .cb-text h1 { font-size: var(--cb-key-size); font-weight: 700; line-height: 1.15; margin: var(--cb-space-md) 0 var(--cb-space-sm); text-wrap: balance; }
 .cb-text h2 { font-size: var(--cb-title-size); font-weight: 600; line-height: 1.25; margin: var(--cb-space-xl) 0 var(--cb-space-sm); text-wrap: balance; }
 .cb-text h3 { font-size: var(--cb-body-size); font-weight: 700; margin: 0; }
 .cb-text li { margin-block: var(--cb-space-xs); }
-.cb-text .mark { display: flex; align-items: center; gap: var(--cb-space-sm); font-family: var(--cb-wordmark-font); font-weight: 600; letter-spacing: 0.29em; text-transform: uppercase; margin-bottom: var(--cb-space-lg); }
-.cb-text .mark span { width: calc(var(--cb-space-lg) + var(--cb-space-xs)); aspect-ratio: 390 / 427; background: url("assets/logo-mark.png") center / contain no-repeat; }
-.cb-text .draft { border: 1.5px solid var(--cb-alert); color: var(--cb-alert); border-radius: var(--cb-radius-sm); padding: var(--cb-space-sm) var(--cb-space-md); font-size: var(--cb-caption-size); margin-bottom: var(--cb-space-md); }
 .cb-text .updated { color: var(--cb-muted); font-size: var(--cb-caption-size); }
 .cb-text .short { background: var(--cb-surface); border: 1px solid var(--cb-line); border-radius: var(--cb-radius-card); padding: var(--cb-space-md); }
 .cb-text .short h2 { margin-top: 0; font-size: var(--cb-label-size); font-weight: 700; letter-spacing: var(--cb-label-tracking); text-transform: uppercase; color: var(--cb-muted); }
