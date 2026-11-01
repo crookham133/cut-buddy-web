@@ -349,12 +349,14 @@ by Ryan's server.
    take screenshots.
 3. End every task with a report: what changed, screenshots, anything that
    failed, open questions, and the recommended next step.
-4. Merging: Claude Code merges its own PRs once CI is green and, for anything
-   touching a screen, navigation or a user flow, the simulator check passes.
-   Ryan does not merge by hand. Ask Ryan for a one-word yes in chat before:
-   merging to cut-buddy-web main (it goes live), applying a migration or any
-   production database change (always after a backup), deploying an edge
-   function, running the paid exam, and anything with billing or legal
-   impact. Report every merge with its commit hash.
+4. Merging: Claude Code merges its own PRs; Ryan does not merge by hand.
+   Report every merge with its commit hash. A prompt Ryan pastes is his yes
+   for everything it asks for, including merging to main, which goes live
+   (31 Oct, Ryan). Do the work, check it (the site check, and screenshots at
+   desktop and 390 px for anything visible), then merge without asking again.
+   Stop and ask only when a check fails, or for something the prompt didn't
+   ask for that is a deploy, a migration or production database change, the
+   paid exam, or has billing or legal impact. Backups before any database
+   change still happen every time.
 5. Never touch cut-buddy-ai, never add secrets, and ask before installing
    anything new.
