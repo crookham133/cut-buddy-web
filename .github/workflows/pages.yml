@@ -36,7 +36,7 @@ jobs:
           PAGES: >-
             index.html privacy.html health-data.html guardians.html
             terms.html support.html approve.html join.html 404.html
-            ambassadors.html
+            ambassadors.html subscribed.html
           STYLES: theme.css style.css
           # The link preview image and the home-screen icon, at the root
           # where link previews and iOS look for them.
@@ -60,6 +60,9 @@ jobs:
           while IFS= read -r f; do
             case "$f" in
               _site/CNAME|*.html|*.css|*.png|*.jpg|*.jpeg|*.webp|*.svg|*.ico|*.ttf|*.woff|*.woff2|*.txt) ;;
+              # The one script of the site's own (the bar's line and the wordmark
+              # decode, 31 Oct), by name: any other .js is still refused.
+              _site/assets/site.js) ;;
               *) bad="$bad $f" ;;
             esac
           done < <(find _site -type f)
