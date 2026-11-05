@@ -4,8 +4,8 @@
   .split { display: grid; gap: var(--cb-space-xl); align-items: center; }
   .shot { margin: 0; display: grid; justify-items: center; }
   .shot .cb-phone { justify-self: center; }
-  /* 804 px crops on wide screens: the image at most 402 px wide (2x), so it's never
-     upscaled; the card's padding and border go on top. */
+  /* Crops on wide screens: the image at most 402 px wide (3x for the 1206 px
+     captures), so it's never upscaled; the card's padding and border go on top. */
   .crop { margin: 0; width: min(100%, calc(402px + 2 * var(--cb-space-md) + 2px)); justify-self: center; }
   .crop img { display: block; width: 100%; height: auto; border-radius: var(--cb-radius-sm); }
   .chart { margin: 0; }
@@ -17,7 +17,6 @@
   .h2 { font-size: calc(var(--cb-display-size) * 0.62); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
   .pair { display: grid; gap: var(--cb-space-xl); align-items: start; }
   @media (max-width: 768px) { .crop { width: min(100%, calc(var(--cb-page) * 0.4)); } }  /* phones: as the live site */
-  .crop.crop-radar { width: min(100%, calc(366px + 2 * var(--cb-space-md) + 2px)); }  /* 732 px wide: 366 at 2x */
   @media (min-width: 900px) {
     .split { grid-template-columns: 1fr 1fr; gap: calc(var(--cb-space-xl) * 2); }
     .split.flip > :first-child { order: 2; }
@@ -42,7 +41,7 @@
         <a class="cb-link" href="ambassadors.html">Apply for ambassadorship →</a></p>
     </div>
     <figure class="shot" data-slide="exit">
-      <div class="cb-phone"><img src="assets/screens/plan.png" alt="The Plan screen for a sample athlete: protein, carbs and fat left for a hard day, 1,473 calories left, breakfast logged, and 54 of 108 ounces of water." width="804" height="1748"></div>
+      <div class="cb-phone"><img src="assets/screens/plan.png" alt="The Plan screen for a sample athlete: the week ahead, today's breakfast logged (eggs, toast and a banana, 352 of 2,460 calories), water, the grocery list and today's planned meals." width="1206" height="2622"></div>
     </figure>
   </div>
 </section>
@@ -65,12 +64,15 @@
       <h2 class="h2" id="log-heading">Log it by saying it.</h2>
       <div class="cb-card">
         <p class="cb-label">Talk to Buddy</p>
-        <p>Tell Buddy what you ate or drank, in your own words. You see exactly what it heard and tap Log it.</p>
+        <p>Tell Buddy what you ate or drank, in your own words, typed or out loud. You see exactly what it heard and tap to log it.</p>
         <p class="cb-muted">Nothing is logged until you confirm.</p>
       </div>
+      <figure class="crop cb-card" data-slide="left">
+        <img src="assets/screens/chat-confirm.png" alt="Buddy chat: someone typed &quot;Had a chicken bowl with rice and black beans for lunch&quot;. Buddy answers with the protein so far and what's still to go, and asks them to check the card and tap Log all. Below it: Logged 3 items to lunch." width="1206" height="760" loading="lazy" decoding="async">
+      </figure>
     </div>
-    <figure class="crop cb-card" data-slide="right">
-      <img src="assets/screens/chat-confirm.png" alt="Buddy chat: someone typed &quot;Drank 20 oz&quot;, and Buddy answers &quot;Here's what I heard, check it and I'll log it&quot; with a Log this? card for 20 ounces of water, a Log it button, Edit and Not that." width="804" height="600" loading="lazy" decoding="async">
+    <figure class="shot" data-slide="right">
+      <div class="cb-phone"><img src="assets/screens/voice-mode.png" alt="Voice mode at the end of a conversation: Buddy says &quot;Here's what I've got: your lunch. Tap Log all to save it.&quot; above one card, a chicken bowl with rice and black beans, with Log all and Change." width="1206" height="2622" loading="lazy" decoding="async"></div>
     </figure>
   </div>
 </section>
@@ -87,8 +89,8 @@
         <p class="cb-muted">Daily weigh-ins go up and down. Cut Buddy compares your 7-day average with your plan and tells you where you stand: on track, behind, or losing too fast.</p>
       </div>
       <div class="cb-stack">
-        <figure class="crop crop-radar cb-card" data-slide="right">
-          <img src="assets/screens/radar-card.png" alt="This week's score for a sample athlete: 74, a solid week, with a radar of the six areas: protein, energy, weight, fueling, water and logging." width="732" height="590" loading="lazy" decoding="async">
+        <figure class="crop cb-card" data-slide="right">
+          <img src="assets/screens/score-card.png" alt="This week's score for a sample athlete: 93, dialed in, with a radar of the six areas, and a tile for each: protein, energy, weight, fueling, water and logging, all on track." width="1206" height="1336" loading="lazy" decoding="async">
         </figure>
         <p class="cb-muted">Each week, Cut Buddy scores the six areas you picked, like protein, water and logging, so you know what to work on next.</p>
       </div>
